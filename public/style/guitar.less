@@ -1,0 +1,206 @@
+/* less stylesheet for the guitar neck */
+
+/* default guitar css file
+ should probably use less
+*/
+
+#guitar {
+    min-height: 100%;
+    
+}
+/* number of frets shown */
+
+
+.guitar-view {
+    
+    margin-left: 10px;
+    margin-right: 10px;
+
+    
+    display: block;
+    
+    @default-border: 1px solid #000;
+    
+    @frets-shown: 16;
+    @neck-width: 100%;
+    
+    @fret-width: (@neck-width / @frets-shown);
+    @note-size: 30px;
+    @note-padding: 5px;
+
+    margin-top: 30px;
+    
+    .tuning-view {
+        position: absolute;
+        left: 13px;
+        //border: 1px solid #CCC;
+        
+        height: 1px;
+        padding-top: 200px;
+        
+        
+        .current-tuning {
+            
+            width: 170px;
+            .rotate;
+            font-size: 20px;
+        }
+        
+        // set some hover states
+        .opacity( .5 );
+        
+        &:hover {
+            .opacity( 1 );
+        }
+    }
+    
+    .guitar-neck {
+        
+        width: 99%;
+        display: block;
+        
+        .guitar-fret {
+            float: left;
+            
+            width: @fret-width;
+
+            /** special frets **/
+            &.fifth, &.seventh, &.ninth {
+                background-color: #EEE;
+            }
+            &.twelfth {
+                background-color: #DDD;
+            }
+            
+            &:nth-child(2) {
+                
+            }
+            
+            &:first-child .guitar-fret-note {
+                border-top: 1px solid #FFF;
+                border-right: 5px solid #000;
+            }
+            
+            /** notes **/
+            .guitar-fret-note {
+                height: 40px; 
+                
+                text-align: right;
+                
+                border-right: @default-border;
+                border-top: @default-border;
+                
+                // remove borders from last child
+                &:last-child {
+                    border-right-color: #FFF;
+                }
+                
+                display: block;
+                
+                a {
+                    width: @note-size;
+                    height: (@note-size - @note-padding);
+                    
+                    .rounded( ( @note-size / 2 ) );
+                    .opacity( .1 );
+                    
+                    color: #000;
+                    display: block;
+                    text-align: center;
+                    text-decoration: none;
+                    
+                    position: relative;
+                    top: (@note-size * -.5);
+                    
+                    /* right align */
+                    margin-left:auto; 
+                    margin-right:5px;
+                    
+                    padding-top: @note-padding;
+                    
+                    border: @default-border;
+                    background: #FFF;
+                    
+                    
+                    &:hover {
+                        background-color: #CCC;
+                        
+                        .opacity( 1 );
+                    }
+                    
+                    &.ghosted {
+                        .opacity( 0.5 );
+                    }
+                    
+                    &.active {
+                        background-color: #000;
+                        color: #FFF;
+                        
+                        .opacity( 1 );
+                    }
+                    
+                    &.tonic {
+                        background-color: #49afcd;
+                    }
+                    
+                    
+                }
+            }
+        }
+    }
+
+}
+
+/* clear fix */
+.clearfix {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/* rounded */
+.rounded(@radius: 2px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+/* opacity */
+.opacity(@opacity: 0.5) {
+  -moz-opacity: @opacity;
+  -khtml-opacity: @opacity;
+  -webkit-opacity: @opacity;
+  opacity: @opacity;
+  @opperc: @opacity * 100;
+  -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
+  filter: ~"alpha(opacity=@{opperc})";
+}
+
+/** rotated **/
+
+.rotate {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  
+  @transform-x : left;
+  @transform-y : top;
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: @transform-x @transform-y;
+  -moz-transform-origin: @transform-x @transform-y;
+  -ms-transform-origin: @transform-x @transform-y;
+  -o-transform-origin: @transform-x @transform-y;
+  transform-origin: @transform-x @transform-y;
+  
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+

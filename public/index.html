@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+    <head>
+        <title>MUSIQ Lab</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="An experimentation zoo for projects related to musical analysis.">
+        <meta name="author" content="Alexander Rulkens">
+        
+        <script src="http://underscorejs.org/underscore.js"></script>
+        <script src="http://requirejs.org/docs/release/2.1.4/minified/require.js"></script>
+        
+        <!-- style sheets -->
+  
+          <!-- Bootstrap -->
+          <link rel="stylesheet" media="screen" href="style/bootstrap.min.css">
+          <style>
+              body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+              }
+            </style>
+        
+        <link rel="stylesheet" href="style/default.css"/>
+    </head>
+    
+    <body>
+        
+        
+        
+        <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="musiq.html">MUSIQ.js</a></li>
+              <li><a href="guitar.html">Interactive Guitar</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="hero-unit">
+        <h1>MUSIQ Lab</h1>
+          <p>The MUSIQ Lab is my experimentation zoo for projects relating to music analysis, 
+                composition and generation with javascript. It is developed using the 
+                <a href="http://www.github.com/studioludens/musiqjs/">MUSIQ.js library</a>, 
+                a collection of useful algorithms that help with note, chord and scale recognition and
+                calculation.
+          </p>
+          <p>
+            <a class="btn btn-primary btn-large" href="http://www.github.com/studioludens/musiqjs/">MUSIQ.js</a>
+            <a class="btn btn-primary btn-large" href="guitar.html">Interactive Guitar</a> 
+          </p>
+      </div>
+      
+      <div class="row">
+        <div class="span4">
+            <h2>MUSIQ.js</h2>
+            <p>This open-source MIT-licensed library is your swiss knife of musical analysis. It allows you to descibe notes, 
+            intervals, chords, scales and other concepts used in musical theory. 
+            </p>
+            <p>It gives you all sorts
+            of ways to work with these concepts, like looking up chords from notes, finding scales
+            belonging to a certain chord, viewing the relationship between notes and more.
+            </p>
+            
+        </div>
+        <div class="span4">
+            <h2>Interactive Guitar</h2>
+            <p>The interactive guitar neck gives you an online interface for manipulating and finding things
+                  on the guitar neck.
+            </p>
+            <p>Some features that are included: search for notes, chords and scales directly on the neck, 
+            click on notes on the neck to form chords, transpose chords and more!</p>
+            <p>It's very much in development, give it a peek and see if you like it!</p>
+            
+        </div>
+        <div class="span4">
+            <h2>Open-source</h2>
+            <p>All code is available on <a href="http://www.github.com/studioludens/musiqlab">github</a>!</p>
+        </div>
+      </div>
+      
+      <!-- buttons -->
+      <div class="row">
+        <div class="span4">
+            <p><a href="library.html" class="btn btn-large">MUSIQ.js primer &raquo;</a></p>
+            
+        </div>
+        <div class="span4">
+            <p><a href="guitar.html" class="btn btn-large">Start Interactive Guitar &raquo;</a></p>
+        </div>
+        
+        
+        <div class="span4">
+            <p><a href="http://www.github.com/studioludens/musiqlab" class="btn btn-large">GitHub Project &raquo;</a></p>
+        </div>
+        
+      </div>
+      <hr>
+      <!-- about section -->
+      <div class="row">
+          <div class="span12">
+              <h2><a name="about"></a>About the project</h2>
+              <p class="lead">MUSIQ Lab is a project by Alexander Rulkens, working at studio:ludens. I'm an music
+                  enthousiast and an active guitar player. I'm also a nerd and developer and looking 
+                  at current websites that help you to learn guitar, I couldn't keep wondering why
+                  they all look like they are made in 1999. Wait, maybe because they are...
+              </p>
+              <p>So, I set out to create an interface for learning guitar and understanding music theory
+                  just the way I want to, which means <b>visual</b> and <b>interactive</b>. Because I'd
+                  like to see what I'm doing and do what I'm seeing.
+              </p>
+              <hr>
+              <h2>Technologies used</h2>
+              <p class="lead">Apart from being enthousiastic about music, I'm also raving about the new possibilities
+                  web technologies give us in building engaging online interfaces (I'm an interaction 
+                  designer as well) and I decided to use the cutting-edge in javascript development technologies.
+              </p>
+              <p>
+                  <ul class="nav nav-pills">
+                      <li><a href="http://c9.io/">Cloud9 IDE</a></li>
+                      <li><a href="http://twitter.github.com/bootstrap/">Bootstrap</a></li>
+                      <li><a href="http://angularjs.org/">AngularJS</a></li>
+                      <li><a href="http://underscorejs.org/">Underscore.js</a></li>
+                      <li><a href="http://lesscss.org/">LESS Stylesheets</a></li>
+                      <li><a href="http://nodejs.org/">Node.js</a></li>
+                      
+                  </ul>
+              </p>
+          </div>
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; <a href="http://www.studioludens.com">Studio Ludens</a> 2013</p>
+      </footer>
+      
+    </div> <!-- /container -->
+    
+    
+        <!-- async scripts -->
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="script/lib/bootstrap/bootstrap.min.js"></script>
+    </body>
+</html>
