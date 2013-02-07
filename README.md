@@ -1,0 +1,4 @@
+musiqlab
+========
+
+Music analysis experiments
