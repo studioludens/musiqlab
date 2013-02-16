@@ -9,7 +9,7 @@
   },
   
   "scripts": {
-    "start": "node ./server.js",
+    "start": "node server.js",
     "predeploy": "echo Deploying MUSIQ Lab...",
     "postdeploy": "echo Deployment of MUSIQ Lab finished"
   },
