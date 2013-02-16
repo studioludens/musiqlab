@@ -5,3 +5,4 @@
 {"ts":1361032139512,"patch":[[{"diffs":[[0,"  },\n  \n"],[1,"  \"scripts\": {\n    \"start\": \"node server.js\",\n    \"predeploy\": \"echo Deploying MUSIQ Lab...\",\n    \"postdeploy\": \"echo Deployment of MUSIQ Lab finished\"\n  },\n  \n"],[0,"  \"repos"]],"start1":216,"start2":216,"length1":16,"length2":176},{"diffs":[[0,"1.x\"\n  }"],[1,",\n  \n  \"license\":\"MIT\""],[0,"\n}"]],"start1":534,"start2":534,"length1":10,"length2":32}]],"length":566,"saved":false}
 {"ts":1361032156277,"patch":[[{"diffs":[[0,": \"node "],[1,"./"],[0,"server.j"]],"start1":250,"start2":250,"length1":16,"length2":18}]],"length":568,"saved":false}
 {"ts":1361032740548,"patch":[[{"diffs":[[0,"\"0.1"],[-1," alpha\""],[1,".0"],[0,",\n  "]],"start1":37,"start2":37,"length1":15,"length2":10}]],"length":563,"saved":false}
+{"ts":1361032937117,"patch":[[{"diffs":[[0,": \"0.1.0"],[1,"\""],[0,",\n  \"aut"]],"start1":35,"start2":35,"length1":16,"length2":17}]],"length":564,"saved":false}
