@@ -1,15 +1,184 @@
-/* less stylesheet for the guitar neck */
+/* less stylesheet for the guitar neck
 
-/* default guitar css file
- should probably use less
 */
 
 #guitar {
     min-height: 100%;
     
 }
-/* number of frets shown */
 
+
+
+@default-border: 1px solid #000;
+    
+@frets-shown: 16;
+@strings-shown: 6;
+@neck-width: 100%;
+
+@note-size: 30px;
+@note-padding: 5px;
+
+// for responsive layout
+
+// the width when the neck is shown horizontally
+//@fret-width-horizontal: (@neck-width / @frets-shown);
+// the fret width when the neck is shown vertically
+//@fret-width-vertical: @neck-width;
+    
+/**
+    HORIZONTAL LAYOUT
+**/
+// for desktop
+@media (min-width: 768px) {
+    
+    .guitar-view {
+        margin-top: 30px;
+    }
+    
+    .tuning-view {
+        
+        position: absolute;
+        left: 13px;
+        //border: 1px solid #CCC;
+        
+        height: 1px;
+        padding-top: 200px;
+        
+        width: 35px;
+        
+        .current-tuning {
+            
+            .rotate;
+        }
+    }
+    
+    .guitar-fret {
+        @fret-width: (@neck-width / (@frets-shown+1));
+        width: @fret-width;
+        float: left;
+        
+        &:first-child {
+            width: (1.5*@fret-width);
+        }
+        
+        &:first-child .guitar-fret-note {
+            border-top: 1px solid #FFF;
+            border-right: 5px solid #000;
+        }
+            
+        
+        .guitar-fret-note {
+            height: 40px; 
+            display: block;
+            
+            text-align: right;
+                    
+            border-right: @default-border;
+            border-top: @default-border;
+            
+            // remove borders from last child
+            &:last-child {
+                border-right-color: #FFF;
+            }
+                
+            a {
+                position: relative;
+                top: (@note-size * -.5);
+
+                .marker {
+                    /* right align */
+                    margin-left:auto; 
+                    margin-right:5px;
+                }
+            }
+        }
+        
+    }
+}
+
+/* VERTICAL LAYOUT */
+// for small screens
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    
+    .guitar-view {
+        margin-top: 5px;
+    }
+    .tuning-view {
+        
+        /* center align */
+        margin-left: auto;
+        margin-right: auto;
+        
+        text-align: center;
+        
+        .current-tuning {
+            
+            
+        }
+    }
+    
+    // Mixin for vertical layout
+    .guitar-fret {
+        width: @neck-width;
+        
+        @note-width: ((@neck-width/@strings-shown)-1);
+        
+        // should be relative to the width
+        // can only be done in javascript
+        height: 70px;
+        padding-top: 2px;
+        
+        
+        
+        // first fret, don't show lines
+        &:first-child .guitar-fret-note {
+            border-right: 1px solid #FFF;
+            border-bottom: 5px solid #000;
+        }
+        
+        .guitar-fret-note {
+            float: left;
+            display: block;
+            width: @note-width;
+            
+            text-align: right;
+            height: 100%;
+                    
+            border-right: @default-border;
+            border-bottom: @default-border;
+            
+            // remove borders from first child
+            &:first-child {
+                border-bottom-color: #FFF;
+            }
+                
+            a {
+                // put it in the middle
+                position: relative;
+                right: -50%;
+                
+                text-align: center;
+                
+                .marker {
+                    /* center align */
+                    margin-left:auto; 
+                    margin-right:auto;
+                    // bottom align
+                    position: absolute;
+                    bottom: 5px;;
+                    left: 0; right: 0;
+                }
+            }
+            
+            
+        }   
+    }
+}
+
+/**
+    SHARED 
+**/
 
 .guitar-view {
     
@@ -19,30 +188,16 @@
     
     display: block;
     
-    @default-border: 1px solid #000;
     
-    @frets-shown: 16;
-    @neck-width: 100%;
-    
-    @fret-width: (@neck-width / @frets-shown);
-    @note-size: 30px;
-    @note-padding: 5px;
 
-    margin-top: 30px;
     
     .tuning-view {
-        position: absolute;
-        left: 13px;
-        //border: 1px solid #CCC;
         
-        height: 1px;
-        padding-top: 200px;
-        
-        
+        //.tuning-view-horizontal;
+
         .current-tuning {
             
             width: 170px;
-            .rotate;
             font-size: 20px;
         }
         
@@ -60,12 +215,11 @@
         display: block;
         
         .guitar-fret {
-            float: left;
+            //float: left;
             
-            width: @fret-width;
 
             /** special frets **/
-            &.fifth, &.seventh, &.ninth {
+            &.third, &.fifth, &.seventh, &.ninth {
                 background-color: #EEE;
             }
             &.twelfth {
@@ -76,74 +230,57 @@
                 
             }
             
-            &:first-child .guitar-fret-note {
-                border-top: 1px solid #FFF;
-                border-right: 5px solid #000;
-            }
-            
             /** notes **/
             .guitar-fret-note {
-                height: 40px; 
-                
-                text-align: right;
-                
-                border-right: @default-border;
-                border-top: @default-border;
-                
-                // remove borders from last child
-                &:last-child {
-                    border-right-color: #FFF;
-                }
-                
-                display: block;
-                
+             
                 a {
-                    width: @note-size;
-                    height: (@note-size - @note-padding);
                     
-                    .rounded( ( @note-size / 2 ) );
-                    .opacity( .1 );
-                    
-                    color: #000;
+                    width: 100%;
+                    height: 100%;
                     display: block;
-                    text-align: center;
+                    
                     text-decoration: none;
                     
-                    position: relative;
-                    top: (@note-size * -.5);
+                    .marker {
+                        width: @note-size;
+                        height: (@note-size - @note-padding);
+                        
+                        .rounded( ( @note-size / 2 ) );
+                        .opacity( .1 );
+                        color: #000;
+                        display: block;
+                        text-align: center;
+                        padding-top: @note-padding;
+                        border: @default-border;
+                        background: #FFF;
+                    }
                     
-                    /* right align */
-                    margin-left:auto; 
-                    margin-right:5px;
                     
-                    padding-top: @note-padding;
-                    
-                    border: @default-border;
-                    background: #FFF;
-                    
-                    
-                    &:hover {
+                    &:hover .marker {
                         background-color: #CCC;
                         
                         .opacity( 1 );
                     }
                     
-                    &.ghosted {
+                    &.ghosted .marker {
                         .opacity( 0.5 );
                     }
                     
-                    &.active {
+                    &.active .marker {
                         background-color: #000;
                         color: #FFF;
                         
                         .opacity( 1 );
                     }
                     
-                    &.tonic {
+                    &.tonic .marker, &.unison .marker, &.octave .marker {
                         background-color: #49afcd;
                     }
                     
-                    
+                    &.fifth .marker {
+                        //background-color: #389dab;
+                        .rounded( 1px );
+                    }
                 }
             }
         }
@@ -203,4 +340,27 @@
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
+.pentagon {
+    margin: 30px 0 0 0; /* cosmetic */
+    position: relative;
+    width: 54px;
+    border-width: 50px 18px 0;
+    border-style: solid;
+    border-color: #000 transparent;
+    padding: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+.pentagon:before {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -85px;
+    left: -18px;
+    border-width: 0 45px 35px;
+    border-style: solid;
+    border-color: transparent transparent #fc2e5a;
+}
 

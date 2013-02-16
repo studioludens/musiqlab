@@ -4,12 +4,18 @@
 $(document).ready(function() {
    
    // set up 
-   $("#help").popover();
    
-   $("#transpose-button").tooltip();
-   $("#clear").tooltip();
-  // $("#search-field").tooltip();
-   $("#search-label").tooltip();
+   if(Modernizr && !Modernizr.touch ){
+       
+       // only show tooltips for non-touch browsers
+       // it's useless for touch
+       $("#transpose-button").tooltip();
+       $("#clear").tooltip();
+       $("#help").tooltip();
+      // $("#search-field").tooltip();
+       $("#search-label").tooltip();
+   }
+   
    
    // set the focus to the search field
    $("#search-field").focus();

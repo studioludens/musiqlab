@@ -16,9 +16,11 @@ var Chord = function( notes, descriptor, tonic, relative ) {
         this.relNotes = descriptor.notes;
         this.names = descriptor.names;
         this.longName = descriptor.longName;
+        
+        //this.name = this.names[0];
     }
-    // the descriptor is an array, just save the values
-    // here and 
+    
+    
     this.notes = notes;
     
     
@@ -44,47 +46,52 @@ var Chord = function( notes, descriptor, tonic, relative ) {
 
 Chord.fromNotation = function( name, octave ){
     
-    var tonic;
-    var notation;
-    // set the tonic
-    if( name.indexOf('#') == 1 || name.indexOf('b') == 1 ){
-        // we have a sharp
-        tonic = Note.fromNotation(name.substring(0,2));
-        notation = name.substring(2);
-    } else {
-        // nothing special
-        tonic = Note.fromNotation(name.substring(0,1));
-        notation = name.substring(1);
+    // check if it's a valid notation, at least the note part
+    
+    var matches = MUSIQ.isValidChord( name );
+    
+    //console.log( matches );
+    
+    // no chord found?
+    if( !matches ){
+        console.warn("Chord not found : " + name);
+        return;
     }
+    
+    var tonic = Note.fromNotation( matches[1] + (matches[2] || "") );
+    //console.log( tonic );
+    var notation = matches[3];
+    
     
     if( !notation || notation.length == 0){
         // set the default maj notation
         notation = 'M';
     }
-    
-    // check if we have a valid notation and a valid tonic
-    
-    
-    
-    // get the chords that match the description.
+    //console.log( notation );
     
     // this should be only one!
     var matchedChords = _(MUSIQ.chords).filter(function(chord){
         return _(chord.names).some(function(name){ return name == notation });
     });
     
-    console.log("matched chords for " + notation );
-    console.log(matchedChords);
+    //console.log("matched chords for " + notation );
+    //console.log(matchedChords);
     
-    // probably also check all alternative names for this chord
-    if( !tonic || !notation || !matchedChords || !(matchedChords.length > 0)){
-        console.warn("Chord not found : " + name);
-        return;
-    }
+    // we should check that the specific notation does not match
+    // more than 1 chord. if so, the definition in MUSIQ.chords 
+    // contains duplicates
+    console.assert( matchedChords.length == 1);
     
+    // get the transposed notes
+    var transNotes = _(matchedChords[0].notes).map(function(note){
+        return (new Note(note)).transpose(tonic.pos).toRelative().pos;
+    })
+    
+    console.log("Transnotes:");
+    console.log( transNotes ); 
     
     // find the name in the chord names array
-    var chord = new Chord( matchedChords[0].notes, matchedChords[0], tonic );
+    var chord = new Chord( transNotes, matchedChords[0], tonic );
     
     return chord;
 };
@@ -120,8 +127,6 @@ Chord.fromNotes = function( notes, inversion ){
         
         // determine the tonic - the lowest note
         var tonic = relNotes[inversion];
-        var tonicNote = new Note(tonic);
-        //var relTonic = relNotes[0];
 
         //var uniqueNotes = _.uniq(relNotes);
 
@@ -173,8 +178,7 @@ Chord.fromNotes = function( notes, inversion ){
         });
 
         //console.log(relNotes);
-        
-        
+
         //console.log( relNotes );
         // now remove duplicates
         relNotes = _.uniq(relNotes);
@@ -183,14 +187,14 @@ Chord.fromNotes = function( notes, inversion ){
         relNotes.sort(function(a, b) { return a - b; });
 
         //console.log(inversion + " : " + tonicNote.simpleNotation() + " [ " + relNotes + " ]");
-        
-        
-        //var foundTonics = [];
+
         // find chords in the descriptor list that match
         var matchedChordDescrs = _.filter(MUSIQ.chords, function(item) {
             // remove the optional 5th chord
             
-            if( item.optionalFifth ){
+            // TODO: change this so it can optionally remove any note and
+            // still match, not only 5th, but also 7th, 9th and 11th
+            if( item.optional ){
                 // match both to the item.notes array and the one without 7
                 // not array without the 5th (remove the 7 from the array)
                 var notesWOFifth = _.without(item.notes, 7);
@@ -205,9 +209,10 @@ Chord.fromNotes = function( notes, inversion ){
         matchedChordDescrs = _.uniq(matchedChordDescrs);
 
 
-        // add the matched chords to the return array
+        
 
         var matchedChords = _.map( matchedChordDescrs, function(item){
+            // add the matched chords to the return array
             return new Chord(noteObjects, item, new Note(tonic));
         } );
         
@@ -302,20 +307,32 @@ Chord.prototype.transpose = function(interval) {
 
 /**
  * returns the absolute notes
+ * 
+ * save it in a local variable _notes for easy access
  */
 Chord.prototype.noteObjects = function(){
     
     // just return the simple list of notes
     if( this._notes ) return this._notes;
     
-    var allNotes =  _.map(  this.relNotes, 
+    this._notes =  _.map(  this.relNotes, 
                             function(note){ 
                                 console.log(this.tonic.pos+note);
                                 return new Note(this.tonic.pos+note); 
                             }, this );
-    console.log(allNotes);
-    return allNotes;
+    console.log("NoteObjects");
+    console.log(this._notes);
+    return this._notes;
 };
+
+/**
+ * check if the chord can be described by a simple name
+ */
+Chord.prototype.hasName = function(name){
+    return _(this.names).find(function(n){
+        return name == n;
+    });
+}
 
 /**
  * a simple toString function that gives us the notation of all the notes
@@ -325,4 +342,29 @@ Chord.prototype.toString = function(){
     _.each(this.notes, function(item){ret += (new Note(item))});
     return ret;
 };
+
+/**
+ * the minimal notes needed to form this chord
+ * @returns an array with the notes that are minimally necessary
+ * to form this chord
+ */
+Chord.prototype.minNotes = function(){
+    
+    return _(this.notes).filter(function(note){
+        return !_(this.optional).contains(note);
+    });
+}
+
+Chord.prototype.type = function(){
+    return "Chord";
+}
+
+
+/**
+ * the plural class, simply to expose some functions in a more
+ * logical way
+ */
+var Chords = {};
+Chords.fromNotes = Chord.fromNotes;
+Chords.fromNotation = Chord.fromNotation;
 

@@ -1,3 +1,10 @@
+/**
+ * Just a simple file server that sends the contents
+ * of the public directory to the web browser.
+ * 
+ * TODO: support different mime-types
+ * 
+ */
 var util = require("util");
 var server = require("http");  
 var fs = require('fs');

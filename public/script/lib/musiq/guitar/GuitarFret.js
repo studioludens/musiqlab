@@ -30,6 +30,7 @@ GuitarFret.prototype.notes = function(){
  */
 GuitarFret.prototype.class = function(){
     //console.log(this.pos);
+    if( this.pos == 3) return "third";
     if( this.pos == 5) return "fifth";
     if( this.pos == 7) return "seventh";
     if( this.pos == 9) return "ninth";

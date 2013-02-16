@@ -18,3 +18,7 @@ Scale.extend = function( startOctave, endOctave ){
     this.startOctave = startOctave;
     this.endOctave = endOctave;
 }
+
+Scale.prototype.type = function(){
+    return "Scale";
+}

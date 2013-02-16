@@ -1,10 +1,32 @@
 <!doctype html>
 <html lang="en" ng-app>
+<!--
+
+-->
 <head>
   <meta charset="utf-8">
-  <title>Easy Guitar Chords</title>
+  <title>Interactive Guitar Chords | MUSIQ Lab</title>
+  
+  <!-- for responsive style sheets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- opengraph -->
+  <meta property="og:title" content="Interactive Guitar Chords | MUSIQ Lab"/>
+  <meta property="og:type" content="game"/>
+  <meta property="og:url" content="http://musiqlab.alexrulkens.com/guitar.html"/>
+  <meta property="og:image" content="http://musiqlab.alexrulkens.com/img/music-favicon.png"/>
+  <meta property="og:site_name" content="MUSIQ Lab"/>
+  <meta property="fb:admins" content="1389455775"/>
+  <meta property="fb:app_id" content="427134627365511"/>
+  <meta property="og:description"
+        content="An interactive way to view notes, chords and scales on the guitar neck."/>
+  
+  <link rel="stylesheet" media="screen" href="style/angular.css">
+  
   <script src="script/lib/angular/angular.js" type="text/javascript"></script>
-  <script src="http://underscorejs.org/underscore.js" type="text/javascript"></script>
+  <script src="script/lib/underscore/underscore-min.js"></script>
+  <!-- modernizr -->
+  <script src="script/lib/modernizr/modernizr.custom.92656.js"></script>
   
   <script src="script/lib/musiq/MUSIQ.js"></script>
   <script src="script/lib/musiq/Note.js"></script>
@@ -19,6 +41,7 @@
   <script src="script/lib/musiq/guitar/GuitarString.js"></script>
   
   <!-- angular.js controller -->
+  
   <script src="script/app/controllers.js"></script>
   
   
@@ -26,6 +49,8 @@
   
   <!-- Bootstrap -->
   <link rel="stylesheet" media="screen" href="style/bootstrap.min.css">
+  <!-- responsive sheets -->
+  <link href="style/bootstrap-responsive.min.css" rel="stylesheet">
   
   <link rel="stylesheet/less" type="text/css" href="style/main.less" />
   <link rel="stylesheet/less" type="text/css" href="style/guitar.less" />
@@ -45,97 +70,176 @@
   <script src="script/lib/less/less-1.3.3.min.js" type="text/javascript"></script>
     
 </head>
-<body>
+<body class="ng-cloak horizontal" ng-cloak>
+
+    <!-- GitHub banner -->
+    <a id="github-banner" href="https://github.com/studioludens/musiqlab/"><img style="position: absolute; top: 0; right: 0; border: 0;" 
+        src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" 
+        alt="Fork me on GitHub"></a>
+    
+    <!-- MAIN CONTENT -->
     <div id="guitar" ng-controller="GuitarCtrl">
             
         <div id="header">
         
             <div class="row-fluid">
                 <!-- TITLE -->
-                <div id="title" class="span3"/>
+                <div id="title" class="span1"/>
                     <h1></h1>
                 </div>
-                
+                <div id="search-info" class="span8">
+                    <p>
+                        <em>click on notes on the fretboard to form 
+                        chords</em>, read more <a href="#about" data-toggle="modal">
+                        about</a> this project, or</p>
+                </div>
+            </div>
+            
+            <div class="row-fluid">
                 <!-- SEARCH BOX -->
-                <div id="search" class="span6">
-                
-                    <div class="search-info"><p><em>click on notes on the fretboard to build your own chords</em>, read more <a href="#about" ng-click="showAbout">about</a> this project, or</p></div>
-                    
+                <div id="search" class="span7 offset1">
                     <form id="search_form">
                         <div class="input-prepend input-append search-view control-group" ng-class="queryGroupClasses">
                             <label id="search-label" 
                                     for="search" 
                                     class="add-on"
-                                    ><i class="icon-search"></i> search for</label>
+                                    ><i class="icon-search"></i> search for </label>
+                            <button type="button" 
+                                    name="help" 
+                                    id="help" 
+                                    class="btn btn-info" 
+                                    title="Show/hide extra selection"
+                                    rel="tooltip"
+                                    data-placement="bottom"
+                                    ng-click="toggleMatchPanel()">
+                                    <i class="icon-question-sign icon-white"></i>
+                                        <span class="caret"></span>
+                                    </button>
                             <input type="text" 
                                     name="search" 
                                     id="search-field" 
-                                    class="input-medium span6" 
+                                    class="input-medium span7"
                                     ng-model="query" 
                                     placeholder="any note, chord or scale, i.e. D# or Cmaj7"
                                     ng-change="search(query)"
-                                    ng-model="query"
-                                    
                                     ></input>
-                            <div class="add-on"><i class="icon-music"></i></div>
+                            <!--<div class="add-on"><i class="icon-music"></i></div>-->
                             <button type="button" 
                                     name="clear" 
                                     id="clear" 
                                     class="btn btn-danger" 
                                     ng-click="clearQuery()"
-                                    data-toggle="dropdown" 
                                     data-placement="bottom"
                                     rel="tooltip" 
                                     title="Clear your search and the fretboard">
                                     <i class="icon-remove icon-white"></i>
                                     </button>
-                            <button type="button" 
-                                    name="help" 
-                                    id="help" 
-                                    class="btn btn-info" 
-                                    data-title="To show chords"
-                                    data-content="Type in a name of a note, chord or scale and the fretboard will show all relevant notes. To show more than one note, chord or scale, separate them with ','. I.e. C,D will show all C and D chords on the neck."
-                                    data-placement="bottom">
-                                    <i class="icon-question-sign icon-white"></i>
-                                        <span class="caret"></span>
-                                    </button>
+                            
                             
                         </div>
                         
                         
                     </form>
                     
+                    <div id="match-panel" class="well ng-cloak" ng-show="showMatchPanel == 'true'" ng-cloak>
+                        <div class="row-fluid">
+                            <div class="span2 notes">
+                                <span class="nav-header">notes</span>
+                            </div>
+                            <div class="span2 chords">
+                                <span class="nav-header">chords</span>
+                            </div>
+                            
+                            <div class="span2 scales">
+                                <span class="nav-header">scales</span>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <!-- notes -->
+                            <div class="span1 panel-item notes">
+                                <ul class="nav nav-pills nav-stacked">
+                                    
+                                    <li ng-repeat="note in musiq.noteNames" ng-class="noteClass(note)"><a ng-click="activateNote(note)">{{note}}</a></li>
+                                </ul>
+                            </div>
+                            <div class="span1 sharp-notes panel-item">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li ng-repeat="note in sharps" ng-class="noteClass(note)"><a ng-click="activateNote(note)">{{note}}</a></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- chords -->
+                            <div class="span2 panel-item chords">
+                                <ul class="nav nav-pills nav-stacked">
+                                    
+                                    <li ng-repeat="chord in musiq.chords" ng-class="chordClass(chord.names[0])"><a ng-click="activateChord(chord.names[0])" title="{{chord.longName}}">{{chord.names[0]}}</a></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- scales -->
+                            <div class="span4 panel-item scales">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li ng-repeat="scale in musiq.scales" ng-class="scaleClass(scale.names[0])"><a href="#" ng-click="activateScale(scale.name)">{{scale.names[0]}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- MATCHES VIEW -->
-                <div id="match" class="span3 centered">
-                    <div class="match-header">matches</div>
+                <div id="match" class="span4 ng-cloak" ng-cloak>
                     
-                    <div class="muted" ng-show="!queryMatches || queryMatches.length &lt; 1">no matches found
-                        <br/><span class="small"><em>click on notes on the fretboard to form chords</em></span>
+                    <span id="matches-indicator" class="disabled btn hidden-phone">matches <i class="icon-hand-right"></i></span>
+                    
+                    <div id="matches-none" class="disabled btn hidden-phone" ng-show="!queryMatches || queryMatches.length &lt; 1">none
                     </div>
                     
                     <div class="btn-group">
-                        <a class="chord-match btn btn-large dropdown-toggle" 
-                            data-toggle="dropdown" 
+                        <a class="chord-match btn dropdown-toggle" 
                             ng-repeat="match in queryMatches"
-                            >
-                        {{match.notation()}}
+                            ng-click="selectMatch(match)">
+                        {{match.notation()}} {{match.type()}}
                             <span class="caret"></span>
                         </a>
                     </div>
                     
+                    <!-- Chord match -->
+                    <div id="match-info" class="well" ng-show="selectedMatch.type() == 'Chord'">
+                        <span class="nav-header">{{selectedMatch.tonic.simple()}} {{selectedMatch.longName}} {{selectedMatch.type()}}</span>
+                        <!-- notes in match -->
+                        <div class="btn-group">
+                            <a  class="btn" 
+                                ng-repeat="note in selectedMatch.noteObjects()"
+                                title="{{selectedMatch.tonic.interval(note).name()}}">{{note.simpleNotation()}}</a>
+                        </div>
+                        <span class="nav-header">alternative names</span>
+                        <span class="badge badge-info alternative-name" ng-repeat="name in selectedMatch.names">{{selectedMatch.tonic.simple()}} {{name}}</span> 
+                        <span class="nav-header">variations</span>
+                        
+                    </div>
+                    
+                    <!-- Note Match -->
+                    <div id="match-info" class="well" ng-show="selectedMatch.type() == 'Note'">
+                        <span class="nav-header">{{selectedMatch.notation()}} {{selectedMatch.type()}}</span>
+                        <!-- notes in match -->
+                        <div class="btn-group">
+                            <a class="btn" ng-repeat="note in selectedMatch.noteObjects()">{{note.simpleNotation()}}</a>
+                        </div>
+                        <span class="nav-header">alternative names</span>
+                        <span class="badge badge-info">{{selectedMatch.notation(false)}}</span> 
+                        <span class="badge badge-info">{{selectedMatch.notation(true)}}</span>
+                    </div>
                 </div>
             </div>
             
             <!-- ACTION BUTTONS -->
             <div id="actions" class="row-fluid">
-                <div class="actions-view span4 offset3">
+                <div class="actions-view span8 offset1">
                     <!-- TRANSPOSE -->
                     
                     <div class="btn-group">
                         <a id="transpose-button" 
-                            href="#" 
+                            
                             class="btn dropdown-toggle" 
                             data-toggle="dropdown" 
                             data-placement="top"
@@ -145,24 +249,24 @@
                             <span class="caret"></span>
                         </a>
                         
-                        <a href="#" class="btn" ng-click="transpose(-1)"><i class="icon-arrow-left"></i></a>
-                        <a href="#" class="btn" ng-click="transpose(1)"><i class="icon-arrow-right"></i></a>
+                        <a class="btn" ng-click="transpose(-1)"><i class="icon-arrow-left"></i></a>
+                        <a class="btn" ng-click="transpose(1)"><i class="icon-arrow-right"></i></a>
                         
                         <!-- menus for transpose -->
                         <ul id="transpose-dropdown" class="dropdown-menu">
                             <li ng-repeat="trans in [-7, -6, -5, -4, -3, -2, -1]">
-                                <a href="#" ng-click="transpose(trans)"><b>{{trans}}</b> semitones - <b>{{intervalName(-trans)}}</b> down</a>
+                                <a ng-click="transpose(trans)"><b>{{trans}}</b> semitones - <b>{{intervalName(-trans)}}</b> down</a>
                             </li>
                             <li class="divider"></li>
                             <li ng-repeat="trans in [1,2,3,4,5,6,7,8,9,10,11,12]">
-                                <a href="#" ng-click="transpose(trans)"><b>{{trans}}</b> semitones - <b>{{intervalName(trans)}}</b> up</a>
+                                <a ng-click="transpose(trans)"><b>{{trans}}</b> semitones - <b>{{intervalName(trans)}}</b> up</a>
                             </li>
                         </ul>
                     </div>
                     
                     <!-- VARIATIONS -->
                     <div class="btn-group">
-                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown">
                             Variations
                             <span class="caret"></span>
                         </a>
@@ -170,7 +274,7 @@
                         <!-- menus for variations -->
                         <ul id="variations-dropdown" class="dropdown-menu">
                             <li ng-repeat="vari in ['1st','2nd','3rd','4th','5th','6th']">
-                                <a href="#"><b>{{vari}}</b> variation</a>
+                                <a><b>{{vari}}</b> variation</a>
                             </li>
                         </ul>
                     </div>
@@ -178,7 +282,7 @@
                     <!-- edit and save functionality -->
                     
                     <div class="btn-group">
-                        <a href="#" class="btn" title="Save this chord"><i class="icon-plus"></i></a>
+                        <a class="btn" title="Save this chord"><i class="icon-plus"></i></a>
                     </div>
                     
                 </div>
@@ -190,28 +294,44 @@
         
         <div id="main">
             
-            <div class="guitar-view">
-                <div class="tuning-view button-group dropup">
-                    <div class="current-tuning btn dropdown-toggle" data-toggle="dropdown">{{currentTuning.name}} Tuning
-                        <span class="caret"></span>
+            <div class="guitar-view ng-cloak" ng-cloak>
+                <div class="tuning-view ">
+                    <div class="button-group dropup">
+                        <div class="current-tuning btn dropdown-toggle" data-toggle="dropdown">{{currentTuning.name}} Tuning
+                            <span class="caret"></span>
+                        </div>
+                        <ul id="tuning-dropdown" class="dropdown-menu">
+                            <li ng-repeat="tuning in tunings">
+                                <a ng-click="changeTuning(tuning.id)">{{tuning.name}} Tuning ({{tuning.notesDisplay}})</a>
+                            </li>
+                        </ul>
                     </div>
-                    <ul id="tuning-dropdown" class="dropdown-menu">
-                        <li ng-repeat="tuning in tunings">
-                            <a href="#" ng-click="changeTuning(tuning.id)">{{tuning.name}} Tuning ({{tuning.notesDisplay}})</a>
-                        </li>
-                    </ul>
                 </div>
-                <div class="guitar-neck">
+                
+                <!-- reverse order: default for bigger screens -->
+                <div class="guitar-neck hidden-phone">
+                
                     <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
+                        
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes().reverse()">
-                            <a  ng-class="note.class()" 
-                                href="#" 
-                                
+                            <a  ng-class="note.class(tonic)" 
                                 ng-click="toggleNote(note)" 
-
-                                
-                                title="{{note.notation()}}"
-                                >{{note.simple()}}</a>
+                                title="{{note.notation()}} / {{selectedMatch.tonic.interval(note).name()}}"
+                                ><div class="marker">{{note.simple()}}</div></a>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                
+                <!-- normal order: for small screens -->
+                <div class="guitar-neck visible-phone">
+                    <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
+                        
+                        <div class="guitar-fret-note" ng-repeat="note in fret.notes()">
+                            <a  ng-class="note.class(tonic)" 
+                                ng-click="toggleNote(note)" 
+                                title="{{note.notation()}} / {{selectedMatch.tonic.interval(note).name()}}"
+                                ><div class="marker">{{note.simple()}}</div></a>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -220,17 +340,79 @@
         </div>
         
         <div id="footer">
-            <p>&copy; 2013
-                <a href="http://www.studioludens.com/">studio:ludens</a>| Using the
-                <a href="http://www.github.com/studioludens/musiq/">MUSIQ.js library</a>
+            <p class="muted">&copy; 2013
+                <a href="http://www.studioludens.com/">studio:ludens</a> | coded 
+                with love by <a href="http://blog.alexrulkens.com/">Alexander Rulkens</a>
+                using the
+                <a href="http://www.github.com/studioludens/musiqjs/">MUSIQ.js </a>
+                library
             </p>
         </div>
     </div>
+    
+    <!-- ABOUT SCREEN -->
+    <div id="about" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="aboutLabel">About Interactive Guitar Chords</h3>
+      </div>
+      <div class="modal-body">
+        <p>The interactive guitar neck gives you an online interface for manipulating and finding things on the guitar neck.
+        </p><p>
+        Some features that are included: search for notes, chords and scales directly on the neck, click on notes on the neck to form chords, transpose chords and more!
+        </p>
+        <p>
+        It's very much in development, give it a peek and see if you like it!</p>
+        <h4>How to use</h4>
+        <p>You can lookup notes, chords and scales by simply typing them into the search box</p>
+        <p>Click the <span class="btn btn-info"><i class="icon-question-sign icon-white"></i>
+                                        <span class="caret"></span>
+                                    </button></span> button you can select them from a list.</p>
+        <p>Click the guitar neck to toggle notes and find chords that match the selected notes.</p>
+        <p>The <span class="btn btn-danger"><i class="icon-remove icon-white"></i></span> button removes all selected notes and scales and lets you start fresh.</p>
+        <p>Click a matched note/chord/scale will give you all sorts of information about it.</p>
+        <p>Transpose notes by selecting an interval from the <span class="btn">Transpose</span>list or clicking the <span class="btn"><i class="icon-arrow-left"></i></span> or <span class="btn"><i class="icon-arrow-right"></i></span> buttons.</p>
+        <p>(Not implemented) Save notes by clicking on the + button.</p>
+        <h4>Get the code</h4>
+        <p>You can get all the source code for this project on <a href="https://www.github.com/studioludens/musiqlab/">GitHub</a>.</p>
+      </div>
+      <div class="modal-footer">
+        <div class="fb-like" data-href="http://musiqlab.alexrulkens.com/guitar.html" data-send="false" data-width="250" data-show-faces="false"></div>
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+    
+    
     
     <!-- async scripts -->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="script/lib/bootstrap/bootstrap.min.js"></script>
     <script src="script/app/interface.js"></script>
     
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-15324233-1']);
+      _gaq.push(['_setDomainName', 'alexrulkens.com']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    
+    </script>
+    
+    <!-- facebook -->
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=427134627365511";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>

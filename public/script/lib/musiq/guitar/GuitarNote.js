@@ -95,13 +95,27 @@ GuitarNote.prototype.onlyActive = function( value ){
 /**
  * get a string representation of the class
  */
-GuitarNote.prototype.class = function(){
+GuitarNote.prototype.class = function( tonic ){
    var ret = [];
    if( this.state.active ) ret.push('active');
    if( this.state.ghosted ) ret.push('ghosted');
    if( this.state.tonic ) ret.push('tonic');
+   
+   // add the interval to the tonic as well
+   if( tonic ) ret.push(this.intervalToTonic(tonic).name().replace(" ","-"));
+   
    return ret.join(' ');
 };
+
+/**
+ * the interval to the tonic
+ * 
+ * @returns an Interval object relative to the tonic
+ */
+GuitarNote.prototype.intervalToTonic = function( tonic ){
+    if( tonic )
+        return tonic.interval( this.note );
+}
 
 /**
  * get the int note position

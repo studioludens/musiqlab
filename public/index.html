@@ -7,8 +7,8 @@
         <meta name="description" content="An experimentation zoo for projects related to musical analysis.">
         <meta name="author" content="Alexander Rulkens">
         
-        <script src="http://underscorejs.org/underscore.js"></script>
-        <script src="http://requirejs.org/docs/release/2.1.4/minified/require.js"></script>
+        <script src="script/lib/underscore/underscore-min.js"></script>
+        
         
         <!-- style sheets -->
   
@@ -153,5 +153,21 @@
         <!-- async scripts -->
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="script/lib/bootstrap/bootstrap.min.js"></script>
+        
+        <!-- Google Analytics -->
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-15324233-1']);
+          _gaq.push(['_setDomainName', 'alexrulkens.com']);
+          _gaq.push(['_trackPageview']);
+        
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        
+        </script>
     </body>
 </html>

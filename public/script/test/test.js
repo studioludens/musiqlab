@@ -2,54 +2,80 @@
 
 
 // EXECUTE test scripts
-//test_Notes();
+test_Notes();
 //test_Chords();
-test_Guitar();
-
+//test_Guitar();
+//test_Match();
 
 function test_Notes() {
-    var c = Note.fromNotation("C0");
-    var d = Note.fromNotation("D1");
-    var e = Note.fromNotation("E2");
-    var f = Note.fromNotation("F3");
     
+    // test notes with octave indication
+    var c = Note.fromNotation("C0");
+    console.assert(c.relative == false);
+    
+    var d = Note.fromNotation("D1");
+    console.assert(d.relative == false);
+    
+    var e = Note.fromNotation("E2");
+    console.assert(e.relative == false);
+    
+    var f = Note.fromNotation("F3");
+    console.assert(f.relative == false);
+    
+    f = Note.fromNotation("C 6 note");
+    console.log(f);
+    console.assert(f.relative == false);
+    
+    // test sharp notes
     var fsharp = Note.fromNotation("F#6");
 
-    console.log("C:");
+    /* SIMPLE (RELATIVE) NOTES */
+    // test simple notes
     var simplec = Note.fromNotation("C");
-    
+    console.assert(simplec.relative == true);
     
     var simple_fsharp = Note.fromNotation("F#");
+    console.assert(simple_fsharp.relative == true);
     
     var cflat = Note.fromNotation("Cb3");
+    console.assert(cflat.relative == false);
     
-    // this should result in ERRORS:
-    console.log("Four failing assertions: ");
-    console.log(Note.fromNotation("Bleg"));
-    console.log(Note.fromNotation("Cf"));
-    console.log(Note.fromNotation("H"));
-    console.log(Note.fromNotation("C-"));
+    /* TEST CASE (SHOULD NOT HAVE TO MATTER) */
+    console.assert(Note.fromNotation("c").pos == 0);
+    
+    // this should result in warnings
+    console.log("Four notes that can't be found: ");
+    console.log(typeof Note.fromNotation("Bleg") == 'undefined');
+    console.log(typeof Note.fromNotation("Cf") == 'undefined');
+    console.log(typeof Note.fromNotation("H") == 'undefined');
+    console.log(typeof Note.fromNotation("C-") == 'undefined');
     
     // this should be fine:
     console.log("No errors: ");
     
     console.log("B");
-    console.log(Note.fromNotation("B"));
+    console.assert(Note.fromNotation("B").pos == 11);
     
     console.log("Gb");
-    console.log(Note.fromNotation("Gb"));
+    console.assert(Note.fromNotation("Gb").pos == 6);
+    
     console.log("Dbbb (D triple flat)");
-    console.log(Note.fromNotation("Dbbb"));
+    console.assert(Note.fromNotation("Dbbb").pos == -1);
+    
     console.log("Fx (double sharp)");
-    console.log(Note.fromNotation("Fx"));
+    console.assert(Note.fromNotation("Fx").pos == 7);
+    
+    
     console.log("Fx (double sharp, octave 2)");
-    console.log(Note.fromNotation("Fx1"));
+    console.assert(Note.fromNotation("Fx1").pos == 19);
     
 
     // check note positions
-    console.log( Note.fromNotation("Cb1").pos);
+    //console.log( Note.fromNotation("Cb1").pos);
     console.assert( Note.fromNotation("Cb1").pos == 11);
-    console.assert( Note.fromNotation("B#").pos == 12);
+    
+    //console.log( Note.fromNotation("B#"));
+    console.assert( Note.fromNotation("B#").pos == 0);
 
     // log some distances
     console.assert(c.distance(d) == 14);
@@ -84,6 +110,7 @@ function test_Notes() {
     
     console.assert(c.transpose(Interval.fromName('octave')).pos == 12);
     
+    
 }
 
 // CHORDS
@@ -91,42 +118,50 @@ function test_Notes() {
 function test_Chords() {
 
     var cmaj = Chord.fromNotation("C");
+    
+    console.log( cmaj );
+    // check if the tonic is relative
+    console.assert( cmaj.tonic.pos == 0);
+    console.assert( cmaj.tonic.relative == true);
 
-
+    
     // chord from notation
     var dmaj7 = Chord.fromNotation("Dmaj7");
 
     // transpose it a bit
     dmaj7.tonic = Note.fromNotation("D5");
-    console.log( cmaj );
+    
     console.log( dmaj7.noteObjects());
 
     //var fmaj7 = Chord.fromNotes( [0,4,7] );
 
-    /*
-    var chords1 = Chord.fromNotes( [0,4,7] );
-    var chords2 = Chord.fromNotes( [1,5,8] );
+    // a C chord
+    var chords1 = Chords.fromNotes( [0,4,7] );
     
-    var chords3 = Chord.fromNotes( [12,15,19,24] );
-    */
+    console.log( chords1[0].notation());
+    console.assert( chords1[0].notation() == "Cmaj");
+    
+    // a C# chord
+    var chords2 = Chords.fromNotes( [1,5,8] );
+    console.assert( chords2[0].notation() == "C#maj");
+    
+    var chords3 = Chords.fromNotes( [12,15,19,24] );
+    console.log( chords3 );
+    
+    
+    
     var chords4 = Chord.fromNotes( [ 0, 4, 7, 11, 14 ] );
     var chords5 = Chord.fromNotes( [ 0, 4, 7, 11, 14 ] );
     
-    /*
+    
     _.each(chords1, function(chord){ console.log(chord.notation()); });
     _.each(chords2, function(chord){ console.log(chord.notation()); });
     _.each(chords3, function(chord){ console.log(chord.notation()); });
-    */
+    
     _.each(chords4, function(chord){ console.log(chord.notation()); });
     _.each(chords5, function(chord){ console.log(chord.notation()); });
     
-    
-    /*console.log(chord2.notation());
-    console.log(chord3.notation());
-    */
-    console.log(chords4.notation());
-    console.log(chords5.notation());
-    
+   
 }
 
 function test_Guitar() {
@@ -305,6 +340,22 @@ function test_Guitar() {
         console.log(chord.notation());
     });
     console.assert(Gb13[0].notation() == "G b13");
+    
+    
 
 }
 
+function test_Match() {
+    
+    var matches = MUSIQ.match("c");
+    console.log(matches);
+    
+    // get the note match, it's a C, but it also
+    // has the name B# (not that often used)
+    console.assert( matches[0].hasName("B#") );
+    
+    console.assert( MUSIQ.isValidNote("c") );
+    console.assert( MUSIQ.isValidChord("c") );
+    
+    
+}

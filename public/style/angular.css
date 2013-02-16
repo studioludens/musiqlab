@@ -1,0 +1,4 @@
+/* cloaking non-loaded elements */
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none;
+}

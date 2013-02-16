@@ -1,3 +1,5 @@
+"use strict";
+
 // guitar class
 // abstracts a guitar
 
@@ -115,10 +117,30 @@ Guitar.prototype.chordsFromActiveNotes = function(){
             return note.notePos();
         });
     
-    console.log(notes);
+    //console.log(notes);
     return Chord.fromNotes( notes );
 };
 
+/**
+ * returns a match array with all the notes or chords that
+ * match this finger position
+ */
+Guitar.prototype.activeMatches = function(){
+    // get all notes
+    var notes = _(this.activeNotes()).map(function(note){
+            return note.notePos();
+        });
+    
+    
+    var matchedChords = Chord.fromNotes( notes );
+    if( !matchedChords ){
+        // just return the individual notes as an array
+        return _(this.activeNotes()).map(function(note){
+            return note.note; // because it's a GuitarNote
+        });
+    }
+    return matchedChords;
+}
 
 
 
@@ -226,41 +248,40 @@ Guitar.prototype.transpose = function( num ){
 /**
  * show function: shows chords, notes or scales on the fretboard
  * 
- * @str : the input string
+ * @param matches : an array of Chord / Note / Scale objects to be shown
  * 
  * @return : true if the query is valid and the fretboard has changed
  * 
  */
  
-Guitar.prototype.show = function( str ){
+Guitar.prototype.show = function( matches ){
     
-    if( !str ) return;
+    if( !matches ) return;
     
     // clear fretboard
     this.clearFretboard();
     
-    if( MUSIQ.isValidNote( str )){
-        console.log("Showing single note");
-       this.showNotes( [str] ); 
-    } else if( MUSIQ.isValidNoteList( str ) ){
-        console.log("Showing multiple notes");
-        var noteList = Note.fromNotation( str );
-        this.showNotes( noteList );
-    } else if( MUSIQ.isValidChord( str )){
-        console.log("Showing single chord");
-        var chord = Chord.fromNotation( str );
-        this.showChords( [chord]);
-    } else if( MUSIQ.isValidScale( str )){
-        console.log("Showing single scale");
-        var scale = Scale.fromNotation( str );
-        this.showScales( [chord]);
-    } else {
-        // cannot be parsed!
-        console.warn("String cannot be shown: " + str);
+    /**
+     * show the first match bright, the second and later
+     * matched slightly faded (ghosted) and the notes matched
+     * as tonic
+     */
+    _(matches).each(function(match, num){
         
-        // function failed to show anything
-        return false;
-    }
+        console.log(num);
+        // options
+        var o = { only: true, active: true, ghosted: num > 0 };
+        
+        if( match instanceof Note){
+            this.showNotes( [match], o);
+            o.tonic = true;
+        } else if( match instanceof Chord ){
+            this.showChords( [match], o );
+        } else if( match instanceof Scale ){
+            this.showScales( [match], o );
+        }
+        
+    },this);
     
     return true;
     
@@ -282,10 +303,13 @@ Guitar.prototype.show = function( str ){
  */
 Guitar.prototype.showNotes = function( notes, options ){
     
+    console.log( "ShowNotes ");
+    //console.log( notes )
+    
     // set the default options
     var opts = options || { only : true, active: true };
     
-    console.log( notes );
+    //console.log( notes );
     // convert it to an array of note objects
     
     // TODO: probably solve this with reduce
@@ -295,7 +319,7 @@ Guitar.prototype.showNotes = function( notes, options ){
             // check if N is a number
             } else if( _(n).isNumber() ){
                 
-                console.log("Note is number : " + n);
+                //console.log("Note is number : " + n);
                 
                 // relative
                 if( n < 12 ){
@@ -307,7 +331,7 @@ Guitar.prototype.showNotes = function( notes, options ){
             // check if N is a string
             } else if( _(n).isString() ){
                 // convert it to a note
-                console.log("Note is string : " + n);
+                //console.log("Note is string : " + n);
                 return Note.fromNotation(n);
             }
             // no match
@@ -317,7 +341,7 @@ Guitar.prototype.showNotes = function( notes, options ){
             return;
         });
     
-    //console.log( noteObjects );
+    console.log( noteObjects );
     
     _(this.notes).each(function(string_notes){
         _(string_notes).each(function(note){
@@ -361,6 +385,9 @@ Guitar.prototype.showNotes = function( notes, options ){
  */
 Guitar.prototype.showChords = function( chords ){
     
+    console.log( "ShowChords ");
+    console.log( chords )
+    
     // get a list of notes - only from the first chord
     if( chords && chords.length > 0){
         this.showNotes( chords[0].notes );
@@ -387,7 +414,7 @@ Guitar.prototype.showTonic = function( note ){
     console.log("Showing tonic");
     console.log( note );
     
-    this.showNotes( [note], { tonic: true });
+    this.showNotes( [note], { only: false, tonic: true });
 };
 
 /**

@@ -1,10 +1,19 @@
 // main css less file
 
+
+
 @default-font: 'Arial', sans-serif;
 
-body, p {
+body {
     font-family: @default-font;
     background-color: #CCC;
+    background-image: url(../img/bg2.png);
+}
+
+
+
+p {
+  font-family: @default-font;
 }
 
 h1, h2, h3, h4 {
@@ -22,12 +31,186 @@ html, body {
     text-align: center;
 }
 
-@top-margin : 15px;
+@top-margin : 10px;
 
 
+/**
+RESPONSIVE LAYOUTS
+**/
 
+
+// for desktop - HORIZONTAL
+@media (min-width: 768px) {
+    
+    // compensate for the 'search for' text
+    // for nice line out
+    @match-panel-left-width: 142px;
+    
+    
+    
+    #search-info {
+            margin-top: @top-margin;
+    }
+    
+    #search {
+        margin-bottom: 30px;
+
+        #search-field {
+            // make span 100%
+        }
+        
+        .search-view {
+            margin-bottom: 0;
+        }
+    }
+    
+    
+    
+    #actions {
+        position: absolute;
+        left: 0;
+        right: 0;
+        //padding-left: @search-box-left-width;
+        
+        .actions-view {
+            position: relative;
+            top: -15px;
+        }
+    }
+    
+    
+    
+    #match-panel {
+        width: 60%;
+        margin-left: @match-panel-left-width;
+    }
+    
+    #match-info {
+        margin-top: 3px;
+    }
+    
+    #footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -1;
+    }
+    
+}
+
+
+// for small screens - VERTICAL
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    
+    #search-info {
+        display: none;
+    }
+    
+    #github-banner {
+        display: none;
+    }
+    
+    // hook the search box to the top of the window
+    #search {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        
+        
+        // some background
+        //.small-shadow;
+        //background-color: #FFF;
+        
+        
+        #search-field {
+            width: 70%;
+        }
+        
+        #match-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-bottom: 0;
+            height: 50%;
+            
+            .small-shadow;
+            
+            .span1 {
+                float: left;
+                width: 40px;
+            }
+            .span2 {
+                float: left;
+                width: 80px;
+            }
+            .span4 {
+                float:left;
+                width: 160px;
+            }
+        }
+    }
+
+    #match {
+        
+        position: fixed;
+        top: 40px;
+        left: 0;
+        z-index: 999;
+        
+        // some background
+        //.small-shadow;
+        //background-color: #FFF;
+        .chord-match {
+            margin-left: 10px;
+            margin-right: 10px;
+            .small-shadow;
+        }
+        
+        // info pop-up
+        #match-info {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+            .small-shadow;
+        }
+        
+        
+        
+        
+        
+    }
+    
+    @margin: 15px;
+    
+    #search-label {
+        display: none;
+    }
+    
+    #actions {
+        margin-top: @margin;
+        margin-bottom: @margin;
+    }
+    
+    #footer {
+        margin-top: @margin;
+        margin-bottom: @margin;
+    }
+}
+
+/* SHARED */
 
 #header {
+    
+    
+    @small-padding: 4px;
+    
+    form {
+        margin: 0;
+    }
 
     #title {
         
@@ -37,22 +220,7 @@ html, body {
             padding: @top-margin 0 0 10px;
         }
     }
-    
-    #search {
-        
-        .search-info {
-            margin-top: @top-margin;
-            margin-bottom: 15px;
-        }
-        
-        .search-view {
-            
-            margin-bottom: 0;
-        }
-        
-        
-    }
-    
+
     #match {
         
         .match-header {
@@ -64,9 +232,7 @@ html, body {
         .muted .small {
             font-size: 85%;
         }
-        
-        
-        
+
         a.chord-match {
             //font-size: 24px;
             font-weight: bold;
@@ -75,28 +241,74 @@ html, body {
             
             
             &:first-child {
-                font-size: 30px;
+                //font-size: 30px;
                 color: #000;
                 
             }
             
-            &:hover {
-                color: #cc0000;
-            }
+            
+        }
+    }
+    
+    #match-panel {
+
+        @note-min-width: 30px;
+        @chord-min-width: 50px;
+        @scales-min-width: 50px;
+        
+        padding-top: 5px;
+        padding-bottom: 5px;
+        
+        .nav-header {
+            padding-left: @small-padding;
+        }
+        
+        .panel-item {
+            max-height: 200px;
+            overflow: auto;
+        }
+        
+        .nav-pills > li > a {
+            padding: @small-padding;
+        }
+        
+        .normal-notes {
+            min-width: @note-min-width;
+        }
+        
+        .sharp-notes {
+            position: relative;
+            left: -10px;
+            min-width: @note-min-width;
+        }
+        
+        .chords {
+            min-width: @chord-min-width;
+        }
+        
+        .scales {
+            min-width: @scales-min-width;
+        }
+    }
+    
+    #match-info {
+        
+        
+        max-width: 200px;
+        padding-top: @small-padding;
+        
+        .nav-header {
+            padding-left: 0;
+        }
+        
+        .alternative-name {
+            display: inline-block;
+            margin-right: @small-padding;
         }
     }
     
     #actions {
-        
-        position: absolute;
-        left: 0;
-        right: 0;
-        
-        .actions-view {
-            position: relative;
-            top: -15px;
-        }
-        
+
         // set some hover states
         /*.opacity( .3 );
         
@@ -125,14 +337,16 @@ html, body {
 #footer {
     
     text-align: center;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    
     
 }
 
 .big-shadow {
+    -webkit-box-shadow:  0px 0px 30px 1px rgba(0, 0, 0, .5);
+    box-shadow:  0px 0px 30px 1px rgba(0, 0, 0, .5);
+}
+
+.small-shadow {
     -webkit-box-shadow:  0px 0px 30px 1px rgba(0, 0, 0, .5);
     box-shadow:  0px 0px 30px 1px rgba(0, 0, 0, .5);
 }
@@ -162,4 +376,5 @@ html, body {
     font-style: normal;
 
 }
+
 
