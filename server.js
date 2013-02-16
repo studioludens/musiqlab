@@ -76,7 +76,7 @@ server.createServer(function(request,response){
         }
     });
     
-}).listen(8080);  
+}).listen(process.env.PORT);  
 
-util.puts("Server Running on 8080");  
+util.puts("Server Running on " + process.env.PORT);  
 
