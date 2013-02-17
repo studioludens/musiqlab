@@ -2,9 +2,10 @@
 
 
 // EXECUTE test scripts
-test_Notes();
+//test_Notes();
 //test_Chords();
 //test_Guitar();
+test_GuitarChordVariations();
 //test_Match();
 
 function test_Notes() {
@@ -343,6 +344,26 @@ function test_Guitar() {
     
     
 
+}
+
+function test_GuitarChordVariations(){
+    
+    var guitar = new Guitar();
+    
+    var c = Chord.fromNotation("c");
+    console.log(c);
+    console.assert(c.relative);
+    
+    var g = Note.fromNotation("G");
+    console.log(g);
+    console.assert(g.relative);
+    
+    console.assert(c.contains(g));
+    
+    
+    var vars = GuitarChord.fromChord(guitar, c);
+    
+    console.log(vars);
 }
 
 function test_Match() {

@@ -20,7 +20,15 @@ var GuitarString = function( guitar, pos, base ){
  * @param fret : a GuitarFret object we should check the note on
  */
 GuitarString.prototype.noteOnFret = function( fret ){
-    return;
+    return this.guitar[this.pos][fret.pos];
+};
+
+/**
+ * matches a Note object to the fret and returns all GuitarNote objects that
+ * match it.
+ */
+GuitarString.prototype.matchNotes = function( note ){
+    
 };
 
 /**

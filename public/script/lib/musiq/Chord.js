@@ -80,15 +80,25 @@ Chord.fromNotation = function( name, octave ){
     // we should check that the specific notation does not match
     // more than 1 chord. if so, the definition in MUSIQ.chords 
     // contains duplicates
+    if( matchedChords.length > 0 ){
+        //console.log( "matched Chords > 0! ");
+        //console.log(matchedChords);
+    }
     console.assert( matchedChords.length == 1);
     
     // get the transposed notes
-    var transNotes = _(matchedChords[0].notes).map(function(note){
+    
+    // first add any optional notes
+    var allNotes = matchedChords[0].optional ?
+                      _(matchedChords[0].notes).union(matchedChords[0].optional).sort(function(a, b) { return a - b; })
+                    : matchedChords[0].notes;
+    
+    var transNotes = _(allNotes).map(function(note){
         return (new Note(note)).transpose(tonic.pos).toRelative().pos;
     })
     
-    console.log("Transnotes:");
-    console.log( transNotes ); 
+    //console.log("Transnotes:");
+    //console.log( transNotes ); 
     
     // find the name in the chord names array
     var chord = new Chord( transNotes, matchedChords[0], tonic );
@@ -186,22 +196,26 @@ Chord.fromNotes = function( notes, inversion ){
         // sort the notes
         relNotes.sort(function(a, b) { return a - b; });
 
-        //console.log(inversion + " : " + tonicNote.simpleNotation() + " [ " + relNotes + " ]");
+        //console.log(inversion + " : " + " [ " + relNotes + " ]");
 
+        //console.log("Check descriptors");
+        
         // find chords in the descriptor list that match
-        var matchedChordDescrs = _.filter(MUSIQ.chords, function(item) {
-            // remove the optional 5th chord
+        var matchedChordDescrs = _(MUSIQ.chords).filter(function(chord) {
             
-            // TODO: change this so it can optionally remove any note and
-            // still match, not only 5th, but also 7th, 9th and 11th
-            if( item.optional ){
-                // match both to the item.notes array and the one without 7
-                // not array without the 5th (remove the 7 from the array)
-                var notesWOFifth = _.without(item.notes, 7);
+            
+            if( chord.optional ){
+                // remove all optional notes from the source array
                 
-                return _.isEqual(item.notes, relNotes ) || _.isEqual(notesWOFifth, relNotes);
+                // so we're only left with the absolute required notes to form this chord
+                var notesReq = _(relNotes).difference(chord.optional);
+                var chordNotesReq = _(chord.notes).difference(chord.optional);
+                
+                //console.log( notesReq + " - " + chord.notes );
+                
+                return _(chordNotesReq).isEqual(relNotes ) || _(chordNotesReq).isEqual(notesReq);
             } else {
-                return _.isEqual(item.notes, relNotes);
+                return _(chord.notes).isEqual(relNotes);
             }
         }, this);
         
@@ -267,6 +281,17 @@ Chord.fromNotes = function( notes, inversion ){
     
 };
 
+/**
+ * check if this chord contains a certain note
+ */
+Chord.contains = function(chord, note){
+    if( chord.relative ){
+        return _(chord.relNotes).contains(note.relPos());
+    } else {
+        return _(chord.notes).contains(note.pos);
+    }
+};
+
 /** instance methods **/
 
 /**
@@ -274,9 +299,9 @@ Chord.fromNotes = function( notes, inversion ){
  */
 Chord.prototype.notation = function() {
     if( this.abstract ){
-        return this.names[0];
+        return this.names[0].replace("b","♭").replace("#","♯");;
     } else {
-        return this.tonic.simpleNotation() + this.names[0];
+        return this.tonic.simpleNotation() + this.names[0].replace("b","♭").replace("#","♯");;
     }
 };
 
@@ -285,9 +310,9 @@ Chord.prototype.notation = function() {
  */
 Chord.prototype.longNotation = function() {
     if( this.abstract ){
-        return this.longName;
+        return this.longName.replace("b","♭").replace("#","♯");;
     } else {
-        return this.tonic.simpleNotation() + " " + this.longName;
+        return this.tonic.simpleNotation() + " " + this.longName.replace("b","♭").replace("#","♯");;
     }
 };
 
@@ -334,6 +359,8 @@ Chord.prototype.hasName = function(name){
     });
 }
 
+
+
 /**
  * a simple toString function that gives us the notation of all the notes
  */
@@ -357,6 +384,13 @@ Chord.prototype.minNotes = function(){
 
 Chord.prototype.type = function(){
     return "Chord";
+}
+
+/**
+ * check if a Chord contains a note
+ */
+Chord.prototype.contains = function( note ){
+    return Chord.contains( this, note );
 }
 
 

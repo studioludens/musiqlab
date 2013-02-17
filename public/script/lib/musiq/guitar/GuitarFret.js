@@ -2,7 +2,7 @@
  * GuitarFret - describes a guitar fret
  * 
  * @param guitar : the guitar this fret belongs to
- * @param pos : the position on the fretboard
+ * @param pos : the position on the fretboard (0-x, 0 being the lowest string, x is usually 6)
  * 
  * the fret automatically calculates a number of useful variables
  * 
@@ -20,9 +20,14 @@ var GuitarFret = function( guitar, pos ){
     this.barre = false;
 };
 
+/**
+ * get all notes on this particular fret. Because we can reference
+ * to the guitar we can determine all the notes
+ */
 GuitarFret.prototype.notes = function(){
     return this.guitar.notesOnFret( this.pos );
 };
+
 
 /**
  * TODO: add this in another place, sort of a 

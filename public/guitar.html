@@ -10,6 +10,7 @@
   <!-- for responsive style sheets -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  
   <!-- opengraph -->
   <meta property="og:title" content="Interactive Guitar Chords | MUSIQ Lab"/>
   <meta property="og:type" content="game"/>
@@ -73,9 +74,10 @@
 <body class="ng-cloak horizontal" ng-cloak>
 
     <!-- GitHub banner -->
-    <a id="github-banner" href="https://github.com/studioludens/musiqlab/"><img style="position: absolute; top: 0; right: 0; border: 0;" 
+    <!--<a id="github-banner" href="https://github.com/studioludens/musiqlab/"><img style="position: absolute; top: 0; right: 0; border: 0;" 
         src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" 
         alt="Fork me on GitHub"></a>
+    -->
     
     <!-- MAIN CONTENT -->
     <div id="guitar" ng-controller="GuitarCtrl">
@@ -294,7 +296,7 @@
         
         <div id="main">
             
-            <div class="guitar-view ng-cloak" ng-cloak>
+            <div class="guitar-view ng-cloak">
                 <div class="tuning-view ">
                     <div class="button-group dropup">
                         <div class="current-tuning btn dropdown-toggle" data-toggle="dropdown">{{currentTuning.name}} Tuning
@@ -309,8 +311,8 @@
                 </div>
                 
                 <!-- reverse order: default for bigger screens -->
-                <div class="guitar-neck hidden-phone">
                 
+                <div class="guitar-neck hidden-phone">
                     <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
                         
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes().reverse()">
@@ -326,7 +328,6 @@
                 <!-- normal order: for small screens -->
                 <div class="guitar-neck visible-phone">
                     <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
-                        
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes()">
                             <a  ng-class="note.class(tonic)" 
                                 ng-click="toggleNote(note)" 

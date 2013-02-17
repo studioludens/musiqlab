@@ -63,7 +63,7 @@ var MUSIQ = {
                         "octave"
                     ],
                     
-    chordExtensionNotes : [1,2,5,8,9],
+    chordExtensionNotes : [1,2,8,9],
     /**
      * a list of the most commonly occuring chords
      * in JSON format
@@ -111,17 +111,20 @@ var MUSIQ = {
         {  
                 'names': ["maj7","maj 7", "major 7"],
                 'longName': "major 7th",
-                'notes': [ 0, 4, 7, 11 ]
+                'notes': [ 0, 4, 7, 11 ],
+                'optional': [7]
              },
         {  
                 'names': ["m7","mi7","min7","minor 7","-7"],
                 'longName': "minor 7th",
-                'notes': [ 0, 3, 7, 10 ]
+                'notes': [ 0, 3, 7, 10 ],
+                'optional': [7]
              },
         {  
                 'names': ["7","M7"],
                 'longName': "dominant 7th",
-                'notes': [ 0, 4, 7, 10 ]
+                'notes': [ 0, 4, 7, 10 ],
+                'optional': [7]
              },
         {  
                 'names': ["dim7","dim 7"],
@@ -169,7 +172,7 @@ var MUSIQ = {
         {  
                 'names': ["m9"],
                 'longName': "minor 9th",
-                'notes': [ 0, 3, 7, 11, 14 ],
+                'notes': [ 0, 3, 7, 10, 14 ],
                 'optional': [7]
              },
         {  
@@ -193,20 +196,26 @@ var MUSIQ = {
              },
         {  
                 'names': [" b9","Mb9","maj b9"],
-                'longName': "flat 9th",
+                'longName': "major flat 9th",
+                'notes': [ 0, 4, 7, 11, 13 ],
+                'optional': [7]
+             },
+        {  
+                'names': ["7b9","M7b9","7 b9"],
+                'longName': "dominant 7th flat 9th",
                 'notes': [ 0, 4, 7, 10, 13 ],
+                'optional': [7]
+             },
+        {  
+                'names': ["7#9","M7#9","7 #9","hendrix","7alt"],
+                'longName': "dominant 7th sharp 9th",
+                'notes': [ 0, 3, 4, 7, 10],
                 'optional': [7]
              },
         {  
                 'names': ["#9","M#9","M #9","maj #9"],
                 'longName': "sharp 9th",
                 'notes': [ 0, 4, 7, 15 ],
-                'optional': [7]
-             },
-        {  
-                'names': ["7#9","M7#9","M 7#9","7 #9","7alt"],
-                'longName': "dominant 7th sharp 9th",
-                'notes': [ 0, 4, 7, 10, 15 ],
                 'optional': [7]
              },
         
@@ -355,7 +364,7 @@ MUSIQ.match = function( name ){
         ret.push( Chord.fromNotation( name ));
     }
     if( MUSIQ.isValidScale( name )){
-        console.log("Showing single scale");
+        console.log("Match single scale");
         ret.push( Scale.fromNotation( name ) );
     }
     
@@ -390,6 +399,9 @@ MUSIQ.isValidNoteList = function( list ){
 };
 
 /**
+ * 
+ * TODO: store these in a static variable when the function is first called
+ * 
  * @returns matches from the regular expression if it's a valid chord
  *              0 : the whole matched name
  *              1 : the note
@@ -404,6 +416,16 @@ MUSIQ.isValidChord = function( notation ){
     var not = notation;
     if( !notation || notation.length == 0 ) not = "M";
     
+    // TODO: make this shorter
+    /*
+    var chordNames = 
+       _.chain(MUSIQ.chords)
+        .pluck("longname")
+        .union( 
+            _(MUSIQ.chords).pluck("names") )
+        .value()
+        .join("|");
+    */
     
     var chordNames = _(MUSIQ.chords).reduce(function(memo, item){
         var m = _(memo).isString() ? memo : memo.names.join("|") + "|" + memo.longName;
@@ -439,3 +461,27 @@ MUSIQ.isValidScaleList = function( chord ){
     return false;
 };
 
+/**
+ * guitar stuff
+ */
+
+MUSIQ.guitar = {};
+
+/**
+ * @returns a list of matches if it's a valid finger position of the notes
+ * currently played on a guitar neck
+ * 
+ * example: "0 2 2 1 0 x" - should get an E-chord
+ * 
+ */
+MUSIQ.guitar.isValidFingerPos = function( tab ){
+    var regex = new RegExp("^((xX|[0-9]{1,2})[ -]*){6}$","m");
+    return regex.exec( tab );
+};
+
+/**
+ * @param chord : a GuitarChord object
+ */
+MUSIQ.guitar.isValidChord = function( chord ){
+    
+}

@@ -127,7 +127,15 @@ GuitarNote.prototype.notePos = function(){
 /**
  * get the relative note position
  */
+GuitarNote.prototype.relPos =
 GuitarNote.prototype.relativeNotePos = function(){
     return this.note.toRelative().pos;
 }
 
+/**
+ * get the 'distance' of a fret to another note on the fretboard
+ * returns an array [ strings, frets ]
+ */
+GuitarNote.prototype.distanceTo = function( otherNote ){
+    return [ otherNote.pos[0] - this.pos[0], otherNote.pos[1] - this.pos[1] ];
+}

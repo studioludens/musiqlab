@@ -1,10 +1,18 @@
 "use strict";
-
-// guitar class
-// abstracts a guitar
-
+/**
+ * Guitar object
+ * 
+ * @param tuning : initializes the guitar object with a tuning
+ *                  defaults to "standard" guitar tuning
+ *                  E A D G B E
+ * 
+ * You can find more tunings in MUSIQ.tunings
+ * 
+ */
 var Guitar = function( tuning ){
     
+    // strings get initialized when a tuning is set
+    this.strings = [];
     
     // the strings property of the guitar object is
     // automatically set when the tuning is set
@@ -20,6 +28,8 @@ var Guitar = function( tuning ){
         // fill the fret with data!
         this.frets[i] = new GuitarFret( this, i );
     }
+    
+    
     
     this.createNotes();
     
@@ -193,6 +203,8 @@ Guitar.prototype.posFromChord = function( chord ){
 /**
  * get all notes on a particular fret
  * @param fretNr : the number of the fret to look for
+ * 
+ * @returns an array of GuitarNote objects
  */
 Guitar.prototype.notesOnFret = function( fretNr ){
     return _(this.strings).map( function( str, str_nr ){

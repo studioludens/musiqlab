@@ -208,6 +208,7 @@ Note.transpose = function( note, interval ){
     }
 };
 
+
 /**
  * class methods
  */
@@ -261,11 +262,19 @@ Note.prototype.octave = function( ){
 };
 
 /**
- * convert the note to a relative position
+ * convert the note to a relative note
  */
 Note.prototype.toRelative = function( ){
     return new Note(this.pos - this.octave()*12);
 };
+
+/**
+ * get the relative position of the note
+ */
+Note.prototype.relPos = function(){
+    return this.relative ? this.pos : this.toRelative().pos;
+};
+
 
 /**
  * transpose a note

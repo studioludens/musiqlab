@@ -6,7 +6,7 @@
  * 
  */
 var util = require("util");
-var server = require("http");  
+var server = require("http");
 var fs = require('fs');
 var path = require('path');
 
