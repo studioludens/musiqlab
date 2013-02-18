@@ -1,0 +1,3 @@
+{"ts":1361156584459,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1361156595802,"patch":[[{"diffs":[[1,"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<svg version=\"1.1\" id=\"Laag_1\" xmlns=\"http://www.w3.org/2000/svg\"\n     viewBox=\"0 0 64.552 54.237\">\n\t<circle cx=\"30.944\" cy=\"26.956\" r=\"24.095\"/>\n</svg>\n"]],"start1":0,"start2":0,"length1":0,"length2":192}]],"length":192,"saved":false}
+{"ts":1361157078446,"patch":[[{"diffs":[[0,"x=\"3"],[-1,"0.9"],[1,"2.2"],[0,"44\" "]],"start1":149,"start2":149,"length1":11,"length2":11}]],"length":192,"saved":false}

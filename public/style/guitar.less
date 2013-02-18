@@ -15,8 +15,17 @@
 @strings-shown: 6;
 @neck-width: 100%;
 
-@note-size: 30px;
-@note-padding: 5px;
+@bg-img-width: 64.552px; 
+@bg-img-height: 54.237px;
+@bg-scale: .75;
+
+
+
+@note-font-size: 15px;
+@note-size: (@bg-img-height*@bg-scale);
+//@note-padding: (@note-size/2 - @note-font-size/2);
+@note-padding: 10px;
+
 
 // for responsive layout
 
@@ -211,6 +220,7 @@
     
     .guitar-neck {
         
+        
         width: 99%;
         display: block;
         
@@ -240,24 +250,36 @@
                     display: block;
                     
                     text-decoration: none;
+                    font-size: @note-font-size;
                     
                     .marker {
+                        
+                        //.tiny-shadow;
+                        /*
                         width: @note-size;
                         height: (@note-size - @note-padding);
+                        */
+                        width: unit(@bg-img-width*@bg-scale, px);
+                        height: unit(@bg-img-height*@bg-scale - @note-padding, px);
+                        padding-top: @note-padding;
                         
-                        .rounded( ( @note-size / 2 ) );
-                        .opacity( .1 );
-                        color: #000;
+                        //.rounded( ( @note-size / 2 ) );
+                        .opacity( .09 );
+                        //color: #000;
                         display: block;
                         text-align: center;
-                        padding-top: @note-padding;
-                        border: @default-border;
-                        background: #FFF;
+                        
+                        //border: @default-border;
+                        //background: #FFF;
+                        color: #FFF;
+                        
+                        // default image
+                        .svg-url('gen');
                     }
                     
                     
                     &:hover .marker {
-                        background-color: #CCC;
+                        //background-color: #CCC;
                         
                         .opacity( 1 );
                     }
@@ -267,20 +289,42 @@
                     }
                     
                     &.active .marker {
-                        background-color: #000;
-                        color: #FFF;
+                        //background-color: #000;
+                        
                         
                         .opacity( 1 );
                     }
                     
                     &.tonic .marker, &.unison .marker, &.octave .marker {
-                        background-color: #49afcd;
+                        //background-color: #49afcd;
                     }
                     
                     &.fifth .marker {
                         //background-color: #389dab;
-                        .rounded( 1px );
+                        //.rounded( 1px );
                     }
+                    
+                    
+                    
+                    .svg-url(@num){
+                        background-image: url("../img/vms/vms-@{num}.svg");
+                    }
+                    
+                    &.unison .marker        {.svg-url('0');}
+                    &.minor-second .marker  {.svg-url('1');}
+                    &.major-second .marker  {.svg-url('2');}
+                    &.minor-third .marker   {.svg-url('3');}
+                    &.major-third .marker   {.svg-url('4');}
+                    &.fourth .marker        {.svg-url('5');}
+                    &.tritone .marker       {.svg-url('6');}
+                    &.fifth .marker         {.svg-url('7');}
+                    &.minor-sixth .marker   {.svg-url('8');}
+                    &.major-sixth .marker   {.svg-url('9');}
+                    &.minor-seventh .marker {.svg-url('10');}
+                    &.major-seventh .marker {.svg-url('11');}
+                     
+                    
+
                 }
             }
         }
@@ -340,27 +384,57 @@
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-.pentagon {
-    margin: 30px 0 0 0; /* cosmetic */
-    position: relative;
-    width: 54px;
-    border-width: 50px 18px 0;
-    border-style: solid;
-    border-color: #000 transparent;
-    padding: 0;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    border-radius: 0;
+/* SVG NOTES */
+.unison {
+    // circle
+    
+    //background-position:center;
 }
-.pentagon:before {
-    content: "";
-    position: absolute;
-    height: 0;
-    width: 0;
-    top: -85px;
-    left: -18px;
-    border-width: 0 45px 35px;
-    border-style: solid;
-    border-color: transparent transparent #fc2e5a;
+
+.minor-second {
+    // something?
+}
+
+.major-second {
+    
+}
+
+.minor-third {
+}
+
+.major-third {
+}
+
+.fourth {
+    
+}
+
+.tritone {
+    
+}
+
+.fifth {
+    
+}
+
+.minor-sixth {
+
+}
+
+.major-sixth {
+    
+}
+
+.minor-seventh {
+    
+}
+
+.major-seventh {
+    
+}
+
+.tiny-shadow {
+    -webkit-box-shadow:  0px 0px 4px 1px rgba(0, 0, 0, .5);
+    box-shadow:  0px 0px 4px 1px rgba(0, 0, 0, .5);
 }
 

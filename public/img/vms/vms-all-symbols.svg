@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64.552px" height="54.237px" viewBox="0 0 64.552 54.237" enable-background="new 0 0 64.552 54.237" xml:space="preserve">
+<g id="major-seventh">
+	<polygon points="32.23,51.298 58.828,27.499 32.23,3.523 32.23,8.117 12.187,8.117 12.187,46.534 32.23,46.534 	"/>
+</g>
+<g id="minor-seventh">
+	<polygon points="32.407,3.523 5.81,27.322 32.407,51.298 32.407,46.704 52.451,46.704 52.451,8.287 32.407,8.287 	"/>
+</g>
+<polygon id="major-sixth" points="51.977,15.593 51.978,39.88 30.944,52.024 9.911,39.88 9.91,15.593 30.944,3.449 "/>
+<polygon id="minor-sixth" points="55.232,28.174 43.087,49.208 18.8,49.208 6.656,28.174 18.8,7.141 43.087,7.141 "/>
+<polygon id="fifth" points="16.41,48.578 6.81,19.031 31.944,0.771 57.078,19.031 47.477,48.578 "/>
+<g id="tritone">
+	<rect x="13.358" y="9.37" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 33.7628 67.8973)" width="35.171" height="35.172"/>
+</g>
+<g id="fourth">
+	<rect x="10.409" y="7.068" width="41.07" height="41.069"/>
+</g>
+<g id="major-third">
+	<polygon points="64.552,27.12 41.068,40.681 17.58,54.239 17.58,27.12 17.58,0.002 41.068,13.562 	"/>
+</g>
+<g id="minor-third">
+	<polygon points="0,27.119 23.485,13.559 46.972,0 46.972,27.119 46.972,54.237 23.485,40.678 	"/>
+</g>
+<path id="major-second" d="M34.335,49.071c12.02,0,21.764-9.744,21.764-21.763c0-12.018-9.744-21.762-21.764-21.762H14.916v43.524
+	H34.335z"/>
+<path id="minor-second" d="M32.115,5.547c-12.02,0-21.763,9.744-21.763,21.762c0,12.019,9.743,21.763,21.763,21.763h19.419V5.547
+	H32.115z"/>
+<g id="unison">
+	<circle cx="30.944" cy="26.956" r="24.095"/>
+</g>
+</svg>

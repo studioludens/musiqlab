@@ -297,6 +297,10 @@
         <div id="main">
             
             <div class="guitar-view ng-cloak">
+                <!-- TUNING VIEW
+                     dropdown button with a list of tunings
+                -->
+                
                 <div class="tuning-view ">
                     <div class="button-group dropup">
                         <div class="current-tuning btn dropdown-toggle" data-toggle="dropdown">{{currentTuning.name}} Tuning
@@ -310,7 +314,13 @@
                     </div>
                 </div>
                 
-                <!-- reverse order: default for bigger screens -->
+                <!-- GUITAR NECK -->
+                
+                <!-- reverse order: default for bigger screens 
+                     
+                     should probably do this in angular, as not to load the
+                     data twice?
+                -->
                 
                 <div class="guitar-neck hidden-phone">
                     <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">

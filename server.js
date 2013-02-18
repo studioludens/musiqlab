@@ -49,6 +49,12 @@ server.createServer(function(request,response){
             
             contentType = 'text/css';
             break;
+        case '.svg':
+            contentType = 'image/svg+xml';
+            break;
+        case '.png':
+            contentType = 'image/png';
+            break;
         default:
             
             break;

@@ -165,6 +165,7 @@ var GuitarCtrl = function( $scope , $window){
 
        } else {
            $scope.query = "";
+           $scope.tonic = "";
        }
        
        
