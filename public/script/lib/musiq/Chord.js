@@ -7,9 +7,10 @@
  * @param relative : if the chord should be interpreted as  relative, 
  *                   i.e. can be positioned anywhere
  *                   on the musical scale (Fretboard for guitar)
+ * @param type : the type of chord
  */
 
-var Chord = function( notes, descriptor, tonic, relative ) {
+var Chord = function( notes, descriptor, tonic, relative, type ) {
     
     if( descriptor.hasOwnProperty( 'names') ){
         // notes in relative position
@@ -36,19 +37,36 @@ var Chord = function( notes, descriptor, tonic, relative ) {
     
     // this should be a Note object
     this.tonic = tonic || new Note(0);
+    
+    this._type = type || "chord";
 };
 
 /**
  * constructs a Chord object from a notation like Cmaj7
+ * @name : the chord name
+ * @type : the chord type, can be 'chord' or 'scale'
  * 
- * TODO: implement this method properly so it supports all accidentals
  */
-
-Chord.fromNotation = function( name, octave ){
+Chord.fromNotation = function( name, type ){
     
     // check if it's a valid notation, at least the note part
+    var matches;
     
-    var matches = MUSIQ.isValidChord( name );
+    // the array used to look up chords
+    var lookup;
+    
+    if( type == 'scale'){
+        matches = MUSIQ.isValidScale( name );
+        lookup = MUSIQ.scales;
+        chordType = 'scale';
+        console.log("Checking Scale");
+    } else {
+        // default to chord
+        matches = MUSIQ.isValidChord( name );
+        lookup = MUSIQ.chords;
+        chordType = 'chord';
+        console.log("Checking Chord");
+    }
     
     //console.log( matches );
     
@@ -65,12 +83,12 @@ Chord.fromNotation = function( name, octave ){
     
     if( !notation || notation.length == 0){
         // set the default maj notation
-        notation = 'M';
+        notation = 'major';
     }
     //console.log( notation );
     
     // this should be only one!
-    var matchedChords = _(MUSIQ.chords).filter(function(chord){
+    var matchedChords = _(lookup).filter(function(chord){
         return _(chord.names).some(function(name){ return name == notation });
     });
     
@@ -101,7 +119,7 @@ Chord.fromNotation = function( name, octave ){
     //console.log( transNotes ); 
     
     // find the name in the chord names array
-    var chord = new Chord( transNotes, matchedChords[0], tonic );
+    var chord = new Chord( transNotes, matchedChords[0], tonic, false, chordType );
     
     return chord;
 };
@@ -221,9 +239,6 @@ Chord.fromNotes = function( notes, inversion ){
         
         // filter duplicates
         matchedChordDescrs = _.uniq(matchedChordDescrs);
-
-
-        
 
         var matchedChords = _.map( matchedChordDescrs, function(item){
             // add the matched chords to the return array
@@ -383,7 +398,7 @@ Chord.prototype.minNotes = function(){
 }
 
 Chord.prototype.type = function(){
-    return "Chord";
+    return this._type;
 }
 
 /**

@@ -284,7 +284,7 @@ Note.prototype.relPos = function(){
  };
  
  Note.prototype.type = function(){
-    return "Note";
+    return "note";
 }
 
 /**

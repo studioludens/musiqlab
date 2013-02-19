@@ -50,3 +50,4 @@
 {"ts":1361070373637,"patch":[[{"diffs":[[0,"()*12);\n};\n\n"],[1,"/**\n * get the relative position of the note\n */\nNote.prototype.relPos = function(){\n    this.\n}\n\n"],[0,"\n/**\n * tran"]],"start1":6498,"start2":6498,"length1":24,"length2":122}]],"length":7045,"saved":false}
 {"ts":1361070384706,"patch":[[{"diffs":[[0,"   this."],[1,"toRelative().pos;"],[0,"\n}"],[1,";"],[0,"\n\n\n/**\n "]],"start1":6596,"start2":6596,"length1":18,"length2":36}]],"length":7063,"saved":false}
 {"ts":1361070577678,"patch":[[{"diffs":[[0,"ction(){\n   "],[1," return this.relative ? this.pos :"],[0," this.toRela"]],"start1":6586,"start2":6586,"length1":24,"length2":58}]],"length":7097,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1361207955887,"patch":[[{"diffs":[[0,"return \""],[-1,"N"],[1,"n"],[0,"ote\";\n}\n"]],"start1":6830,"start2":6830,"length1":17,"length2":17}]],"length":7097,"saved":false}

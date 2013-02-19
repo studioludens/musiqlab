@@ -272,67 +272,100 @@ var MUSIQ = {
     
     
     /* LOTS OF SCALES */
-    scales: {
-        'chromatic' : {
-            'names': ['Chromatic'],
+    scales: [
+        {
+            'names': ['chromatic','chro'],
+            'longName': 'chromatic',
             'notes': [0,1,2,3,4,5,6,7,8,9,10,11]
         },
         
-        'major' : {
-            'names': ['Major','Ionian'],
+        {
+            'names': ['major','ionian',"-major"],
+            'longName': 'major',
             'notes': [0,2,4,5,7,9,11]
         },
-        'minor' : {
-            'names': ['Minor','Aeolian'],
+        {
+            'names': ['minor','aeolian'],
+            'longName': 'minor',
             'notes': [0,2,3,5,7,8,10]
         },
         
         
         
         /* pentatonic */
-        'minor pentatonic' : {
-            'names': ['Minor Pentatonic'],
-            'notes': [0,2,3,7,9]
+        
+        {
+            'names': ['major pentatonic','pentatonic'],
+            'longName': 'major pentatonic',
+            'notes': [0,2,4,7,9]
+        },
+        {
+            'names': ['minor pentatonic','relative minor pentatonic'],
+            'longName': 'relative minor pentatonic',
+            'notes': [0,3,5,7,10]
         },
         
-        'major pentatonic' : {
-            'names': ['Major Pentatonic'],
-            'notes': [0,2,4,7,9]
+        
+        
+        /* blues (with blue notes added) */
+        {
+            'names': ['major blues','blues major','blues','hexatonic'],
+            'longName': 'major blues',
+            'notes': [0,2,4,6,7,9]
+        },
+        
+        {
+            'names': ['minor blues','blues minor','m blues'],
+            'longName': 'minor blues',
+            'notes': [0,3,5,6,7,10]
         },
         
         
         /* modes : TODO */
-        'ionian' : {
-            'names': ['Ionian','Major'],
+        {
+            'names': ['ionian','Major'],
+            'longName': 'ionian',
             'notes': [0,2,4,5,7,9,11]
         },
-        'dorian' : {
-            'names': ['Dorian'],
+        {
+            'names': ['dorian'],
+            'longName': 'dorian',
             'notes': [0,2,3,5,7,9,10]
         },
-        'phrygian' : {
-            'names': ['Phrygian'],
+        {
+            'names': ['phrygian'],
+            'longName': 'phrygian',
             'notes': [0,1,3,5,7,8,10]
         },
-        'lydian' : {
-            'names': ['Lydian'],
+        {
+            'names': ['lydian'],
+            'longName': 'lydian',
             'notes': [0,2,4,6,7,9,11]
         },
-        'mixolydian' : {
-            'names': ['Mixolydian'],
+        {
+            'names': ['mixolydian'],
+            'longName': 'mixolydian',
             'notes': [0,2,4,5,7,9,10]
         },
-        'aeolian' : {
-            'names': ['Aeolian', 'Natural Minor'],
+        {
+            'names': ['aeolian', 'natural minor'],
+            'longName': 'aeolian',
             'notes': [0,2,3,5,7,8,10]
         },
-        'locrian' : {
-            'names': ['Locrian'],
+        {
+            'names': ['locrian'],
+            'longName': 'locrian',
             'notes': [0,1,3,5,6,8,10]
         }
         
         /* some simple scales */
-    }
+    ],
+    
+    /** SOME REGULAR EXPRESSION MATCHES **/
+    NOTE_REGEX : "([A-G]|[a-g])(bbb|bb|b|#|##)? ?([0-9])? ?(n|no|not|note|notes)",
+    NOTE_SIMPLE_REGEX : "([A-G]|[a-g])(bbb|bb|b|#|##|###)?",
+    SCALE_REGEX : "(s|sc|sca|scal|scale)?",
+    CHORD_REGEX : "(c|ch|cho|chrd|chor|chord)?"
 };
 
 // MUSIQ utility functions
@@ -365,7 +398,7 @@ MUSIQ.match = function( name ){
     }
     if( MUSIQ.isValidScale( name )){
         console.log("Match single scale");
-        ret.push( Scale.fromNotation( name ) );
+        ret.push( Chord.fromNotation( name, 'scale' ) );
     }
     
     console.log( "MusiQ MAtch: " + name)
@@ -383,7 +416,7 @@ MUSIQ.isValidNote = function( notation ){
     
     if( !notation ) return false;
     
-    var regex = new RegExp("^([A-G]|[a-g])(bbb|bb|b|#|##)? ?([0-9])? ?(n|no|not|note|notes)?$","m");
+    var regex = new RegExp("^" + MUSIQ.NOTE_REGEX + "?$","m");
     return regex.exec( notation );
     
 };
@@ -433,7 +466,7 @@ MUSIQ.isValidChord = function( notation ){
         return m + "|" + item.names.join("|") + "|" + item.longName;
     });
     
-    var regex = new RegExp("^([A-G]|[a-g])(bbb|bb|b|#|##|###)? ?("+ chordNames + ")? ?(c|ch|cho|chrd|chor|chord)?$","m");
+    var regex = new RegExp("^" + MUSIQ.NOTE_SIMPLE_REGEX + " ?("+ chordNames + ")? ?" + MUSIQ.CHORD_REGEX + "$","m");
     return regex.exec( not );
 };
 
@@ -446,11 +479,26 @@ MUSIQ.isValidChordList = function( chord ){
 };
 
 /**
- * @returns true if
+ * @returns true if it's a valid scale
  */
-MUSIQ.isValidScale = function( chord ){
-    // check if the scale name is valid
-    return false;
+MUSIQ.isValidScale = function( notation ){
+    
+    if( !notation) return false;
+    
+    // default to major
+    var not = notation;
+    if( !notation || notation.length == 0 ) not = "M";
+    
+    // TODO: make this shorter
+    
+    var scaleNames = _(MUSIQ.scales).reduce(function(memo, item){
+        var m = _(memo).isString() ? memo : memo.names.join("|");
+        //console.log(m);
+        return m + "|" + item.names.join("|");
+    });
+    
+    var regex = new RegExp("^" + MUSIQ.NOTE_SIMPLE_REGEX + " ?("+ scaleNames + ")? ?" + MUSIQ.SCALE_REGEX + "$","m");
+    return regex.exec( not );
 };
 
 /**

@@ -1,8 +1,14 @@
-// Representation of a musical scale
-var Scale = function( type ){
-   this.type = type;
-   
-};
+/**
+ * the MUSIQ.js scale class
+ * 
+ * @param notes : a simple array of integers representing the midi notes
+ * @param descriptor : an object describing the scale
+ * @param tonic : the current tonic Note oject
+ * @param relative : if the scale should be interpreted as  relative, 
+ *                   i.e. can be positioned anywhere
+ *                   on the musical scale (Fretboard for guitar)
+ */
+var Scale = {}; //_(Chord).extend();
 
 /**
  * create a scale from a tonic note and a type
@@ -19,6 +25,6 @@ Scale.extend = function( startOctave, endOctave ){
     this.endOctave = endOctave;
 }
 
-Scale.prototype.type = function(){
-    return "Scale";
-}
+/*Scale.prototype.type = function(){
+    return "scale";
+}*/

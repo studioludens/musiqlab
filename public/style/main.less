@@ -341,6 +341,51 @@ RESPONSIVE LAYOUTS
     
 }
 
+/** VMS INTERVAL MARKERS **/
+.svg-url(@num){
+    background-image: url("../img/vms/vms-@{num}.svg");
+}
+
+
+.interval {
+    
+    @interval-marker-width: 64.552px; 
+    @interval-marker-height: 54.237px;
+    @interval-marker-scale: .75;
+    @text-padding: 10px;
+    
+    display: inline-block;
+    
+    padding-top: @text-padding;
+    
+    // set a fixed width and height
+    width: @interval-marker-width*@interval-marker-scale;
+    height: (@interval-marker-height*@interval-marker-scale - @text-padding);
+    
+    color: #FFF;
+    text-decoration: none;
+    text-align: center;
+    
+    .opacity(.5);
+    
+    &:hover { color: #FFF; .opacity(1); text-decoration: none; }
+    
+    &.unison        {.svg-url('0');}
+    &.minor-second  {.svg-url('1');}
+    &.major-second  {.svg-url('2');}
+    &.minor-third   {.svg-url('3');}
+    &.major-third   {.svg-url('4');}
+    &.fourth        {.svg-url('5');}
+    &.tritone       {.svg-url('6');}
+    &.fifth         {.svg-url('7');}
+    &.minor-sixth   {.svg-url('8');}
+    &.major-sixth   {.svg-url('9');}
+    &.minor-seventh {.svg-url('10');}
+    &.major-seventh {.svg-url('11');}
+}
+
+/** MIXINS **/
+
 .big-shadow {
     -webkit-box-shadow:  0px 0px 30px 1px rgba(0, 0, 0, .5);
     box-shadow:  0px 0px 30px 1px rgba(0, 0, 0, .5);

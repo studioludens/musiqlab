@@ -92,7 +92,7 @@ var GuitarCtrl = function( $scope , $window){
     // search function
     $scope.search = function( query ){
         console.log("New query: " + query);
-        $scope.query = query;
+        $scope.query = query.replace("♭","b").replace("♯","#");
         $scope.updateMatches();
         
         //console.log("New query: " + $scope.query);
@@ -130,7 +130,7 @@ var GuitarCtrl = function( $scope , $window){
        $scope.queryMatches = $scope.musiq.match($scope.query);//$scope.guitar.chordsFromActiveNotes();
        var firstChord = _($scope.queryMatches).find(function(m){
            // check for a match
-           return ( m instanceof Chord );
+           return ( m.type() == 'chord' || m.type() == 'scale' );
        });
        
        $scope.tonic = firstChord ? firstChord.tonic : null;
@@ -155,10 +155,10 @@ var GuitarCtrl = function( $scope , $window){
            
            $scope.query = firstMatch.notation();
            // set tonic of guitar
-           if( firstMatch.type() == "Chord" || firstMatch.type() == "Scale" ){
+           if( firstMatch.type() == "chord" || firstMatch.type() == "scale" ){
                $scope.tonic = firstMatch.tonic;
                //$scope.guitar.showTonic( firstMatch.tonic );
-           } if( firstMatch.type() == "Note" ){
+           } if( firstMatch.type() == "note" ){
                $scope.tonic = firstMatch;
                //$scope.guitar.showTonic( firstMatch );
            }
@@ -185,9 +185,9 @@ var GuitarCtrl = function( $scope , $window){
         
         return _($scope.queryMatches).find(function(m){
             
-            return m instanceof Note && m.hasName( name )
-                    || m instanceof Chord && m.tonic.simpleNotation() == name
-                    || m instanceof Scale && m.tonic.simpleNotation() == name
+            return m.type() == 'note' && m.hasName( name )
+                    || m.type() == 'chord' && m.tonic.simpleNotation() == name
+                    || m.type() == 'scale' && m.tonic.simpleNotation() == name
         }) ? 'active' : '';
     }
     
@@ -198,7 +198,7 @@ var GuitarCtrl = function( $scope , $window){
         if( $scope.queryMatches && $scope.queryMatches.length > 0 ) disabled = "";
         
         return _($scope.queryMatches).find(function(m){
-            return m instanceof Chord && m.hasName( name );
+            return m.type() == 'chord' && m.hasName( name );
         }) ? 'active' : disabled;
     };
     
@@ -209,7 +209,7 @@ var GuitarCtrl = function( $scope , $window){
         if( $scope.queryMatches && $scope.queryMatches.length > 0 ) disabled = "";
         
         return _($scope.queryMatches).find(function(m){
-            return m instanceof Scale && m.hasName( name );
+            return m.type() == 'scale' && m.hasName( name );
         }) ? 'active' : disabled;
     };
     
@@ -217,7 +217,7 @@ var GuitarCtrl = function( $scope , $window){
         console.log("Activate note " + name);
         
         // match the note in the query
-        $scope.search(name.replace("♭","b").replace("♯","#"));
+        $scope.search(name);
         $scope.updateMatches();
         
     };
@@ -228,12 +228,28 @@ var GuitarCtrl = function( $scope , $window){
         // replace the chord bit in the query
         
         // if we already have a chord match
-        var match = _($scope.queryMatches).find(function(m){ return m instanceof Chord });
+        var match = _($scope.queryMatches).find(function(m){ return m.type() == 'chord' });
         if( match ){
             $scope.search(match.tonic.simpleNotation() + name);
         }
         else
             $scope.search( $scope.query + name );
+            
+        $scope.updateMatches();
+    };
+    
+    $scope.activateScale = function( name ){
+        console.log("Activate scale " + name);
+        
+        // replace the scale bit in the query
+        
+        // if we already have a chord match
+        var match = _($scope.queryMatches).find(function(m){ return m.type() == 'scale' });
+        if( match ){
+            $scope.search(match.tonic.simpleNotation() + name + " scale");
+        }
+        else
+            $scope.search( $scope.query + name + " scale" );
             
         $scope.updateMatches();
     };

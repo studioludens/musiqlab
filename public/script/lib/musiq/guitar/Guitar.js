@@ -284,14 +284,12 @@ Guitar.prototype.show = function( matches ){
         // options
         var o = { only: true, active: true, ghosted: num > 0 };
         
-        if( match instanceof Note){
+        if( match.type() == 'note'){
             this.showNotes( [match], o);
             o.tonic = true;
-        } else if( match instanceof Chord ){
+        } else if( match.type() == 'chord' || match.type() == 'scale' ){
             this.showChords( [match], o );
-        } else if( match instanceof Scale ){
-            this.showScales( [match], o );
-        }
+        } 
         
     },this);
     

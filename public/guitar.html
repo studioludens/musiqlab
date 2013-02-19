@@ -181,7 +181,7 @@
                             <!-- scales -->
                             <div class="span4 panel-item scales">
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li ng-repeat="scale in musiq.scales" ng-class="scaleClass(scale.names[0])"><a href="#" ng-click="activateScale(scale.name)">{{scale.names[0]}}</a></li>
+                                    <li ng-repeat="scale in musiq.scales" ng-class="scaleClass(scale.names[0])"><a href="#" ng-click="activateScale(scale.names[0])">{{scale.names[0]}}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -206,22 +206,21 @@
                     </div>
                     
                     <!-- Chord match -->
-                    <div id="match-info" class="well" ng-show="selectedMatch.type() == 'Chord'">
+                    <div id="match-info" class="well" ng-show="selectedMatch.type() == 'chord' || selectedMatch.type() == 'scale'">
                         <span class="nav-header">{{selectedMatch.tonic.simple()}} {{selectedMatch.longName}} {{selectedMatch.type()}}</span>
                         <!-- notes in match -->
-                        <div class="btn-group">
-                            <a  class="btn" 
+                        <div class="">
+                            <a   
                                 ng-repeat="note in selectedMatch.noteObjects()"
+                                class="interval {{selectedMatch.tonic.interval(note).name().replace(' ','-')}}"
                                 title="{{selectedMatch.tonic.interval(note).name()}}">{{note.simpleNotation()}}</a>
                         </div>
                         <span class="nav-header">alternative names</span>
                         <span class="badge badge-info alternative-name" ng-repeat="name in selectedMatch.names">{{selectedMatch.tonic.simple()}} {{name}}</span> 
-                        <span class="nav-header">variations</span>
-                        
                     </div>
                     
                     <!-- Note Match -->
-                    <div id="match-info" class="well" ng-show="selectedMatch.type() == 'Note'">
+                    <div id="match-info" class="well" ng-show="selectedMatch.type() == 'note'">
                         <span class="nav-header">{{selectedMatch.notation()}} {{selectedMatch.type()}}</span>
                         <!-- notes in match -->
                         <div class="btn-group">
@@ -267,26 +266,26 @@
                     </div>
                     
                     <!-- VARIATIONS -->
+                    <!--
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown">
                             Variations
                             <span class="caret"></span>
                         </a>
                         
-                        <!-- menus for variations -->
                         <ul id="variations-dropdown" class="dropdown-menu">
                             <li ng-repeat="vari in ['1st','2nd','3rd','4th','5th','6th']">
                                 <a><b>{{vari}}</b> variation</a>
                             </li>
                         </ul>
                     </div>
-                        
+                        -->
                     <!-- edit and save functionality -->
-                    
+                    <!--
                     <div class="btn-group">
                         <a class="btn" title="Save this chord"><i class="icon-plus"></i></a>
                     </div>
-                    
+                    -->
                 </div>
                 
             </div>
