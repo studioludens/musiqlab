@@ -153,15 +153,19 @@ Note.cofPosition = function( note ){
 
 /**
  * get the proper notation for a note
+ * 
+ * @param signature : integer representing the amount of sharps of flats
+ * 
  */
-Note.notation = function( note, flat ){
+Note.notation = function( note, signature ){
+    
     // check flat
     var ret = "";
     
-    if( flat ){
-        ret = MUSIQ.flatNames[note.toRelative().pos] + (!note.relative ? note.octave() : "");
+    if( Note.signatureIsFlat( signature ) ){
+        ret = MUSIQ.flatNames[note.relPos()] + (!note.relative ? note.octave() : "");
     } else {
-        ret = MUSIQ.sharpNames[note.toRelative().pos] + (!note.relative ? note.octave() : "");
+        ret = MUSIQ.sharpNames[note.relPos()] + (!note.relative ? note.octave() : "");
     }
     
     // experimental : replace b with ♭ and # with ♯
@@ -173,23 +177,39 @@ Note.notation = function( note, flat ){
 /**
  * get a simple notation for a note, i.e. C#
  */
-Note.simpleNotation = function( note, flat ){
+Note.simpleNotation = function( note, signature ){
    
    n = note;
    var ret;
    
    if( !(note instanceof Note) ) n = new Note(note);
    
-   if( flat ){
-        ret = MUSIQ.flatNames[n.toRelative().pos];
+   if( Note.signatureIsFlat( signature ) ){
+        ret = MUSIQ.flatNames[n.relPos()];
     } else {
-        ret = MUSIQ.sharpNames[n.toRelative().pos];
+        ret = MUSIQ.sharpNames[n.relPos()];
     } 
     
     // experimental : replace b with ♭ and # with ♯
     // should probably check for unicode support?
     return ret.replace("b","♭").replace("#","♯");
 };
+
+/**
+ * checks if a signature is flat
+ * 
+ */
+Note.signatureIsFlat = function( signature ){
+    var sig = 0;
+    if( typeof signature == "undefined")
+        sig = 0; // default to C (no sharps or flats)
+    else if( _(signature).isBoolean() )
+        sig = signature ? 0 : -1; // if signature is a boolean
+    else
+        sig = signature;
+    // return true  if the signature is lower than 0
+    return sig < 0;
+}
 
 
 
@@ -198,9 +218,9 @@ Note.simpleNotation = function( note, flat ){
  */
 Note.transpose = function( note, interval ){
     // check if it's an interval object
-    if( _.isNumber( interval ) ){
+    if( _( interval ).isNumber() ){
         return new Note(note.pos + interval);
-    } else if(_.isString( interval )) {
+    } else if(_( interval ).isString() ) {
         return new Note(note.pos + Interval.fromName(interval).distance);
     } else {
         // let's hope it's an interval object
@@ -236,13 +256,13 @@ Note.prototype.cofPosition = function() {
     return Note.cofPosition( this );
 };
 
-Note.prototype.notation = function(flat) {
-    return Note.notation(this, flat);
+Note.prototype.notation = function(signature) {
+    return Note.notation(this, signature);
 };
 
 Note.prototype.simple = 
-Note.prototype.simpleNotation = function(flat){
-    return Note.simpleNotation(this, flat);
+Note.prototype.simpleNotation = function(signature){
+    return Note.simpleNotation(this, signature);
 };
 
 /**
@@ -264,7 +284,8 @@ Note.prototype.octave = function( ){
 /**
  * convert the note to a relative note
  */
-Note.prototype.toRelative = function( ){
+Note.prototype.toRelative = 
+Note.prototype.rel = function( ){
     return new Note(this.pos - this.octave()*12);
 };
 

@@ -32,9 +32,10 @@ var GuitarCtrl = function( $scope , $window){
     $scope.tonic = null;
     
     // set helper for sharps
-    $scope.sharps = ["","C♯","D♯","","","F♯","G♯","A♯"];
+    $scope.sharps = ["","D♭·C♯·","E♭·D♯","","","G♭·F♯","A♭·G♯","B♭·A♯"];
     
-    
+    //♭
+    //♯
     
     
     // add a nice display string to it

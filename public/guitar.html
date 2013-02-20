@@ -166,7 +166,7 @@
                             </div>
                             <div class="span1 sharp-notes panel-item">
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li ng-repeat="note in sharps" ng-class="noteClass(note)"><a ng-click="activateNote(note)">{{note}}</a></li>
+                                    <li ng-repeat="note in sharps" ng-class="noteClass(note)"><a ng-click="activateNote(note.substr(0,2))">{{note}}</a></li>
                                 </ul>
                             </div>
                             
@@ -200,7 +200,7 @@
                         <a class="chord-match btn dropdown-toggle" 
                             ng-repeat="match in queryMatches"
                             ng-click="selectMatch(match)">
-                        {{match.notation()}} {{match.type()}}
+                        {{match.notation(tonic.signature())}} {{match.type()}}
                             <span class="caret"></span>
                         </a>
                     </div>
@@ -221,10 +221,10 @@
                     
                     <!-- Note Match -->
                     <div id="match-info" class="well" ng-show="selectedMatch.type() == 'note'">
-                        <span class="nav-header">{{selectedMatch.notation()}} {{selectedMatch.type()}}</span>
+                        <span class="nav-header">{{selectedMatch.notation(tonic.signature())}} {{selectedMatch.type()}}</span>
                         <!-- notes in match -->
                         <div class="btn-group">
-                            <a class="btn" ng-repeat="note in selectedMatch.noteObjects()">{{note.simpleNotation()}}</a>
+                            <a class="btn" ng-repeat="note in selectedMatch.noteObjects()">{{note.simpleNotation(tonic.signature())}}</a>
                         </div>
                         <span class="nav-header">alternative names</span>
                         <span class="badge badge-info">{{selectedMatch.notation(false)}}</span> 
@@ -327,8 +327,8 @@
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes().reverse()">
                             <a  ng-class="note.class(tonic)" 
                                 ng-click="toggleNote(note)" 
-                                title="{{note.notation()}} / {{selectedMatch.tonic.interval(note).name()}}"
-                                ><div class="marker">{{note.simple()}}</div></a>
+                                title="{{note.notation(tonic.signature())}} / {{selectedMatch.tonic.interval(note).name()}}"
+                                ><div class="marker">{{note.simple(tonic.signature())}}</div></a>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -340,8 +340,8 @@
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes()">
                             <a  ng-class="note.class(tonic)" 
                                 ng-click="toggleNote(note)" 
-                                title="{{note.notation()}} / {{selectedMatch.tonic.interval(note).name()}}"
-                                ><div class="marker">{{note.simple()}}</div></a>
+                                title="{{note.notation(tonic.signature())}} / {{selectedMatch.tonic.interval(note).name()}}"
+                                ><div class="marker">{{note.simple(tonic.signature())}}</div></a>
                         </div>
                     </div>
                     <div class="clearfix"></div>

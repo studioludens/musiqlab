@@ -312,22 +312,22 @@ Chord.contains = function(chord, note){
 /**
  * get the chord in proper notation
  */
-Chord.prototype.notation = function() {
+Chord.prototype.notation = function( signature ) {
     if( this.abstract ){
         return this.names[0].replace("b","♭").replace("#","♯");;
     } else {
-        return this.tonic.simpleNotation() + this.names[0].replace("b","♭").replace("#","♯");;
+        return this.tonic.simpleNotation( signature ) + this.names[0].replace("b","♭").replace("#","♯");;
     }
 };
 
 /**
  * get the name of the chord in long, readable notation
  */
-Chord.prototype.longNotation = function() {
+Chord.prototype.longNotation = function( signature ) {
     if( this.abstract ){
         return this.longName.replace("b","♭").replace("#","♯");;
     } else {
-        return this.tonic.simpleNotation() + " " + this.longName.replace("b","♭").replace("#","♯");;
+        return this.tonic.simpleNotation( signature ) + " " + this.longName.replace("b","♭").replace("#","♯");;
     }
 };
 

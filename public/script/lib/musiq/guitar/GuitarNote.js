@@ -41,8 +41,8 @@ GuitarNote.prototype.notation = function(){
 };
 
 GuitarNote.prototype.short = 
-GuitarNote.prototype.simple = function(){
-    return this.note.simpleNotation();
+GuitarNote.prototype.simple = function( signature ){
+    return this.note.simpleNotation( signature );
 };
 
 
