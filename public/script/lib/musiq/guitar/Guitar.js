@@ -49,6 +49,10 @@ Guitar.tunings = {
     "open g"   : {
         "name"    : "Open G",
         "notes" : [ 38, 43, 50, 55, 59, 62 ]
+    },
+    "fourths"   : {
+        "name"    : "All Fourths",
+        "notes" : [ 40, 45, 50, 55, 60, 65 ]
     }
 };
 
