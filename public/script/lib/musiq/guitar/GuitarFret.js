@@ -1,6 +1,8 @@
 /**
  * GuitarFret - describes a guitar fret
  * 
+ * @constructor
+ * 
  * @param guitar : the guitar this fret belongs to
  * @param pos : the position on the fretboard (0-x, 0 being the lowest string, x is usually 6)
  * 
@@ -33,7 +35,7 @@ GuitarFret.prototype.notes = function(){
  * TODO: add this in another place, sort of a 
  * decorator type of function
  */
-GuitarFret.prototype.class = function(){
+GuitarFret.prototype.className = function(){
     //console.log(this.pos);
     if( this.pos == 3) return "third";
     if( this.pos == 5) return "fifth";

@@ -1,8 +1,9 @@
 /**
  * the MUSIQ.js Note object
  * 
- * @param pos : the midi position of the note
- * @param relative : a boolean, true if the note is relative (it doesn't have
+ * @constructor
+ * @param pos {integer} - the midi position of the note
+ * @param relative {boolean} - a boolean, true if the note is relative (it doesn't have
  *                   an octave). if relative is true, pos should not be larger
  *                   than 12
  */
@@ -19,10 +20,13 @@ var Note = function( pos, relative ){
 
 
  /**
-  * get a new note object from the notation
-    @param : notation in the form C4, Bb6 etc
+  * get a new note object from a string notation
+  * 
+  * @param notation {string} - in the form C4, Bb6 etc
              where the number is the octave
              this should also match lowerCase notations
+             
+  * @returns {Note} - a note object or null, when no note could be found
  */
 Note.fromNotation = function( notation ){
      
@@ -96,6 +100,8 @@ Note.fromNotation = function( notation ){
 
 /**
  * make a note object from a position
+ * 
+ * @param pos {integer} - the midi position of the note
  */
 Note.fromPos = function( pos ){
     console.log( pos );
@@ -106,6 +112,10 @@ Note.fromPos = function( pos ){
 /**
  * the distance (in semitones) to another note
  * this is the number notation of the interval
+ * 
+ * @param note1 {Note} - The first note
+ * @param note2 {Note} - The second note
+ * @returns {integer} - The distance between the notes in semitones
  */
 Note.distance = function( note1, note2 ){
   return note2.pos - note1.pos;  
@@ -113,21 +123,34 @@ Note.distance = function( note1, note2 ){
 
 /**
  * returns the relative distance from note1 to note2
+ * 
+ * this is an integer from 0 - 11 representing the distance in semitones between
+ * the notes
+ * 
+ * @param note1 {Note} - The first note
+ * @param note2 {Note} - The second note
+ * 
+ * @returns {integer} - The relative distance between the notes in semitones
  */
-Note.relativeDistance = function( note1, note2){
+Note.relativeDistance = function( note1, note2 ){
   var rel = note2.toRelative().pos - note1.toRelative().pos;
   return ( rel < 0 ) ? rel + 12 : rel;
 };
 
 /**
- * returns the shortest distance from note1 to note2
+ * 
+ * @param note1 {Note} - The first note
+ * @param note2 {Note} - The second note
+ * @returns {integer} - the shortest distance from note1 to note2
+ * 
+ *
  */
 Note.shortestDistance = function( note1, note2 ){
     return 0;
 };
 
 /**
- * returns the shortest relative distance
+ * @returns {integer} - the shortest relative distance
  */
 Note.shortestRelativeDistance = function( note1, note2 ){
     return 0;
@@ -136,15 +159,35 @@ Note.shortestRelativeDistance = function( note1, note2 ){
 
 /**
  * the interval between the notes
+ * 
+ * @param {Note} note1 - The first note
+ * @param {Note} note2 - The second note
+ * @returns {Interval} The interval between the notes
  */
 Note.interval = function( note1, note2 ){
     return new Interval( Note.distance(note1, note2) );
 };
 
+/**
+ * 
+ * The signature as an integer representing the amount
+ * of sharps or flats the scale has when using this
+ * note as root.
+ * 
+ * @returns {integer} - The signature as an integer representing the amount
+ *                      of sharps or flats the scale has when using this
+ *                      note as root.
+ */
 Note.signature = function( note ){
     return MUSIQ.signatures[note.toRelative().pos];
 };
 
+/**
+ * the Note's position on the circle of fifths
+ * 
+ * @returns {integer} - the position on the circle of fifths as an integer
+ *                      ( C = 0, G = 1, D = 2, ... F = -1 )
+ */
 Note.cofPosition = function( note ){
     return MUSIQ.cofPositions[note.toRelative().pos];
 };
@@ -154,8 +197,14 @@ Note.cofPosition = function( note ){
 /**
  * get the proper notation for a note
  * 
- * @param signature : integer representing the amount of sharps of flats
+ * In the end, we use the unicode characters ♭ and ♯ to represent sharps and 
+ * flats, instead of b or #
  * 
+ * @param note {Note} - A Note object
+ * @param signature {integer} - the amount of sharps of flats 
+ *                              (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)
+ * 
+ * @returns {string} - the notation used based on the 
  */
 Note.notation = function( note, signature ){
     
@@ -176,6 +225,12 @@ Note.notation = function( note, signature ){
 
 /**
  * get a simple notation for a note, i.e. C#
+ * 
+ * @param note {Note} - A note object
+ * @param signature {integer} - the amount of sharps of flats 
+ *                              (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)
+ * 
+ * @returns {string}
  */
 Note.simpleNotation = function( note, signature ){
    
@@ -198,23 +253,28 @@ Note.simpleNotation = function( note, signature ){
 /**
  * checks if a signature is flat
  * 
+ * @param signature {boolean|integer} - the signature ( if an integer, )
+ * 
+ * @returns {boolean} - True if the signature is flat (one or more b)
  */
 Note.signatureIsFlat = function( signature ){
-    var sig = 0;
+    //var sig = 0;
     if( typeof signature == "undefined")
-        sig = 0; // default to C (no sharps or flats)
+        return false; // default to C (no sharps or flats)
     else if( _(signature).isBoolean() )
-        sig = signature ? 0 : -1; // if signature is a boolean
+        return signature; // if signature is a boolean
     else
-        sig = signature;
+        return signature < 0;
     // return true  if the signature is lower than 0
-    return sig < 0;
+    
 }
 
 
 
 /**
  * transpose a note with an interval
+ * @param note {Note} - A note object
+ * @param interval {Interval} - An interval object
  */
 Note.transpose = function( note, interval ){
     // check if it's an interval object
@@ -271,7 +331,7 @@ Note.prototype.simpleNotation = function(signature){
  * compensates for accidentals, i.e. 
  */
  Note.prototype.hasName = function( name ){
-     return Note.fromNotation(name) && this.pos == Note.fromNotation(name).pos;
+     return Note.fromNotation(name) && this.relPos() == Note.fromNotation(name).relPos();
  }
 
 /**

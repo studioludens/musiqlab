@@ -1,7 +1,8 @@
 /**
  * MUSIQ: a javascript library for note and chord analysis
+ * 
+ * 
  */
-
 var MUSIQ = {
     /**
      * the normal names of the notes

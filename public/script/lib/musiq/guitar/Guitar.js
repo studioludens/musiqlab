@@ -2,6 +2,8 @@
 /**
  * Guitar object
  * 
+ * @constructor
+ * 
  * @param tuning : initializes the guitar object with a tuning
  *                  defaults to "standard" guitar tuning
  *                  E A D G B E
@@ -264,9 +266,9 @@ Guitar.prototype.transpose = function( num ){
 /**
  * show function: shows chords, notes or scales on the fretboard
  * 
- * @param matches : an array of Chord / Note / Scale objects to be shown
+ * @param matches - an array of Chord / Note / Scale objects to be shown
  * 
- * @return : true if the query is valid and the fretboard has changed
+ * @return {boolean} - true if the query is valid and the fretboard has changed
  * 
  */
  
@@ -305,14 +307,14 @@ Guitar.prototype.show = function( matches ){
  * show all the notes on the fretboard that match a
  * particular array of basic notes
  * 
- * @param notes : array with notes
- * @param options : object describing some formatting options:
+ * @param notes {array} - array with notes
+ * @param options {object} - object describing some formatting options:
  * 
- *      {   only: boolean,
+ *         only: boolean,
  *          active: boolean,
  *          ghosted: boolean,
  *          tonic: boolean
- *      }
+ *      
  * 
  */
 Guitar.prototype.showNotes = function( notes, options ){
@@ -422,7 +424,7 @@ Guitar.prototype.showScales = function( scales ){
 
 /**
  * show the tonic notes on the fret board as well
- * @param note : a Note object representing the current tonic
+ * @param note - a Note object representing the current tonic
  */
 Guitar.prototype.showTonic = function( note ){
     console.log("Showing tonic");
@@ -433,7 +435,7 @@ Guitar.prototype.showTonic = function( note ){
 
 /**
  * show the notes on the fretboard
- * @param frets : an array of integers representing which note to show
+ * @param frets - an array of integers representing which note to show
  *                on what string
  */
 Guitar.prototype.showFrets = function( frets ){

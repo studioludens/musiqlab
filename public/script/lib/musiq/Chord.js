@@ -1,13 +1,14 @@
 /**
  * the MUSIQ.js chord class
  * 
- * @param notes : a simple array of integers representing the midi notes
- * @param descriptor : an object describing the chord
- * @param tonic : the current tonic Note oject
- * @param relative : if the chord should be interpreted as  relative, 
+ * @constructor
+ * @param notes {array} - a simple array of integers representing the midi notes
+ * @param descriptor {object} - an object describing the chord
+ * @param tonic {Note} - the current tonic Note oject
+ * @param relative {boolean} - if the chord should be interpreted as  relative, 
  *                   i.e. can be positioned anywhere
  *                   on the musical scale (Fretboard for guitar)
- * @param type : the type of chord
+ * @param type {string} - the type of chord, 
  */
 
 var Chord = function( notes, descriptor, tonic, relative, type ) {
@@ -43,8 +44,8 @@ var Chord = function( notes, descriptor, tonic, relative, type ) {
 
 /**
  * constructs a Chord object from a notation like Cmaj7
- * @name : the chord name
- * @type : the chord type, can be 'chord' or 'scale'
+ * @param name {string} - the chord name
+ * @param type {string} - the chord type, can be 'chord' or 'scale'
  * 
  */
 Chord.fromNotation = function( name, type ){
@@ -127,10 +128,10 @@ Chord.fromNotation = function( name, type ){
 /**
  * build a chord from individual notes
  * these can be note objects or just a list of integers
- * @param notes     : a simple array of integer notes
- * @param inversion : the number of the inversion, 
+ * @param notes     {array} - a simple array of integer notes
+ * @param inversion {integer} - the number of the inversion, 
  *                    0 = root position, 1 = first inversion, 2 = second inversion, ...
- * @returns an array of matching chords
+ * @returns {array} - an array of matching chords, undefined when nothing is found
  */
 Chord.fromNotes = function( notes, inversion ){
     
@@ -298,6 +299,12 @@ Chord.fromNotes = function( notes, inversion ){
 
 /**
  * check if this chord contains a certain note
+ * 
+ * if the Chord is relative, the relative position of the Note is taken
+ * 
+ * @param chord {Chord} - a Chord object
+ * @param note {Note} - a Note object
+ * @returns {boolean} - true when the Chord contains the specific note
  */
 Chord.contains = function(chord, note){
     if( chord.relative ){
@@ -307,10 +314,20 @@ Chord.contains = function(chord, note){
     }
 };
 
-/** instance methods **/
+/* instance methods */
 
 /**
  * get the chord in proper notation
+ * 
+ * these are examples of proper notations:
+ * C - an abstract C chord
+ * C# - a C sharp chord
+ * B♭6 - A Bb7 chord
+ * Cmin7 - A cminor chord
+ * 
+ * 
+ * @param signature {integer} - the signature of the note
+ * @returns {string} - the chord notation as it is most commonly used
  */
 Chord.prototype.notation = function( signature ) {
     if( this.abstract ){
@@ -322,6 +339,8 @@ Chord.prototype.notation = function( signature ) {
 
 /**
  * get the name of the chord in long, readable notation
+ * 
+ * @param signature {integer} - the signature of the note
  */
 Chord.prototype.longNotation = function( signature ) {
     if( this.abstract ){
@@ -332,8 +351,11 @@ Chord.prototype.longNotation = function( signature ) {
 };
 
 /**
- * transpose a chard with a certain interval and return the new transposed
+ * transpose a chord with a certain interval and return the new transposed
  * chord
+ * 
+ * @param interval {Interval} - an Interval object
+ * 
  */
 Chord.prototype.transpose = function(interval) {
     // TODO; implement method
@@ -346,7 +368,7 @@ Chord.prototype.transpose = function(interval) {
 };
 
 /**
- * returns the absolute notes
+ * @returns {array} - An array of Note objects, all absolute
  * 
  * save it in a local variable _notes for easy access
  */
@@ -367,17 +389,23 @@ Chord.prototype.noteObjects = function(){
 
 /**
  * check if the chord can be described by a simple name
+ * 
+ * @param name {string} - a possible way to describe the chord, i.e. 'maj', 'min'
+ *                        'dim', etc.
+ * @returns {boolean} -   true if the chord can be described by this name
  */
 Chord.prototype.hasName = function(name){
     return _(this.names).find(function(n){
         return name == n;
     });
-}
+};
 
 
 
 /**
  * a simple toString function that gives us the notation of all the notes
+ * 
+ * @returns {string}
  */
 Chord.prototype.toString = function(){
     var ret = "[ ";
@@ -387,8 +415,10 @@ Chord.prototype.toString = function(){
 
 /**
  * the minimal notes needed to form this chord
- * @returns an array with the notes that are minimally necessary
- * to form this chord
+ * @returns {array} - the notes that are minimally necessary
+ *                    to form this chord (without optional notes)
+ * 
+ * 
  */
 Chord.prototype.minNotes = function(){
     
@@ -397,12 +427,17 @@ Chord.prototype.minNotes = function(){
     });
 }
 
+/**
+ * @returns {string} - representing the type, can be 'chord', 'scale'
+ */
 Chord.prototype.type = function(){
     return this._type;
 }
 
 /**
  * check if a Chord contains a note
+ * 
+ * @returns {boolean}
  */
 Chord.prototype.contains = function( note ){
     return Chord.contains( this, note );
@@ -412,6 +447,8 @@ Chord.prototype.contains = function( note ){
 /**
  * the plural class, simply to expose some functions in a more
  * logical way
+ * 
+ * @class
  */
 var Chords = {};
 Chords.fromNotes = Chord.fromNotes;

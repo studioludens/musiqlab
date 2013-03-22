@@ -325,9 +325,9 @@
                     <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
                         
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes().reverse()">
-                            <a  ng-class="note.class(tonic)" 
+                            <a  ng-class="note.className(tonic)" 
                                 ng-click="toggleNote(note)" 
-                                title="{{note.notation(tonic.signature())}} / {{selectedMatch.tonic.interval(note).name()}}"
+                                title="{{note.notation(tonic.signature()) + '/' + selectedMatch.tonic.interval(note).name()}}"
                                 ><div class="marker">{{note.simple(tonic.signature())}}</div></a>
                         </div>
                     </div>
@@ -338,7 +338,7 @@
                 <div class="guitar-neck visible-phone">
                     <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes()">
-                            <a  ng-class="note.class(tonic)" 
+                            <a  ng-class="note.className(tonic)" 
                                 ng-click="toggleNote(note)" 
                                 title="{{note.notation(tonic.signature())}} / {{selectedMatch.tonic.interval(note).name()}}"
                                 ><div class="marker">{{note.simple(tonic.signature())}}</div></a>

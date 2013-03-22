@@ -3,3 +3,4 @@
 {"ts":1361043614332,"patch":[[{"diffs":[[0,"s];\n};\n\n"],[1,"/**\n * matches a Note object to the fret and returns all GuitarNote objects that\n * match it.\n */\nGuitarString.prototype.matchNotes ( note ){\n    \n}"],[0,"\n\n/**\n *"]],"start1":584,"start2":584,"length1":16,"length2":164}]],"length":1163,"saved":false}
 {"ts":1361043616561,"patch":[[{"diffs":[[0,"chNotes "],[1,"= function"],[0,"( note )"]],"start1":716,"start2":716,"length1":16,"length2":26}]],"length":1173,"saved":false}
 {"ts":1361043620247,"patch":[[{"diffs":[[0,"{\n    \n}"],[1,";"],[0,"\n\n/**\n *"]],"start1":742,"start2":742,"length1":16,"length2":17}]],"length":1174,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1363909394169,"patch":[[{"diffs":[[0,"g class\n"],[1," * \n * @constructor\n * \n"],[0," * @para"]],"start1":20,"start2":20,"length1":16,"length2":40}]],"length":1198,"saved":false}

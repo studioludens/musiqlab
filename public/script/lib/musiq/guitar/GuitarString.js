@@ -1,5 +1,8 @@
 /** 
  * guitar string class
+ * 
+ * @constructor
+ * 
  * @param guitar : the Guitar object this String belongs to
  * @param base : the base note position of this string
  * @param pos : the position of the string relative to the other strings

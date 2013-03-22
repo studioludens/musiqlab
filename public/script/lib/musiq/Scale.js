@@ -1,10 +1,12 @@
 /**
  * the MUSIQ.js scale class
  * 
- * @param notes : a simple array of integers representing the midi notes
- * @param descriptor : an object describing the scale
- * @param tonic : the current tonic Note oject
- * @param relative : if the scale should be interpreted as  relative, 
+ * @class
+ * 
+ * @param notes - a simple array of integers representing the midi notes
+ * @param descriptor - an object describing the scale
+ * @param tonic - the current tonic Note oject
+ * @param relative - if the scale should be interpreted as  relative, 
  *                   i.e. can be positioned anywhere
  *                   on the musical scale (Fretboard for guitar)
  */

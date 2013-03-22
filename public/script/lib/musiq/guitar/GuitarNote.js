@@ -1,15 +1,18 @@
 /** 
  * the guitar note data object
- * @param guitar : a Guitar object this note belongs to
- * @param guitarString : a GuitarString object this note belongs to
- * @param fret : the GuitarFret this note belongs to
- * @param pos : the position as in [ string, fret ]
  * 
- * @param state : an object representing the state of the note:
- *                      {   active: false,
+ * @constructor
+ * 
+ * @param guitar - a Guitar object this note belongs to
+ * @param guitarString - a GuitarString object this note belongs to
+ * @param fret - the GuitarFret this note belongs to
+ * @param pos - the position as in [ string, fret ]
+ * 
+ * @param state - an object representing the state of the note:
+ *                         active: false,
  *                          ghosted: false,
  *                          tonic: false
- *                      }
+ *                      
  */
 var GuitarNote = function( guitar, guitarString, fret, pos, state ){
 
@@ -36,10 +39,16 @@ var GuitarNote = function( guitar, guitarString, fret, pos, state ){
  */
 GuitarNote.DEFAULT_STATE = { active: false, ghosted: false, tonic: false };
 
+/**
+ * get the notation
+ */
 GuitarNote.prototype.notation = function(){
     return this.note.notation();
 };
 
+/**
+ * get the short notation
+ */
 GuitarNote.prototype.short = 
 GuitarNote.prototype.simple = function( signature ){
     return this.note.simpleNotation( signature );
@@ -95,7 +104,7 @@ GuitarNote.prototype.onlyActive = function( value ){
 /**
  * get a string representation of the class
  */
-GuitarNote.prototype.class = function( tonic ){
+GuitarNote.prototype.className = function( tonic ){
    var ret = [];
    if( this.state.active ) ret.push('active');
    if( this.state.ghosted ) ret.push('ghosted');

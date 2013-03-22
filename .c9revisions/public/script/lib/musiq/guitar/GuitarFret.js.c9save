@@ -3,3 +3,5 @@
 {"contributors":[],"silentsave":false,"ts":1361043203209,"patch":[[{"diffs":[[0,"retboard"],[1," (0-x, 0 being the lowest string, x is usually 6)"],[0,"\n * \n * "]],"start1":136,"start2":136,"length1":16,"length2":65}]],"length":917,"saved":false}
 {"contributors":[],"silentsave":false,"ts":1361043264910,"patch":[[{"diffs":[[0,"se;\n};\n\n"],[1,"/**\n * get all notes on this particular fret. Because we can reference\n * to the guitar we can determine all the notes\n */\n"],[0,"GuitarFr"]],"start1":440,"start2":440,"length1":16,"length2":139}]],"length":1040,"saved":false}
 {"ts":1361043432425,"patch":[[{"diffs":[[0,".pos );\n};\n\n"],[1,"\n"],[0,"/**\n * TODO:"]],"start1":652,"start2":652,"length1":24,"length2":25}]],"length":1041,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1362587004836,"patch":[[{"diffs":[[0,"pe.class"],[1,"Name"],[0," = funct"]],"start1":768,"start2":768,"length1":16,"length2":20}]],"length":1045,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1363909402346,"patch":[[{"diffs":[[0,"ret\n * \n"],[1," * @constructor\n * \n"],[0," * @para"]],"start1":40,"start2":40,"length1":16,"length2":36}]],"length":1065,"saved":false}

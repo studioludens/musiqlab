@@ -1,7 +1,7 @@
 /**
  * GuitarChord - a class for representing a guitar chord
  * 
- * 
+ * @constructor
  * 
  * @param guitar : a Guitar object on which this chord is played
  * @param chord : a Chord object
@@ -31,11 +31,11 @@ GuitarChord.MAX_STRETCH = 4;
  * @param chord : the Chord object to find specific GuitarChords for
  * @param base : the Base note we want to base the chord on (GuitarNote)
  * @param options : an object specifying more options:
- *                  {
+ *                  
  *                      upPreference: false
  *                      maxFingerStretch: 2
  *                      maxDifficulty: 10 
- *                  }
+ *                  
  * 
  * @returns an array of GuitarChord objects
  */
@@ -221,4 +221,4 @@ GuitarChord.prototype.barre = function(){
     console.log(same);
     return same;
     
-}
+};
