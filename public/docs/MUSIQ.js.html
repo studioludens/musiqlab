@@ -4,22 +4,81 @@
     <meta charset="utf-8">
     <title>JSDoc: Source: MUSIQ.js</title>
     
+    <script src="scripts/jquery-1.9.1.min.js"></script>
+    
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="../style/bootstrap.min.css">
+    <!-- responsive sheets -->
+    <link href="../style/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../style/docs.css" rel="stylesheet">
+    
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    
+    
+          
+    <script>
+        $(document).ready(function(w){
+            
+            // toggle handlers for the data titles
+            $('dt.doc-header').click(function(){
+                //alert("It works");
+                $(this).next('dd').toggle(100);
+                //$(this).toggle();
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-<div id="main">
-    
-    <h1 class="page-title">Source: MUSIQ.js</h1>
-    
-    
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li>
+                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="tutorials/">Tutorials</a></li>
+                    <li class="active"><a href="docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                </ul>
+              </li>
+              <li><a href="guitar.html">Interactive Guitar</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li></ul>
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1 class="page-title">Source: MUSIQ.js</h1>
+                </div>
+                
 
 
     
@@ -29,16 +88,39 @@
  * MUSIQ: a javascript library for note and chord analysis
  * 
  * 
+ * @namespace
+ * 
+ * @property {array} noteNames - array of common note names
+ * @property {array} notePositions - array of semitones for the notes in noteNames
+ * @property {array} sharpNames - all notes represented with sharps
+ * @property {array} flatNames - all notes represented with flats
+ * @property {array} accidentals - accidentals that can be used for the notes
+ * @property {array} cofPositions - position on the circle of fifths
+ * @property {array} tonicPositions - preferred tonics for note lookup
+ * @property {array} signatures - signatures (-1 means 1 flat, 1 means 1 sharp)
+ * @property {array} solfege - solfege names
+ * @property {array} intervalNames - names of the intervals
+ * @property {array} chordExtensionNotes
+ * @property {array} chords - a list of the most commonly occuring chords (in JSON format)
+ * @property {array} scales
+ * 
+ * 
+ * 
  */
 var MUSIQ = {
     /**
      * the normal names of the notes
      */
     noteNames : ["C", "D", "E", "F", "G", "A", "B"],
+    
+    /**
+     * positions of the normal notes
+     */
     notePositions: [0, 2, 4, 5, 7, 9, 11],
 
     /**
      * the sharp names for all the notes
+     * 
      */
     sharpNames : ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
     
@@ -403,7 +485,9 @@ var MUSIQ = {
  * and tries to find all the matches, be it notes, chords
  * or scales.
  * 
- * @returns an array of match objects (Note/Scale/Chord)
+ * @param {string} name - a name of a note, chord or scale
+ * 
+ * @returns {array} - an array of match objects (Note/Scale/Chord)
  */
 MUSIQ.match = function( name ){
     
@@ -438,7 +522,10 @@ MUSIQ.match = function( name ){
 
 /**
  * isValidNote
- * @returns true if the note can be parsed into a Note object
+ * 
+ * @param {string} notation - a string notation for a note
+ * 
+ * @returns {boolean} true if the note can be parsed into a Note object
  */
 MUSIQ.isValidNote = function( notation ){
     
@@ -450,9 +537,14 @@ MUSIQ.isValidNote = function( notation ){
 };
 
 /**
- * @returns true if the list (in string format) is a valid list
+ * 
+ * @param {array} list
+ * @returns {boolean} true if the list (in string format) is a valid list
  * we can use thesse delimiters:  " " (space), "," (comma) and "|" (pipe)
  * more probably to follow...
+ * 
+ * @todo: implement this function
+ * 
  */
 MUSIQ.isValidNoteList = function( list ){
    // split the list 
@@ -461,9 +553,11 @@ MUSIQ.isValidNoteList = function( list ){
 
 /**
  * 
- * TODO: store these in a static variable when the function is first called
+ * @todo: store these in a static variable when the function is first called
  * 
- * @returns matches from the regular expression if it's a valid chord
+ * @param {string} notation - string notation to check if valid
+ * 
+ * @returns {array} matches from the regular expression if it's a valid chord
  *              0 : the whole matched name
  *              1 : the note
  *              2 : any specified accidentals
@@ -499,15 +593,20 @@ MUSIQ.isValidChord = function( notation ){
 };
 
 /**
- * @returns true if
+ * @param {array} list - list of strings with chord names
+ * @returns {boolean} true if all chords are valid
+ * 
+ * @todo - implement function
  */
-MUSIQ.isValidChordList = function( chord ){
+MUSIQ.isValidChordList = function( list ){
     // check if the chord name is valid
     return false;
 };
 
 /**
- * @returns true if it's a valid scale
+ * 
+ * @param {string} notation - 
+ * @returns {boolean} true if it's a valid scale
  */
 MUSIQ.isValidScale = function( notation ){
     
@@ -515,7 +614,7 @@ MUSIQ.isValidScale = function( notation ){
     
     // default to major
     var not = notation;
-    if( !notation || notation.length == 0 ) not = "M";
+    if( !notation || notation.length === 0 ) not = "M";
     
     // TODO: make this shorter
     
@@ -530,7 +629,9 @@ MUSIQ.isValidScale = function( notation ){
 };
 
 /**
- * @returns true if
+ * @returns {boolean} true if
+ * 
+ * @todo implement function
  */
 MUSIQ.isValidScaleList = function( chord ){
     // check if the scale name is valid
@@ -540,11 +641,10 @@ MUSIQ.isValidScaleList = function( chord ){
 /**
  * guitar stuff
  */
-
 MUSIQ.guitar = {};
 
 /**
- * @returns a list of matches if it's a valid finger position of the notes
+ * @returns {array} a list of matches if it's a valid finger position of the notes
  * currently played on a guitar neck
  * 
  * example: "0 2 2 1 0 x" - should get an E-chord
@@ -556,7 +656,9 @@ MUSIQ.guitar.isValidFingerPos = function( tab ){
 };
 
 /**
- * @param chord : a GuitarChord object
+ * @param {GuitarChord} chord - a GuitarChord object
+ * 
+ * @todo implement function
  */
 MUSIQ.guitar.isValidChord = function( chord ){
     
@@ -567,18 +669,17 @@ MUSIQ.guitar.isValidChord = function( chord ){
 
 
 
-</div>
+            </div>
+        </div>
+        
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Mar 23 2013 09:34:34 GMT-0400 (EDT)
+        </footer>
+    </div>
 
-<nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Chord.html">Chord</a></li><li><a href="Chords.html">Chords</a></li><li><a href="Guitar.html">Guitar</a></li><li><a href="GuitarChord.html">GuitarChord</a></li><li><a href="GuitarFret.html">GuitarFret</a></li><li><a href="GuitarNote.html">GuitarNote</a></li><li><a href="GuitarString.html">GuitarString</a></li><li><a href="Interval.html">Interval</a></li><li><a href="Note.html">Note</a></li><li><a href="Scale.html">Scale</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUSIQ">MUSIQ</a></li></ul>
-</nav>
 
-<br clear="both">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Mar 21 2013 19:51:10 GMT-0400 (EDT)
-</footer>
 
 <script> prettyPrint(); </script>
+<script src="../script/lib/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

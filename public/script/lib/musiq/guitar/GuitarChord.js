@@ -1,11 +1,12 @@
 /**
  * GuitarChord - a class for representing a guitar chord
  * 
+ * 
  * @constructor
  * 
- * @param guitar : a Guitar object on which this chord is played
- * @param chord : a Chord object
- * @param notes : a collection of GuitarNote objects (optional)
+ * @param {Guitar} guitar - a Guitar object on which this chord is played
+ * @param {Chord}  chord - a Chord object
+ * @param {array}  notes - a collection of GuitarNote objects (optional)
  */
 
 var GuitarChord = function( guitar, chord, notes  ){
@@ -27,17 +28,17 @@ GuitarChord.MAX_STRETCH = 4;
  * finds all variations of a particular chord with a specific
  * tonic. All these 
  * 
- * @param guitar : the guitar object (with specific tuning)
- * @param chord : the Chord object to find specific GuitarChords for
- * @param base : the Base note we want to base the chord on (GuitarNote)
- * @param options : an object specifying more options:
+ * @param guitar {Guitar} - the guitar object (with specific tuning)
+ * @param chord {Chord} - the Chord object to find specific GuitarChords for
+ * @param base {GuitarNote} the Base note we want to base the chord on (GuitarNote)
+ * @param options {object} an object specifying more options:
  *                  
  *                      upPreference: false
  *                      maxFingerStretch: 2
  *                      maxDifficulty: 10 
  *                  
  * 
- * @returns an array of GuitarChord objects
+ * @returns {array} an array of GuitarChord objects
  */
 GuitarChord.fromChordAndBase = function( guitar, chord, base ){
     
@@ -96,7 +97,7 @@ GuitarChord.fromChordAndBase = function( guitar, chord, base ){
             // and are close enough to the base note
             stringNotes = _(stringNotes).filter(function(note){
                 if( Math.abs( note.distanceTo(base)[1] ) <= GuitarChord.MAX_STRETCH ){
-                    console.log("Found note " + note.simple() + " on pos [" + note.pos + "]");
+                    //console.log("Found note " + note.simple() + " on pos [" + note.pos + "]");
                     return true;
                 }
             });
@@ -112,7 +113,7 @@ GuitarChord.fromChordAndBase = function( guitar, chord, base ){
                 
             } else {
                 // more notes found!
-                console.log( stringNotes.length + " matching note on string found!");
+                //console.log( stringNotes.length + " matching note on string found!");
                 //console.log( stringNotes );
                 
                 // for now, return the combined array
@@ -131,7 +132,8 @@ GuitarChord.fromChordAndBase = function( guitar, chord, base ){
             highestFret = Math.max(notes[0].pos[1], highestFret);
         });
         
-        console.log( "Biggest distance between frets: " + highestFret-lowestFret);
+        // TODO: not working
+        //console.log( "Biggest distance between frets: " + highestFret-lowestFret);
         
         return foundNotes;
         
@@ -158,12 +160,17 @@ GuitarChord.fromChordAndBase = function( guitar, chord, base ){
  * 
  * the chord should be relative
  * - find the tonic on each fret
+ * 
+ * @param guitar {Guitar} - A Guitar object
+ * @param chord {Chord} - A chord object
+ * 
+ * @returns {GuitarChord}
  */
 GuitarChord.fromChord = function( guitar, chord ){
     
     if( !chord.relative ){
         console.warn("Relative chord not allowed!");
-        return;
+        return null;
     }
     
     // get all base (lowest) notes
@@ -197,17 +204,21 @@ GuitarChord.fromChord = function( guitar, chord ){
  * 
  * 
  * 
- * @returns true : if the chord is valid
+ * @returns {boolean} - true if the chord is valid
+ * 
+ * @todo implement function
  */
 GuitarChord.prototype.valid = function(){
     
 };
 
 /**
- * barre - returns an integer representing how
- * many fingers can be played barre.
+ * barre - 
  * 
- * TODO: test
+ * @returns {integer}   how many fingers can be played barre. Calculated from the
+ *                      top string
+ * 
+ * @todo test function
  */
 GuitarChord.prototype.barre = function(){
     // check highest strings and recurse down, adding as we go

@@ -1,14 +1,15 @@
+"use strict";
 /**
  * the MUSIQ.js chord class
  * 
  * @constructor
- * @param notes {array} - a simple array of integers representing the midi notes
- * @param descriptor {object} - an object describing the chord
- * @param tonic {Note} - the current tonic Note oject
- * @param relative {boolean} - if the chord should be interpreted as  relative, 
+ * @param {array} notes - a simple array of integers representing the midi notes
+ * @param {object} descriptor - an object describing the chord
+ * @param {Note} tonic - the current tonic Note oject
+ * @param {boolean} [relative=false] - if the chord should be interpreted as  relative, 
  *                   i.e. can be positioned anywhere
  *                   on the musical scale (Fretboard for guitar)
- * @param type {string} - the type of chord, 
+ * @param {string} [type=chord] - the type of chord, 
  */
 
 var Chord = function( notes, descriptor, tonic, relative, type ) {
@@ -44,9 +45,10 @@ var Chord = function( notes, descriptor, tonic, relative, type ) {
 
 /**
  * constructs a Chord object from a notation like Cmaj7
- * @param name {string} - the chord name
- * @param type {string} - the chord type, can be 'chord' or 'scale'
+ * @param {string} name - the chord name
+ * @param {string} [type=chord] - the chord type, can be 'chord' or 'scale'
  * 
+ * @returns {Chord}
  */
 Chord.fromNotation = function( name, type ){
     
@@ -56,17 +58,19 @@ Chord.fromNotation = function( name, type ){
     // the array used to look up chords
     var lookup;
     
+    var chordType = "";
+    
     if( type == 'scale'){
         matches = MUSIQ.isValidScale( name );
         lookup = MUSIQ.scales;
         chordType = 'scale';
-        console.log("Checking Scale");
+        //console.log("Checking Scale");
     } else {
         // default to chord
         matches = MUSIQ.isValidChord( name );
         lookup = MUSIQ.chords;
         chordType = 'chord';
-        console.log("Checking Chord");
+        //console.log("Checking Chord");
     }
     
     //console.log( matches );
@@ -74,7 +78,7 @@ Chord.fromNotation = function( name, type ){
     // no chord found?
     if( !matches ){
         console.warn("Chord not found : " + name);
-        return;
+        return null;
     }
     
     var tonic = Note.fromNotation( matches[1] + (matches[2] || "") );
@@ -113,7 +117,7 @@ Chord.fromNotation = function( name, type ){
                     : matchedChords[0].notes;
     
     var transNotes = _(allNotes).map(function(note){
-        return (new Note(note)).transpose(tonic.pos).toRelative().pos;
+        return (new Note(note)).transpose(tonic.pos).relPos();
     })
     
     //console.log("Transnotes:");
@@ -128,12 +132,208 @@ Chord.fromNotation = function( name, type ){
 /**
  * build a chord from individual notes
  * these can be note objects or just a list of integers
- * @param notes     {array} - a simple array of integer notes
- * @param inversion {integer} - the number of the inversion, 
- *                    0 = root position, 1 = first inversion, 2 = second inversion, ...
- * @returns {array} - an array of matching chords, undefined when nothing is found
+ * @param {array}   notes         - a simple array of integer notes
+ * @param {integer} [inversion=0] - the number of the inversion, 
+ *                                  0 = root position, 1 = first inversion, 
+ *                                  2 = second inversion, ...
+ * 
+ * @returns {Chord} a matching chord, null when nothing is found
  */
 Chord.fromNotes = function( notes, inversion ){
+    
+    var matches = Chords.fromNotes( notes, inversion );
+    if( matches && matches.length > 0 ){
+        return matches[0];
+    }
+    return null;
+};
+
+/**
+ * check if this chord contains a certain note
+ * 
+ * if the Chord is relative, the relative position of the Note is taken
+ * 
+ * @param {Chord} chord - a Chord object
+ * @param {Note} note - a Note object
+ * @returns {boolean} true when the Chord contains the specific note
+ */
+Chord.contains = function(chord, note){
+    if( chord.relative ){
+        return _(chord.relNotes).contains(note.relPos());
+    } else {
+        return _(chord.notes).contains(note.pos);
+    }
+};
+
+/* instance methods */
+
+/**
+ * get the chord in proper notation
+ * 
+ * these are examples of proper notations:
+ * C - an abstract C chord
+ * C# - a C sharp chord
+ * B♭6 - A Bb7 chord
+ * Cmin7 - A cminor chord
+ * 
+ * 
+ * @param {integer} signature - the signature of the note
+ * @returns {string} - the chord notation as it is most commonly used
+ */
+Chord.prototype.notation = function( signature ) {
+    if( this.abstract ){
+        return this.names[0].replace("b","♭").replace("#","♯");;
+    } else {
+        return this.tonic.simpleNotation( signature ) + this.names[0].replace("b","♭").replace("#","♯");;
+    }
+};
+
+/**
+ * get the name of the chord in long, readable notation
+ * 
+ * @param {integer} signature - the signature of the note
+ */
+Chord.prototype.longNotation = function( signature ) {
+    if( this.abstract ){
+        return this.longName.replace("b","♭").replace("#","♯");;
+    } else {
+        return this.tonic.simpleNotation( signature ) + " " + this.longName.replace("b","♭").replace("#","♯");;
+    }
+};
+
+/**
+ * transpose a chord with a certain interval and return the new transposed
+ * chord
+ * 
+ * @param {Interval} interval - an Interval object
+ * 
+ */
+Chord.prototype.transpose = function(interval) {
+    // TODO; implement method
+    // transpose notes
+    this.notes = _(this.notes).map(function(note){
+        return note.transpose( interval );
+    });
+    // transpose tonic
+    this.tonic = this.tonic.transpose( interval );
+};
+
+/**
+ * @returns {array} An array of Note objects, all absolute
+ * 
+ * save it in a local variable _notes for easy access
+ */
+Chord.prototype.noteObjects = function(){
+    
+    // just return the simple list of notes
+    if( this._notes ) return this._notes;
+    
+    this._notes =  _.map(  this.relNotes, 
+                            function(note){ 
+                                //console.log(this.tonic.pos+note);
+                                return new Note(this.tonic.pos+note); 
+                            }, this );
+    //console.log("NoteObjects");
+    //console.log(this._notes);
+    return this._notes;
+};
+
+/**
+ * check if the chord can be described by a simple name
+ * 
+ * @param {string} name - a possible way to describe the chord, i.e. 'Cmaj', 'D#min'
+ *                        'dim', etc.
+ *                      - should support both # and b, ♭ and ♯
+ * @returns {boolean}   true if the chord can be described by this name
+ */
+Chord.prototype.hasName = function(name){
+    
+    // split it between the note and the chord type indicator
+    var matches = MUSIQ.isValidChord( name );
+    
+    //console.log( matches );
+    // if the name is not even valid, return false
+    if(!matches ) return false;
+    
+    // check if the tonic is the same
+    if( !this.tonic.hasName( matches[1] + (matches[2] || "") )) return false;
+    
+    //console.log( tonic );
+    
+    // if the notation is undefined (from the match), it couldn't be found (no text),
+    // but it can still result in a valid chord
+    var notation = matches[3] || "";
+    
+    if( notation === "") 
+        console.warn( notation );
+    
+    // and finally check the notation
+    
+    var found = _(this.names).find(function(n){
+        return notation === n;
+    });
+    
+    console.log( found );
+    
+    // NOTE: the _.find() function returns undefined when the item hasn't been found
+    return typeof(found) == 'undefined' ? false : true;
+};
+
+
+
+/**
+ * a simple toString function that gives us the notation of all the notes
+ * 
+ * @returns {string}
+ */
+Chord.prototype.toString = function(){
+    var ret = "[ ";
+    _.each(this.notes, function(item){ret += (new Note(item))});
+    return ret;
+};
+
+/**
+ * the minimal notes needed to form this chord
+ * @returns {array}   the notes that are minimally necessary
+ *                    to form this chord (without optional notes)
+ * 
+ * 
+ */
+Chord.prototype.minNotes = function(){
+    
+    return _(this.notes).filter(function(note){
+        return !_(this.optional).contains(note);
+    });
+}
+
+/**
+ * @returns {string} representing the type, can be 'chord', 'scale'
+ */
+Chord.prototype.type = function(){
+    return this._type;
+}
+
+/**
+ * check if a Chord contains a note
+ * 
+ * @param {Note} note - a Note object
+ * @returns {boolean} true if the chord contains the note
+ */
+Chord.prototype.contains = function( note ){
+    return Chord.contains( this, note );
+}
+
+
+/**
+ * the plural class, simply to expose some functions in a more
+ * logical way
+ * 
+ * @class
+ */
+var Chords = {};
+
+
+Chords.fromNotes = function( notes, inversion ){
     
     var ret = [];
     
@@ -276,16 +476,13 @@ Chord.fromNotes = function( notes, inversion ){
             
             chordTonics.push(curNote.toRelative().pos);
             
-            var matchedChords = Chord.fromNotes(notes, i);
+            var matchedChords = Chords.fromNotes(notes, i);
             
             
             ret = ret.concat(matchedChords);
         }
         
         //console.log( chordTonics);
-        
-        // remove any duplicates
-        
         
         //console.log( ret );
         
@@ -297,160 +494,5 @@ Chord.fromNotes = function( notes, inversion ){
     
 };
 
-/**
- * check if this chord contains a certain note
- * 
- * if the Chord is relative, the relative position of the Note is taken
- * 
- * @param chord {Chord} - a Chord object
- * @param note {Note} - a Note object
- * @returns {boolean} - true when the Chord contains the specific note
- */
-Chord.contains = function(chord, note){
-    if( chord.relative ){
-        return _(chord.relNotes).contains(note.relPos());
-    } else {
-        return _(chord.notes).contains(note.pos);
-    }
-};
-
-/* instance methods */
-
-/**
- * get the chord in proper notation
- * 
- * these are examples of proper notations:
- * C - an abstract C chord
- * C# - a C sharp chord
- * B♭6 - A Bb7 chord
- * Cmin7 - A cminor chord
- * 
- * 
- * @param signature {integer} - the signature of the note
- * @returns {string} - the chord notation as it is most commonly used
- */
-Chord.prototype.notation = function( signature ) {
-    if( this.abstract ){
-        return this.names[0].replace("b","♭").replace("#","♯");;
-    } else {
-        return this.tonic.simpleNotation( signature ) + this.names[0].replace("b","♭").replace("#","♯");;
-    }
-};
-
-/**
- * get the name of the chord in long, readable notation
- * 
- * @param signature {integer} - the signature of the note
- */
-Chord.prototype.longNotation = function( signature ) {
-    if( this.abstract ){
-        return this.longName.replace("b","♭").replace("#","♯");;
-    } else {
-        return this.tonic.simpleNotation( signature ) + " " + this.longName.replace("b","♭").replace("#","♯");;
-    }
-};
-
-/**
- * transpose a chord with a certain interval and return the new transposed
- * chord
- * 
- * @param interval {Interval} - an Interval object
- * 
- */
-Chord.prototype.transpose = function(interval) {
-    // TODO; implement method
-    // transpose notes
-    this.notes = _(this.notes).map(function(note){
-        return note.transpose( interval );
-    });
-    // transpose tonic
-    this.tonic = this.tonic.transpose( interval );
-};
-
-/**
- * @returns {array} - An array of Note objects, all absolute
- * 
- * save it in a local variable _notes for easy access
- */
-Chord.prototype.noteObjects = function(){
-    
-    // just return the simple list of notes
-    if( this._notes ) return this._notes;
-    
-    this._notes =  _.map(  this.relNotes, 
-                            function(note){ 
-                                console.log(this.tonic.pos+note);
-                                return new Note(this.tonic.pos+note); 
-                            }, this );
-    console.log("NoteObjects");
-    console.log(this._notes);
-    return this._notes;
-};
-
-/**
- * check if the chord can be described by a simple name
- * 
- * @param name {string} - a possible way to describe the chord, i.e. 'maj', 'min'
- *                        'dim', etc.
- * @returns {boolean} -   true if the chord can be described by this name
- */
-Chord.prototype.hasName = function(name){
-    return _(this.names).find(function(n){
-        return name == n;
-    });
-};
-
-
-
-/**
- * a simple toString function that gives us the notation of all the notes
- * 
- * @returns {string}
- */
-Chord.prototype.toString = function(){
-    var ret = "[ ";
-    _.each(this.notes, function(item){ret += (new Note(item))});
-    return ret;
-};
-
-/**
- * the minimal notes needed to form this chord
- * @returns {array} - the notes that are minimally necessary
- *                    to form this chord (without optional notes)
- * 
- * 
- */
-Chord.prototype.minNotes = function(){
-    
-    return _(this.notes).filter(function(note){
-        return !_(this.optional).contains(note);
-    });
-}
-
-/**
- * @returns {string} - representing the type, can be 'chord', 'scale'
- */
-Chord.prototype.type = function(){
-    return this._type;
-}
-
-/**
- * check if a Chord contains a note
- * 
- * @returns {boolean}
- */
-Chord.prototype.contains = function( note ){
-    return Chord.contains( this, note );
-}
-
-
-/**
- * the plural class, simply to expose some functions in a more
- * logical way
- * 
- * @class
- */
-var Chords = {};
-Chords.fromNotes = Chord.fromNotes;
 Chords.fromNotation = Chord.fromNotation;
 

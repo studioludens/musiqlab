@@ -4,22 +4,81 @@
     <meta charset="utf-8">
     <title>JSDoc: Source: Note.js</title>
     
+    <script src="scripts/jquery-1.9.1.min.js"></script>
+    
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="../style/bootstrap.min.css">
+    <!-- responsive sheets -->
+    <link href="../style/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../style/docs.css" rel="stylesheet">
+    
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    
+    
+          
+    <script>
+        $(document).ready(function(w){
+            
+            // toggle handlers for the data titles
+            $('dt.doc-header').click(function(){
+                //alert("It works");
+                $(this).next('dd').toggle(100);
+                //$(this).toggle();
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-<div id="main">
-    
-    <h1 class="page-title">Source: Note.js</h1>
-    
-    
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li>
+                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="tutorials/">Tutorials</a></li>
+                    <li class="active"><a href="docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                </ul>
+              </li>
+              <li><a href="guitar.html">Interactive Guitar</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li></ul>
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1 class="page-title">Source: Note.js</h1>
+                </div>
+                
 
 
     
@@ -29,8 +88,8 @@
  * the MUSIQ.js Note object
  * 
  * @constructor
- * @param pos - the midi position of the note
- * @param relative - a boolean, true if the note is relative (it doesn't have
+ * @param {integer} pos - the midi position of the note
+ * @param {boolean} relative - a boolean, true if the note is relative (it doesn't have
  *                   an octave). if relative is true, pos should not be larger
  *                   than 12
  */
@@ -49,11 +108,11 @@ var Note = function( pos, relative ){
  /**
   * get a new note object from a string notation
   * 
-  * @param notation - in the form C4, Bb6 etc
+  * @param {string} notation - in the form C4, Bb6 etc
              where the number is the octave
              this should also match lowerCase notations
              
-  * @returns {Note} - a note object or null, when no note could be found
+  * @returns {Note} a note object or null, when no note could be found
  */
 Note.fromNotation = function( notation ){
      
@@ -127,6 +186,10 @@ Note.fromNotation = function( notation ){
 
 /**
  * make a note object from a position
+ * 
+ * @param {integer} pos - the midi position of the note
+ * 
+ * @returns {Note}
  */
 Note.fromPos = function( pos ){
     console.log( pos );
@@ -138,9 +201,9 @@ Note.fromPos = function( pos ){
  * the distance (in semitones) to another note
  * this is the number notation of the interval
  * 
- * @param note1 {Note} - The first note
- * @param note2 {Note} - The second note
- * @returns {integer} - The distance between the notes in semitones
+ * @param {Note} note1 - The first note
+ * @param {Note} note2 - The second note
+ * @returns {integer} The distance between the notes in semitones
  */
 Note.distance = function( note1, note2 ){
   return note2.pos - note1.pos;  
@@ -152,10 +215,10 @@ Note.distance = function( note1, note2 ){
  * this is an integer from 0 - 11 representing the distance in semitones between
  * the notes
  * 
- * @param note1 {Note} - The first note
- * @param note2 {Note} - The second note
+ * @param {Note} note1 - The first note
+ * @param {Note} note2 - The second note
  * 
- * @returns {integer} - The relative distance between the notes in semitones
+ * @returns {integer} The relative distance between the notes in semitones
  */
 Note.relativeDistance = function( note1, note2 ){
   var rel = note2.toRelative().pos - note1.toRelative().pos;
@@ -164,10 +227,11 @@ Note.relativeDistance = function( note1, note2 ){
 
 /**
  * 
- * @param note1 {Note} - The first note
- * @param note2 {Note} - The second note
- * @returns {integer} - the shortest distance from note1 to note2
+ * @param {Note} note1 - The first note
+ * @param {Note} note2 - The second note
+ * @returns {integer} the shortest distance from note1 to note2
  * 
+ * @todo - implement function
  *
  */
 Note.shortestDistance = function( note1, note2 ){
@@ -175,7 +239,9 @@ Note.shortestDistance = function( note1, note2 ){
 };
 
 /**
- * @returns {integer} - the shortest relative distance
+ * @returns {integer} the shortest relative distance
+ * 
+ * @todo - implement function
  */
 Note.shortestRelativeDistance = function( note1, note2 ){
     return 0;
@@ -199,7 +265,9 @@ Note.interval = function( note1, note2 ){
  * of sharps or flats the scale has when using this
  * note as root.
  * 
- * @returns {integer} - The signature as an integer representing the amount
+ * @param {Note} note - a Note object
+ * 
+ * @returns {integer}   The signature as an integer representing the amount
  *                      of sharps or flats the scale has when using this
  *                      note as root.
  */
@@ -210,7 +278,9 @@ Note.signature = function( note ){
 /**
  * the Note's position on the circle of fifths
  * 
- * @returns {integer} - the position on the circle of fifths as an integer
+ * @param {Note} note - a Note object
+ * 
+ * @returns {integer}   the position on the circle of fifths as an integer
  *                      ( C = 0, G = 1, D = 2, ... F = -1 )
  */
 Note.cofPosition = function( note ){
@@ -225,11 +295,11 @@ Note.cofPosition = function( note ){
  * In the end, we use the unicode characters ♭ and ♯ to represent sharps and 
  * flats, instead of b or #
  * 
- * @param note {Note} - A Note object
- * @param signature {integer} - the amount of sharps of flats 
+ * @param {Note} note - A Note object
+ * @param {integer} signature - the amount of sharps of flats 
  *                              (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)
  * 
- * @returns {string} - the notation used based on the 
+ * @returns {string} the notation used based on the 
  */
 Note.notation = function( note, signature ){
     
@@ -251,8 +321,8 @@ Note.notation = function( note, signature ){
 /**
  * get a simple notation for a note, i.e. C#
  * 
- * @param note {Note} - A note object
- * @param signature {integer} - the amount of sharps of flats 
+ * @param {Note} note - A note object
+ * @param {integer} signature - the amount of sharps of flats 
  *                              (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)
  * 
  * @returns {string}
@@ -278,9 +348,9 @@ Note.simpleNotation = function( note, signature ){
 /**
  * checks if a signature is flat
  * 
- * @param signature {boolean|integer} - the signature ( if an integer, )
+ * @param {boolean|integer} signature - the signature ( if an integer, )
  * 
- * @returns {boolean} - True if the signature is flat (one or more b)
+ * @returns {boolean}   True if the signature is flat (one or more b)
  */
 Note.signatureIsFlat = function( signature ){
     //var sig = 0;
@@ -298,8 +368,8 @@ Note.signatureIsFlat = function( signature ){
 
 /**
  * transpose a note with an interval
- * @param note {Note} - A note object
- * @param interval {Interval} - An interval object
+ * @param {Note} note - A note object
+ * @param {Interval} interval - An interval object
  */
 Note.transpose = function( note, interval ){
     // check if it's an interval object
@@ -314,37 +384,102 @@ Note.transpose = function( note, interval ){
 };
 
 
-/**
+/*
  * class methods
+ */
+ 
+/**
+ * calculates the distance from this note to the specified note
+ * 
+ * @param {Note} note - the note to calculate the distance to
+ * @returns {integer}   the distance from this note to the note in semitones
  */
 Note.prototype.distance = function( note ){
     return Note.distance( this, note );
 };
 
+/**
+ * returns the relative distance from this note to note
+ * 
+ * this is an integer from 0 - 11 representing the distance in semitones between
+ * the notes
+ * 
+ * @param {Note} note - The second note
+ * 
+ * @returns {integer} The relative distance between the notes in semitones
+ */
 Note.prototype.relativeDistance = function( note ){
     return Note.relativeDistance( this, note);
 };
 
+/**
+ * 
+ * @param {Note} note - The second note
+ * @returns {integer} the shortest distance from this to note
+ *
+ */
 Note.prototype.shortestDistance = function( note ){
     return Note.shortestDistance( this, note);
 };
 
-Note.prototype.interval = function( note ){
-    return Note.interval( this, note);
+/**
+ * transpose the note with an interval
+ * @param {Interval} interval - An interval object
+ * 
+ * @returns {Note}
+ */
+Note.prototype.interval = function( interval ){
+    return Note.interval( this, interval);
 };
 
+/**
+ * 
+ * The signature as an integer representing the amount
+ * of sharps or flats the scale has when using this
+ * note as root.
+ * 
+ * @returns {integer}   The signature as an integer representing the amount
+ *                      of sharps or flats the scale has when using this
+ *                      note as root.
+ */
 Note.prototype.signature = function() {
     return Note.signature( this );
 };
 
+/**
+ * the Note's position on the circle of fifths
+ * 
+ * 
+ * @returns {integer}   the position on the circle of fifths as an integer
+ *                      ( C = 0, G = 1, D = 2, ... F = -1 )
+ */
 Note.prototype.cofPosition = function() {
     return Note.cofPosition( this );
 };
 
+/**
+ * get the proper notation for a note
+ * 
+ * In the end, we use the unicode characters ♭ and ♯ to represent sharps and 
+ * flats, instead of b or #
+ * 
+ * @param {integer} signature - the amount of sharps of flats 
+ *                              (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)
+ * 
+ * @returns {string} the notation used based on the 
+ */
 Note.prototype.notation = function(signature) {
     return Note.notation(this, signature);
 };
 
+/**
+ * get a simple notation for a note, i.e. C#
+ * 
+ * @param {integer} signature - the amount of sharps of flats 
+ *                              (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)
+ * 
+ * @returns {string}
+ */
 Note.prototype.simple = 
 Note.prototype.simpleNotation = function(signature){
     return Note.simpleNotation(this, signature);
@@ -354,13 +489,17 @@ Note.prototype.simpleNotation = function(signature){
  * can this note have the following name?
  * 
  * compensates for accidentals, i.e. 
+ * 
+ * @returns {boolean} true if the note can be described by this name
  */
- Note.prototype.hasName = function( name ){
-     return Note.fromNotation(name) && this.pos == Note.fromNotation(name).pos;
- }
+Note.prototype.hasName = function( name ){
+     return Note.fromNotation(name) && this.relPos() == Note.fromNotation(name).relPos();
+};
 
 /**
  * the octave the note is in
+ * 
+ * @returns {integer} the octave
  */
 Note.prototype.octave = function( ){
     return Math.floor(this.pos/12) || 0;
@@ -368,6 +507,8 @@ Note.prototype.octave = function( ){
 
 /**
  * convert the note to a relative note
+ * 
+ * @returns {Note} a new relative Note object
  */
 Note.prototype.toRelative = 
 Note.prototype.rel = function( ){
@@ -376,6 +517,8 @@ Note.prototype.rel = function( ){
 
 /**
  * get the relative position of the note
+ * 
+ * @returns {integer} the relative position ( 0 - 11 )
  */
 Note.prototype.relPos = function(){
     return this.relative ? this.pos : this.toRelative().pos;
@@ -384,14 +527,20 @@ Note.prototype.relPos = function(){
 
 /**
  * transpose a note
+ * 
+ * @returns {Note} A new Note object
  */
- Note.prototype.transpose = function( interval ){
+Note.prototype.transpose = function( interval ){
      return Note.transpose( this, interval );
- };
+};
  
- Note.prototype.type = function(){
+ /**
+  * the type of object, always returns "note"
+  * @returns {string} "note"
+  */
+Note.prototype.type = function(){
     return "note";
-}
+};
 
 /**
  * returns the frequency (in Hz) of the note
@@ -400,6 +549,8 @@ Note.prototype.relPos = function(){
  * use this for sound generation
  * 
  * possible optimization: lookup table
+ * 
+ * @returns {Number} the frequency of the note in Hz
  */
 Note.prototype.frequency = function(){
     return 440 * Math.pow(2, (this.pos-69)/12 );
@@ -412,18 +563,17 @@ Note.prototype.frequency = function(){
 
 
 
-</div>
+            </div>
+        </div>
+        
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Mar 23 2013 09:34:34 GMT-0400 (EDT)
+        </footer>
+    </div>
 
-<nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Chord.html">Chord</a></li><li><a href="Chords.html">Chords</a></li><li><a href="Guitar.html">Guitar</a></li><li><a href="GuitarChord.html">GuitarChord</a></li><li><a href="GuitarFret.html">GuitarFret</a></li><li><a href="GuitarNote.html">GuitarNote</a></li><li><a href="GuitarString.html">GuitarString</a></li><li><a href="Interval.html">Interval</a></li><li><a href="Note.html">Note</a></li><li><a href="Scale.html">Scale</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUSIQ">MUSIQ</a></li></ul>
-</nav>
 
-<br clear="both">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Mar 21 2013 19:51:10 GMT-0400 (EDT)
-</footer>
 
 <script> prettyPrint(); </script>
+<script src="../script/lib/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

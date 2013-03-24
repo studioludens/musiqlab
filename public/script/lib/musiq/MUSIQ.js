@@ -2,16 +2,39 @@
  * MUSIQ: a javascript library for note and chord analysis
  * 
  * 
+ * @namespace
+ * 
+ * @property {array} noteNames - array of common note names
+ * @property {array} notePositions - array of semitones for the notes in noteNames
+ * @property {array} sharpNames - all notes represented with sharps
+ * @property {array} flatNames - all notes represented with flats
+ * @property {array} accidentals - accidentals that can be used for the notes
+ * @property {array} cofPositions - position on the circle of fifths
+ * @property {array} tonicPositions - preferred tonics for note lookup
+ * @property {array} signatures - signatures (-1 means 1 flat, 1 means 1 sharp)
+ * @property {array} solfege - solfege names
+ * @property {array} intervalNames - names of the intervals
+ * @property {array} chordExtensionNotes
+ * @property {array} chords - a list of the most commonly occuring chords (in JSON format)
+ * @property {array} scales
+ * 
+ * 
+ * 
  */
 var MUSIQ = {
     /**
      * the normal names of the notes
      */
     noteNames : ["C", "D", "E", "F", "G", "A", "B"],
+    
+    /**
+     * positions of the normal notes
+     */
     notePositions: [0, 2, 4, 5, 7, 9, 11],
 
     /**
      * the sharp names for all the notes
+     * 
      */
     sharpNames : ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
     
@@ -78,7 +101,7 @@ var MUSIQ = {
              },
         /* triads */
         {  
-                'names': ["maj", "M","ma", "major"],
+                'names': ["maj", "M","ma", "major", ""],
                 'longName': "major",
                 'notes': [ 0, 4, 7 ]
              },
@@ -376,7 +399,9 @@ var MUSIQ = {
  * and tries to find all the matches, be it notes, chords
  * or scales.
  * 
- * @returns an array of match objects (Note/Scale/Chord)
+ * @param {string} name - a name of a note, chord or scale
+ * 
+ * @returns {array} - an array of match objects (Note/Scale/Chord)
  */
 MUSIQ.match = function( name ){
     
@@ -395,11 +420,11 @@ MUSIQ.match = function( name ){
     
     if( MUSIQ.isValidChord( name )){
         console.log("Match single chord");
-        ret.push( Chord.fromNotation( name ));
+        ret.push( Chords.fromNotation( name ));
     }
     if( MUSIQ.isValidScale( name )){
         console.log("Match single scale");
-        ret.push( Chord.fromNotation( name, 'scale' ) );
+        ret.push( Chords.fromNotation( name, 'scale' ) );
     }
     
     console.log( "MusiQ MAtch: " + name)
@@ -411,7 +436,10 @@ MUSIQ.match = function( name ){
 
 /**
  * isValidNote
- * @returns true if the note can be parsed into a Note object
+ * 
+ * @param {string} notation - a string notation for a note
+ * 
+ * @returns {boolean} true if the note can be parsed into a Note object
  */
 MUSIQ.isValidNote = function( notation ){
     
@@ -423,9 +451,14 @@ MUSIQ.isValidNote = function( notation ){
 };
 
 /**
- * @returns true if the list (in string format) is a valid list
+ * 
+ * @param {array} list
+ * @returns {boolean} true if the list (in string format) is a valid list
  * we can use thesse delimiters:  " " (space), "," (comma) and "|" (pipe)
  * more probably to follow...
+ * 
+ * @todo: implement this function
+ * 
  */
 MUSIQ.isValidNoteList = function( list ){
    // split the list 
@@ -434,9 +467,11 @@ MUSIQ.isValidNoteList = function( list ){
 
 /**
  * 
- * TODO: store these in a static variable when the function is first called
+ * @todo: store these in a static variable when the function is first called
  * 
- * @returns matches from the regular expression if it's a valid chord
+ * @param {string} notation - string notation to check if valid
+ * 
+ * @returns {array} matches from the regular expression if it's a valid chord
  *              0 : the whole matched name
  *              1 : the note
  *              2 : any specified accidentals
@@ -468,19 +503,25 @@ MUSIQ.isValidChord = function( notation ){
     });
     
     var regex = new RegExp("^" + MUSIQ.NOTE_SIMPLE_REGEX + " ?("+ chordNames + ")? ?" + MUSIQ.CHORD_REGEX + "$","m");
+    //console.log( regex );
     return regex.exec( not );
 };
 
 /**
- * @returns true if
+ * @param {array} list - list of strings with chord names
+ * @returns {boolean} true if all chords are valid
+ * 
+ * @todo - implement function
  */
-MUSIQ.isValidChordList = function( chord ){
+MUSIQ.isValidChordList = function( list ){
     // check if the chord name is valid
     return false;
 };
 
 /**
- * @returns true if it's a valid scale
+ * 
+ * @param {string} notation - 
+ * @returns {boolean} true if it's a valid scale
  */
 MUSIQ.isValidScale = function( notation ){
     
@@ -488,7 +529,7 @@ MUSIQ.isValidScale = function( notation ){
     
     // default to major
     var not = notation;
-    if( !notation || notation.length == 0 ) not = "M";
+    if( !notation || notation.length === 0 ) not = "M";
     
     // TODO: make this shorter
     
@@ -503,7 +544,9 @@ MUSIQ.isValidScale = function( notation ){
 };
 
 /**
- * @returns true if
+ * @returns {boolean} true if
+ * 
+ * @todo implement function
  */
 MUSIQ.isValidScaleList = function( chord ){
     // check if the scale name is valid
@@ -513,11 +556,10 @@ MUSIQ.isValidScaleList = function( chord ){
 /**
  * guitar stuff
  */
-
 MUSIQ.guitar = {};
 
 /**
- * @returns a list of matches if it's a valid finger position of the notes
+ * @returns {array} a list of matches if it's a valid finger position of the notes
  * currently played on a guitar neck
  * 
  * example: "0 2 2 1 0 x" - should get an E-chord
@@ -529,7 +571,9 @@ MUSIQ.guitar.isValidFingerPos = function( tab ){
 };
 
 /**
- * @param chord : a GuitarChord object
+ * @param {GuitarChord} chord - a GuitarChord object
+ * 
+ * @todo implement function
  */
 MUSIQ.guitar.isValidChord = function( chord ){
     

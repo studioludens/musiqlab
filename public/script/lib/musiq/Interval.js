@@ -4,7 +4,7 @@
  * 
  * @constructor
  * 
- * @param distance {integer} - The number of semitones between the notes
+ * @param {integer} distance - The number of semitones between the notes
  */
 var Interval = function( distance ){
     
@@ -13,22 +13,23 @@ var Interval = function( distance ){
     this.relativeDistance = this.distance - this.octaves*12;
     
     //console.log(this.relativeDistance);
-    
-    this.name = function(){
+
+};
+
+/**
+ * @returns {string} the name of the interval
+ */
+Interval.prototype.name = function(){
         return MUSIQ.intervalNames[this.relativeDistance];
-    }
-    
-    
-    
 };
 
 /**
  * take two notes and create a new Interval object from it
  * 
- * @param note1 {Note} - The first note
- * @param note2 {Note} - The second note
+ * @param {Note} note1 - The first note
+ * @param {Note} note2 - The second note
  * 
- * @returns {Interval} - A new Interval object
+ * @returns {Interval} A new Interval object
  */
 Interval.fromNotes = function( note1, note2 ){
     return new Interval( note1.distance(note2) );
@@ -37,7 +38,7 @@ Interval.fromNotes = function( note1, note2 ){
 /**
  * lookup the english name of the interval
  * 
- * @returns {string} - the English name of the interval
+ * @returns {string} the English name of the interval
  * 
  * can be one of the following:
  * "unison"

@@ -143,7 +143,14 @@ var GuitarCtrl = function( $scope , $window){
     
     $scope.updateMatchesFromGuitar = function(){
         // update guitar matches
+        console.log("[GuitarCtrl] Update matches from Guitar");
+        
+        
+        
        $scope.queryMatches = $scope.guitar.activeMatches();
+       
+       console.log($scope.queryMatches);
+       
        // and the query
        if($scope.queryMatches && $scope.queryMatches.length > 0){
            

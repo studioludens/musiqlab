@@ -1,16 +1,17 @@
 /**
  * GuitarFret - describes a guitar fret
  * 
+ * 
  * @constructor
  * 
- * @param guitar : the guitar this fret belongs to
- * @param pos : the position on the fretboard (0-x, 0 being the lowest string, x is usually 6)
+ * @param {Guitar} guitar - the guitar this fret belongs to
+ * @param {integer} pos - the position on the fretboard (0-x, 0 being the lowest string, x is usually 6)
+ * 
+ * @property {boolean} barre - if it's played barre
  * 
  * the fret automatically calculates a number of useful variables
  * 
  */
- 
-
 var GuitarFret = function( guitar, pos ){
     
     this.guitar = guitar;
@@ -25,6 +26,8 @@ var GuitarFret = function( guitar, pos ){
 /**
  * get all notes on this particular fret. Because we can reference
  * to the guitar we can determine all the notes
+ * 
+ * @returns {array} - Array of GuitarNote objects
  */
 GuitarFret.prototype.notes = function(){
     return this.guitar.notesOnFret( this.pos );
@@ -32,8 +35,10 @@ GuitarFret.prototype.notes = function(){
 
 
 /**
- * TODO: add this in another place, sort of a 
+ * @todo: add this in another place, sort of a 
  * decorator type of function
+ * 
+ * @returns {string} - 
  */
 GuitarFret.prototype.className = function(){
     //console.log(this.pos);

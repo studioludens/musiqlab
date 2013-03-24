@@ -1,460 +1,2091 @@
-<!DOCTYPE html>  <html> <head>   <title>MUSIQ.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               MUSIQ.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm"> * MUSIQ: a javascript library for note and chord analysis</span>
-<span class="cm"> */</span>
-
-<span class="kd">var</span> <span class="nx">MUSIQ</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="cm">/**</span>
-<span class="cm">     * the normal names of the notes</span>
-<span class="cm">     */</span>
-    <span class="nx">noteNames</span> <span class="o">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">],</span>
-    <span class="nx">notePositions</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * the sharp names for all the notes</span>
-<span class="cm">     */</span>
-    <span class="nx">sharpNames</span> <span class="o">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;C#&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;D#&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;F#&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;G#&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A#&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">],</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Namespace: MUSIQ</title>
     
-
-    <span class="cm">/**</span>
-<span class="cm">     * the flat names for all the notes</span>
-<span class="cm">     */</span>
-    <span class="nx">flatNames</span> <span class="o">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;Db&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;Eb&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;Gb&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;Ab&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Bb&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">],</span>
+    <script src="scripts/jquery-1.9.1.min.js"></script>
     
-    <span class="cm">/**</span>
-<span class="cm">     * accidentals that can be used for the notes</span>
-<span class="cm">     */</span>
-    <span class="nx">accidentals</span> <span class="o">:</span> <span class="p">[</span><span class="s2">&quot;bbb&quot;</span><span class="p">,</span><span class="s2">&quot;bb&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;#&quot;</span><span class="p">,</span><span class="s2">&quot;##&quot;</span><span class="p">,</span><span class="s2">&quot;###&quot;</span><span class="p">],</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * position on the circle of fifths</span>
-<span class="cm">     */</span>
-    <span class="nx">cofPositions</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     
-    <span class="cm">/**</span>
-<span class="cm">     * preferred tonics for note lookup</span>
-<span class="cm">     */</span>
-    <span class="nx">tonicPositions</span> <span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * signatures</span>
-<span class="cm">     * -1 means 1 flat, 1 means 1 sharp</span>
-<span class="cm">     */</span>
-    <span class="nx">signatures</span> <span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="../style/bootstrap.min.css">
+    <!-- responsive sheets -->
+    <link href="../style/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../style/docs.css" rel="stylesheet">
     
-    <span class="cm">/**</span>
-<span class="cm">     * solfege names</span>
-<span class="cm">     */</span>
-    <span class="nx">solfege</span> <span class="o">:</span> <span class="p">[</span><span class="s2">&quot;do&quot;</span><span class="p">,</span> <span class="s2">&quot;di&quot;</span><span class="p">,</span> <span class="s2">&quot;re&quot;</span><span class="p">,</span> <span class="s2">&quot;me&quot;</span><span class="p">,</span><span class="s2">&quot;mi&quot;</span><span class="p">,</span> <span class="s2">&quot;fa&quot;</span><span class="p">,</span> <span class="s2">&quot;se&quot;</span><span class="p">,</span> <span class="s2">&quot;sol&quot;</span><span class="p">,</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span> <span class="s2">&quot;la&quot;</span><span class="p">,</span> <span class="s2">&quot;te&quot;</span><span class="p">,</span> <span class="s2">&quot;ti&quot;</span><span class="p">],</span>
-    <span class="cm">/**</span>
-<span class="cm">     * names of the intervals</span>
-<span class="cm">     */</span>
-    <span class="nx">intervalNames</span> <span class="o">:</span> <span class="p">[</span>   <span class="s2">&quot;unison&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;minor second&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;major second&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;minor third&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;major third&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;fourth&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;tritone&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;fifth&quot;</span><span class="p">,</span> 
-                        <span class="s2">&quot;minor sixth&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;major sixth&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;minor seventh&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;major seventh&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;octave&quot;</span>
-                    <span class="p">],</span>
-                    
-    <span class="nx">chordExtensionNotes</span> <span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span>
-    <span class="cm">/**</span>
-<span class="cm">     * a list of the most commonly occuring chords</span>
-<span class="cm">     * in JSON format</span>
-<span class="cm">     */</span>
-    <span class="nx">chords</span><span class="o">:</span> <span class="p">[</span>
-        <span class="cm">/* power chord */</span>
-        <span class="p">{</span>
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="s2">&quot;power&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot; power&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="cm">/* triads */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;maj&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;ma&quot;</span><span class="p">,</span> <span class="s2">&quot;major&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span><span class="s2">&quot;mi&quot;</span><span class="p">,</span><span class="s2">&quot;min&quot;</span><span class="p">,</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span><span class="s2">&quot;diminished&quot;</span><span class="p">,</span><span class="s2">&quot;o&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;diminished&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;aug&quot;</span><span class="p">,</span><span class="s2">&quot;augmented&quot;</span><span class="p">,</span><span class="s2">&quot;a&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;augmented&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="cm">/* suspended chords */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;sus2&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;suspended 2nd&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;sus4&quot;</span><span class="p">,</span><span class="s2">&quot;su&quot;</span><span class="p">,</span><span class="s2">&quot;sus&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;suspended 4th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
-             <span class="p">},</span>      
-             
-        <span class="cm">/* jazz (7th) chords */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;maj7&quot;</span><span class="p">,</span><span class="s2">&quot;maj 7&quot;</span><span class="p">,</span> <span class="s2">&quot;major 7&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major 7th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m7&quot;</span><span class="p">,</span><span class="s2">&quot;mi7&quot;</span><span class="p">,</span><span class="s2">&quot;min7&quot;</span><span class="p">,</span><span class="s2">&quot;minor 7&quot;</span><span class="p">,</span><span class="s2">&quot;-7&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor 7th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="s2">&quot;M7&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;dominant 7th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;dim7&quot;</span><span class="p">,</span><span class="s2">&quot;dim 7&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;diminished 7th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span> <span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m7b5&quot;</span><span class="p">,</span><span class="s2">&quot;ø7&quot;</span><span class="p">,</span><span class="s2">&quot;-7b5&quot;</span><span class="p">,</span><span class="s2">&quot;m7(b5)&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;half diminished&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span> <span class="p">]</span>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    
+    
+          
+    <script>
+        $(document).ready(function(w){
+            
+            // toggle handlers for the data titles
+            $('dt.doc-header').click(function(){
+                //alert("It works");
+                $(this).next('dd').toggle(100);
+                //$(this).toggle();
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li>
+                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="tutorials/">Tutorials</a></li>
+                    <li class="active"><a href="docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                </ul>
+              </li>
+              <li><a href="guitar.html">Interactive Guitar</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li></ul>
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1 class="page-title">Namespace: MUSIQ</h1>
+                </div>
                 
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;mM7&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor major seventh&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="cm">/* sixths chords */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;6&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major 6th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m6&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor 6th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="cm">/* ninth chords */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="s2">&quot;M9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;dominant 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;maj9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;madd9&quot;</span><span class="p">,</span><span class="s2">&quot;m add9&quot;</span><span class="p">,</span><span class="s2">&quot;min add9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor add 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;add9&quot;</span><span class="p">,</span><span class="s2">&quot;Madd9&quot;</span><span class="p">,</span><span class="s2">&quot;maj add9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major add 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+
+
+
+<section>
+    
+<header>
+    <h2>
+    MUSIQ
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description">MUSIQ: a javascript library for note and chord analysis</div>
+        
+        
+        
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>noteNames</code></td>
+            
+            
+            <td class="type">
+            
                 
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;6/9&quot;</span><span class="p">,</span><span class="s2">&quot;69&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;6 9th chord&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot; b9&quot;</span><span class="p">,</span><span class="s2">&quot;Mb9&quot;</span><span class="p">,</span><span class="s2">&quot;maj b9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major flat 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;7b9&quot;</span><span class="p">,</span><span class="s2">&quot;M7b9&quot;</span><span class="p">,</span><span class="s2">&quot;7 b9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;dominant 7th flat 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;7#9&quot;</span><span class="p">,</span><span class="s2">&quot;M7#9&quot;</span><span class="p">,</span><span class="s2">&quot;7 #9&quot;</span><span class="p">,</span><span class="s2">&quot;hendrix&quot;</span><span class="p">,</span><span class="s2">&quot;7alt&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;dominant 7th sharp 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;#9&quot;</span><span class="p">,</span><span class="s2">&quot;M#9&quot;</span><span class="p">,</span><span class="s2">&quot;M #9&quot;</span><span class="p">,</span><span class="s2">&quot;maj #9&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;sharp 9th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">15</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        
-        
-        <span class="cm">/* eleventh chords */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;maj11&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major 11th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">17</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">array of common note names</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>notePositions</code></td>
+            
+            
+            <td class="type">
+            
                 
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m11&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor 11th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;11&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;dominant 11th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        
-        <span class="cm">/* thirteenth chords */</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;maj13&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;major 13th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">21</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">array of semitones for the notes in noteNames</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sharpNames</code></td>
+            
+            
+            <td class="type">
+            
                 
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;m13&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;minor 13th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">21</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;13&quot;</span><span class="p">,</span><span class="s2">&quot;M13&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;dominant 13th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">21</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">},</span>  
-        <span class="p">{</span>  
-                <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot; b13&quot;</span><span class="p">],</span>
-                <span class="s1">&#39;longName&#39;</span><span class="o">:</span> <span class="s2">&quot;flat 13th&quot;</span><span class="p">,</span>
-                <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span> <span class="p">],</span>
-                <span class="s1">&#39;optional&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-             <span class="p">}</span>   
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">all notes represented with sharps</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>flatNames</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">all notes represented with flats</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>accidentals</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">accidentals that can be used for the notes</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>cofPositions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">position on the circle of fifths</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tonicPositions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">preferred tonics for note lookup</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>signatures</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">signatures (-1 means 1 flat, 1 means 1 sharp)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>solfege</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">solfege names</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>intervalNames</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">names of the intervals</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>chordExtensionNotes</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>chords</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">a list of the most commonly occuring chords (in JSON format)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scales</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
         
-    <span class="p">],</span>
     
-    
-    <span class="cm">/* LOTS OF SCALES */</span>
-    <span class="nx">scales</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s1">&#39;chromatic&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Chromatic&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span>
-        <span class="p">},</span>
         
-        <span class="s1">&#39;major&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Major&#39;</span><span class="p">,</span><span class="s1">&#39;Ionian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;minor&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Minor&#39;</span><span class="p">,</span><span class="s1">&#39;Aeolian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-        <span class="p">},</span>
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 24
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
         
         
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
         
-        <span class="cm">/* pentatonic */</span>
-        <span class="s1">&#39;minor pentatonic&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Minor Pentatonic&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
-        <span class="p">},</span>
+        <dl>
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="accidentals"><span class="type-signature">&lt;static> </span>accidentals<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        accidentals that can be used for the notes
+    </div>
+    
+    
+    
+<dl class="details">
+    
         
-        <span class="s1">&#39;major pentatonic&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Major Pentatonic&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
-        <span class="p">},</span>
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 50
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
         
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="chords"><span class="type-signature">&lt;static> </span>chords<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        a list of the most commonly occuring chords
+in JSON format
+    </div>
+    
+    
+    
+<dl class="details">
+    
         
-        <span class="cm">/* modes : TODO */</span>
-        <span class="s1">&#39;ionian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Ionian&#39;</span><span class="p">,</span><span class="s1">&#39;Major&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;dorian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Dorian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;phrygian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Phrygian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;lydian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Lydian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;mixolydian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Mixolydian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;aeolian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Aeolian&#39;</span><span class="p">,</span> <span class="s1">&#39;Natural Minor&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;locrian&#39;</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="s1">&#39;names&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Locrian&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;notes&#39;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-        <span class="p">}</span>
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 95
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
         
-        <span class="cm">/* some simple scales */</span>
-    <span class="p">}</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>MUSIQ utility functions</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm"> * the very powerful match() function takes a string</span>
-<span class="cm"> * and tries to find all the matches, be it notes, chords</span>
-<span class="cm"> * or scales.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @returns an array of match objects (Note/Scale/Chord)</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">match</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">name</span> <span class="p">){</span>
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="cofPositions"><span class="type-signature">&lt;static> </span>cofPositions<span class="type-signature"></span></h4>
     
     
-    <span class="kd">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="p">[];</span>
+</dt>
+<dd class="doc-content doc-member-content">
     
-    <span class="k">if</span><span class="p">(</span> <span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidNote</span><span class="p">(</span> <span class="nx">name</span> <span class="p">)){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Match single note&quot;</span><span class="p">);</span>
-       <span class="nx">ret</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">Note</span><span class="p">.</span><span class="nx">fromNotation</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">);</span>
-    <span class="p">}</span>
+    <div class="description">
+        position on the circle of fifths
+    </div>
     
-    <span class="k">if</span><span class="p">(</span> <span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidNoteList</span><span class="p">(</span> <span class="nx">name</span> <span class="p">)</span> <span class="p">){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Match multiple notes&quot;</span><span class="p">);</span>
-        <span class="nx">ret</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span> <span class="nx">Note</span><span class="p">.</span><span class="nx">fromNotation</span><span class="p">(</span><span class="nx">name</span><span class="p">));</span> 
-    <span class="p">}</span> 
     
-    <span class="k">if</span><span class="p">(</span> <span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidChord</span><span class="p">(</span> <span class="nx">name</span> <span class="p">)){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Match single chord&quot;</span><span class="p">);</span>
-        <span class="nx">ret</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">Chord</span><span class="p">.</span><span class="nx">fromNotation</span><span class="p">(</span> <span class="nx">name</span> <span class="p">));</span>
-    <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span> <span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidScale</span><span class="p">(</span> <span class="nx">name</span> <span class="p">)){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Showing single scale&quot;</span><span class="p">);</span>
-        <span class="nx">ret</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">Scale</span><span class="p">.</span><span class="nx">fromNotation</span><span class="p">(</span> <span class="nx">name</span> <span class="p">)</span> <span class="p">);</span>
-    <span class="p">}</span>
     
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s2">&quot;MusiQ MAtch: &quot;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">)</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">ret</span> <span class="p">)</span>
+<dl class="details">
     
-    <span class="k">return</span> <span class="nx">ret</span><span class="p">;</span>
-<span class="p">};</span>
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 55
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="flatNames"><span class="type-signature">&lt;static> </span>flatNames<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        the flat names for all the notes
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 45
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="guitar"><span class="type-signature">&lt;static> </span>guitar<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        guitar stuff
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 558
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="intervalNames"><span class="type-signature">&lt;static> </span>intervalNames<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        names of the intervals
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 75
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="NOTE_REGEX"><span class="type-signature">&lt;static> </span>NOTE_REGEX<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        SOME REGULAR EXPRESSION MATCHES
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 389
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="noteNames"><span class="type-signature">&lt;static> </span>noteNames<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        the normal names of the notes
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 28
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="notePositions"><span class="type-signature">&lt;static> </span>notePositions<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        positions of the normal notes
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 33
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="sharpNames"><span class="type-signature">&lt;static> </span>sharpNames<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        the sharp names for all the notes
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 39
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="signatures"><span class="type-signature">&lt;static> </span>signatures<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        signatures
+-1 means 1 flat, 1 means 1 sharp
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 66
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="solfege"><span class="type-signature">&lt;static> </span>solfege<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        solfege names
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 71
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
+    <h4 class="name" id="tonicPositions"><span class="type-signature">&lt;static> </span>tonicPositions<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        preferred tonics for note lookup
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 60
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="isValidChord"><span class="type-signature">&lt;static> </span>isValidChord<span class="signature">(<span class="type-signature">string</span> notation)</span><span class="type-signature"> &rarr; array</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>notation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
-<span class="cm">/**</span>
-<span class="cm"> * isValidNote</span>
-<span class="cm"> * @returns true if the note can be parsed into a Note object</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidNote</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">notation</span> <span class="p">){</span>
-    
-    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">notation</span> <span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    
-    <span class="kd">var</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;^([A-G]|[a-g])(bbb|bb|b|#|##)? ?([0-9])? ?(n|no|not|note|notes)?$&quot;</span><span class="p">,</span><span class="s2">&quot;m&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span> <span class="nx">notation</span> <span class="p">);</span>
-    
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @returns true if the list (in string format) is a valid list</span>
-<span class="cm"> * we can use thesse delimiters:  &quot; &quot; (space), &quot;,&quot; (comma) and &quot;|&quot; (pipe)</span>
-<span class="cm"> * more probably to follow...</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidNoteList</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">list</span> <span class="p">){</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>split the list </p>             </td>             <td class="code">               <div class="highlight"><pre>   <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @returns matches from the regular expression if it&#39;s a valid chord</span>
-<span class="cm"> *              0 : the whole matched name</span>
-<span class="cm"> *              1 : the note</span>
-<span class="cm"> *              2 : any specified accidentals</span>
-<span class="cm"> *              3 : chord indicator / name</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidChord</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">notation</span> <span class="p">){</span>
-    
-    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">notation</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>default to major</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">not</span> <span class="o">=</span> <span class="nx">notation</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">notation</span> <span class="o">||</span> <span class="nx">notation</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="nx">not</span> <span class="o">=</span> <span class="s2">&quot;M&quot;</span><span class="p">;</span>
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">string notation to check if valid</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
-    <span class="kd">var</span> <span class="nx">chordNames</span> <span class="o">=</span> <span class="nx">_</span><span class="p">(</span><span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">chords</span><span class="p">).</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">memo</span><span class="p">,</span> <span class="nx">item</span><span class="p">){</span>
-        <span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">_</span><span class="p">(</span><span class="nx">memo</span><span class="p">).</span><span class="nx">isString</span><span class="p">()</span> <span class="o">?</span> <span class="nx">memo</span> <span class="o">:</span> <span class="nx">memo</span><span class="p">.</span><span class="nx">names</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="nx">memo</span><span class="p">.</span><span class="nx">longName</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>console.log(m);</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">return</span> <span class="nx">m</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">names</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">longName</span><span class="p">;</span>
-    <span class="p">});</span>
     
-    <span class="kd">var</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;^([A-G]|[a-g])(bbb|bb|b|#|##|###)? ?(&quot;</span><span class="o">+</span> <span class="nx">chordNames</span> <span class="o">+</span> <span class="s2">&quot;)? ?(c|ch|cho|chrd|chor|chord)?$&quot;</span><span class="p">,</span><span class="s2">&quot;m&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span> <span class="nx">not</span> <span class="p">);</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @returns true if</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidChordList</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">chord</span> <span class="p">){</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>check if the chord name is valid</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @returns true if</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidScale</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">chord</span> <span class="p">){</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>check if the scale name is valid</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @returns true if</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">isValidScaleList</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">chord</span> <span class="p">){</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>check if the scale name is valid</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * guitar stuff</span>
-<span class="cm"> */</span>
-
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">guitar</span> <span class="o">=</span> <span class="p">{};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @returns a list of matches if it&#39;s a valid finger position of the notes</span>
-<span class="cm"> * currently played on a guitar neck</span>
-<span class="cm"> * </span>
-<span class="cm"> * example: &quot;0 2 2 1 0 x&quot; - should get an E-chord</span>
-<span class="cm"> * </span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">guitar</span><span class="p">.</span><span class="nx">isValidFingerPos</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">tab</span> <span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;^((xX|[0-9]{1,2})[ -]*){6}$&quot;</span><span class="p">,</span><span class="s2">&quot;m&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span> <span class="nx">tab</span> <span class="p">);</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * @param chord : a GuitarChord object</span>
-<span class="cm"> */</span>
-<span class="nx">MUSIQ</span><span class="p">.</span><span class="nx">guitar</span><span class="p">.</span><span class="nx">isValidChord</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">chord</span> <span class="p">){</span>
+<dl class="details">
     
-<span class="p">}</span>
+        
+    
+    
+    
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 480
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    matches from the regular expression if it's a valid chord
+             0 : the whole matched name
+             1 : the note
+             2 : any specified accidentals
+             3 : chord indicator / name
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="isValidChordList"><span class="type-signature">&lt;static> </span>isValidChordList<span class="signature">(<span class="type-signature">array</span> list)</span><span class="type-signature"> &rarr; boolean</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>list</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">list of strings with chord names</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 515
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>- implement function</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if all chords are valid
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="isValidNote"><span class="type-signature">&lt;static> </span>isValidNote<span class="signature">(<span class="type-signature">string</span> notation)</span><span class="type-signature"> &rarr; boolean</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        isValidNote
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>notation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">a string notation for a note</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 444
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if the note can be parsed into a Note object
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="isValidNoteList"><span class="type-signature">&lt;static> </span>isValidNoteList<span class="signature">(<span class="type-signature">array</span> list)</span><span class="type-signature"> &rarr; boolean</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>list</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 463
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if the list (in string format) is a valid list
+we can use thesse delimiters:  " " (space), "," (comma) and "|" (pipe)
+more probably to follow...
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="isValidScale"><span class="type-signature">&lt;static> </span>isValidScale<span class="signature">(<span class="type-signature">string</span> notation)</span><span class="type-signature"> &rarr; boolean</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>notation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">-</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 525
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if it's a valid scale
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="isValidScaleList"><span class="type-signature">&lt;static> </span>isValidScaleList<span class="signature">()</span><span class="type-signature"> &rarr; boolean</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 550
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>implement function</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="match"><span class="type-signature">&lt;static> </span>match<span class="signature">(<span class="type-signature">string</span> name)</span><span class="type-signature"> &rarr; array</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        the very powerful match() function takes a string
+and tries to find all the matches, be it notes, chords
+or scales.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">a name of a note, chord or scale</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MUSIQ.js.html">MUSIQ.js</a>, line 406
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    - an array of match objects (Note/Scale/Chord)
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+            </div>
+        </div>
+        
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Mar 23 2013 09:34:40 GMT-0400 (EDT)
+        </footer>
+    </div>
+
+
+
+<script> prettyPrint(); </script>
+<script src="../script/lib/bootstrap/bootstrap.min.js"></script>
+</body>
+</html>

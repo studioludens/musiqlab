@@ -4,22 +4,81 @@
     <meta charset="utf-8">
     <title>JSDoc: Class: Note</title>
     
+    <script src="scripts/jquery-1.9.1.min.js"></script>
+    
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="../style/bootstrap.min.css">
+    <!-- responsive sheets -->
+    <link href="../style/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../style/docs.css" rel="stylesheet">
+    
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    
+    
+          
+    <script>
+        $(document).ready(function(w){
+            
+            // toggle handlers for the data titles
+            $('dt.doc-header').click(function(){
+                //alert("It works");
+                $(this).next('dd').toggle(100);
+                //$(this).toggle();
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-<div id="main">
-    
-    <h1 class="page-title">Class: Note</h1>
-    
-    
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li>
+                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="tutorials/">Tutorials</a></li>
+                    <li class="active"><a href="docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                </ul>
+              </li>
+              <li><a href="guitar.html">Interactive Guitar</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li></ul>
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1 class="page-title">Class: Note</h1>
+                </div>
+                
 
 
 
@@ -38,12 +97,12 @@
     
     
         
-<dt>
-    <h4 class="name" id="Note"><span class="type-signature"></span>new Note<span class="signature">(pos, relative)</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="Note"><span class="type-signature"></span>new Note<span class="signature">(<span class="type-signature">integer</span> pos, <span class="type-signature">boolean</span> relative)</span><span class="type-signature"></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -86,6 +145,11 @@
             
             <td class="type">
             
+                
+<span class="param-type">integer</span>
+
+
+            
             </td>
             
             
@@ -103,6 +167,11 @@
             
             
             <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
             
             </td>
             
@@ -182,12 +251,64 @@
         
         <dl>
             
-<dt>
+<dt class="doc-header doc-member">
+    <h4 class="name" id="simple"><span class="type-signature"></span>simple<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-member-content">
+    
+    <div class="description">
+        get a simple notation for a note, i.e. C#
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 397
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-member">
     <h4 class="name" id="toRelative"><span class="type-signature"></span>toRelative<span class="type-signature"></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-member-content">
     
     <div class="description">
         convert the note to a relative note
@@ -217,7 +338,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 345
+        <a href="Note.js.html">Note.js</a>, line 427
     </li></ul></dd>
     
     
@@ -240,12 +361,12 @@
         
         <dl>
             
-<dt>
-    <h4 class="name" id="cofPosition"><span class="type-signature">&lt;static> </span>cofPosition<span class="signature">()</span><span class="type-signature"> &rarr; {integer}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="cofPosition"><span class="type-signature">&lt;static> </span>cofPosition<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -257,6 +378,54 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>note</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">a Note object</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -282,7 +451,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 189
+        <a href="Note.js.html">Note.js</a>, line 200
     </li></ul></dd>
     
     
@@ -303,7 +472,7 @@
     
             
 <div class="param-desc">
-    - the position on the circle of fifths as an integer
+    the position on the circle of fifths as an integer
                      ( C = 0, G = 1, D = 2, ... F = -1 )
 </div>
 
@@ -328,12 +497,12 @@
 
         
             
-<dt>
-    <h4 class="name" id="distance"><span class="type-signature">&lt;static> </span>distance<span class="signature">(note1, note2)</span><span class="type-signature"> &rarr; {integer}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="distance"><span class="type-signature">&lt;static> </span>distance<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note1, <span class="type-signature"><a href="Note.html">Note</a></span> note2)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -442,7 +611,7 @@ this is the number notation of the interval
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 118
+        <a href="Note.js.html">Note.js</a>, line 122
     </li></ul></dd>
     
     
@@ -463,7 +632,7 @@ this is the number notation of the interval
     
             
 <div class="param-desc">
-    - The distance between the notes in semitones
+    The distance between the notes in semitones
 </div>
 
 
@@ -487,12 +656,12 @@ this is the number notation of the interval
 
         
             
-<dt>
-    <h4 class="name" id="fromNotation"><span class="type-signature">&lt;static> </span>fromNotation<span class="signature">(notation)</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="fromNotation"><span class="type-signature">&lt;static> </span>fromNotation<span class="signature">(<span class="type-signature">string</span> notation)</span><span class="type-signature"> &rarr; <a href="Note.html">Note</a></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -534,6 +703,11 @@ this is the number notation of the interval
             
             
             <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
             
             </td>
             
@@ -595,7 +769,7 @@ this is the number notation of the interval
     
             
 <div class="param-desc">
-    - a note object or null, when no note could be found
+    a note object or null, when no note could be found
 </div>
 
 
@@ -619,12 +793,12 @@ this is the number notation of the interval
 
         
             
-<dt>
-    <h4 class="name" id="fromPos"><span class="type-signature">&lt;static> </span>fromPos<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="fromPos"><span class="type-signature">&lt;static> </span>fromPos<span class="signature">(<span class="type-signature">integer</span> pos)</span><span class="type-signature"> &rarr; <a href="Note.html">Note</a></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -636,6 +810,54 @@ this is the number notation of the interval
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>pos</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">integer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">the midi position of the note</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -661,7 +883,7 @@ this is the number notation of the interval
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 104
+        <a href="Note.js.html">Note.js</a>, line 108
     </li></ul></dd>
     
     
@@ -678,18 +900,36 @@ this is the number notation of the interval
     
     
     
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="interval"><span class="type-signature">&lt;static> </span>interval<span class="signature">(note1, note2)</span><span class="type-signature"> &rarr; {<a href="Interval.html">Interval</a>}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="interval"><span class="type-signature">&lt;static> </span>interval<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note1, <span class="type-signature"><a href="Note.html">Note</a></span> note2)</span><span class="type-signature"> &rarr; <a href="Interval.html">Interval</a></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -797,7 +1037,7 @@ this is the number notation of the interval
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 165
+        <a href="Note.js.html">Note.js</a>, line 172
     </li></ul></dd>
     
     
@@ -842,12 +1082,12 @@ this is the number notation of the interval
 
         
             
-<dt>
-    <h4 class="name" id="notation"><span class="type-signature">&lt;static> </span>notation<span class="signature">(note, signature)</span><span class="type-signature"> &rarr; {string}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="notation"><span class="type-signature">&lt;static> </span>notation<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note, <span class="type-signature">integer</span> signature)</span><span class="type-signature"> &rarr; string</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -959,7 +1199,7 @@ flats, instead of b or #
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 207
+        <a href="Note.js.html">Note.js</a>, line 218
     </li></ul></dd>
     
     
@@ -980,7 +1220,7 @@ flats, instead of b or #
     
             
 <div class="param-desc">
-    - the notation used based on the
+    the notation used based on the
 </div>
 
 
@@ -1004,12 +1244,12 @@ flats, instead of b or #
 
         
             
-<dt>
-    <h4 class="name" id="relativeDistance"><span class="type-signature">&lt;static> </span>relativeDistance<span class="signature">(note1, note2)</span><span class="type-signature"> &rarr; {integer}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="relativeDistance"><span class="type-signature">&lt;static> </span>relativeDistance<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note1, <span class="type-signature"><a href="Note.html">Note</a></span> note2)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -1120,7 +1360,7 @@ the notes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 133
+        <a href="Note.js.html">Note.js</a>, line 137
     </li></ul></dd>
     
     
@@ -1141,7 +1381,7 @@ the notes
     
             
 <div class="param-desc">
-    - The relative distance between the notes in semitones
+    The relative distance between the notes in semitones
 </div>
 
 
@@ -1165,12 +1405,12 @@ the notes
 
         
             
-<dt>
-    <h4 class="name" id="shortestDistance"><span class="type-signature">&lt;static> </span>shortestDistance<span class="signature">(note1, note2)</span><span class="type-signature"> &rarr; {integer}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="shortestDistance"><span class="type-signature">&lt;static> </span>shortestDistance<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note1, <span class="type-signature"><a href="Note.html">Note</a></span> note2)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
 
@@ -1274,7 +1514,7 @@ the notes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 146
+        <a href="Note.js.html">Note.js</a>, line 151
     </li></ul></dd>
     
     
@@ -1282,6 +1522,13 @@ the notes
     
     
     
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>- implement function</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -1295,7 +1542,7 @@ the notes
     
             
 <div class="param-desc">
-    - the shortest distance from note1 to note2
+    the shortest distance from note1 to note2
 </div>
 
 
@@ -1319,12 +1566,12 @@ the notes
 
         
             
-<dt>
-    <h4 class="name" id="shortestRelativeDistance"><span class="type-signature">&lt;static> </span>shortestRelativeDistance<span class="signature">()</span><span class="type-signature"> &rarr; {integer}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="shortestRelativeDistance"><span class="type-signature">&lt;static> </span>shortestRelativeDistance<span class="signature">()</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
 
@@ -1357,7 +1604,7 @@ the notes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 153
+        <a href="Note.js.html">Note.js</a>, line 160
     </li></ul></dd>
     
     
@@ -1365,6 +1612,13 @@ the notes
     
     
     
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>- implement function</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -1378,7 +1632,7 @@ the notes
     
             
 <div class="param-desc">
-    - the shortest relative distance
+    the shortest relative distance
 </div>
 
 
@@ -1402,12 +1656,12 @@ the notes
 
         
             
-<dt>
-    <h4 class="name" id="signature"><span class="type-signature">&lt;static> </span>signature<span class="signature">()</span><span class="type-signature"> &rarr; {integer}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="signature"><span class="type-signature">&lt;static> </span>signature<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -1422,6 +1676,54 @@ note as root.
     
     
     
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>note</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">a Note object</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
     
     
 <dl class="details">
@@ -1446,7 +1748,7 @@ note as root.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 179
+        <a href="Note.js.html">Note.js</a>, line 188
     </li></ul></dd>
     
     
@@ -1467,7 +1769,7 @@ note as root.
     
             
 <div class="param-desc">
-    - The signature as an integer representing the amount
+    The signature as an integer representing the amount
                      of sharps or flats the scale has when using this
                      note as root.
 </div>
@@ -1493,12 +1795,12 @@ note as root.
 
         
             
-<dt>
-    <h4 class="name" id="signatureIsFlat"><span class="type-signature">&lt;static> </span>signatureIsFlat<span class="signature">(signature)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="signatureIsFlat"><span class="type-signature">&lt;static> </span>signatureIsFlat<span class="signature">(<span class="type-signature">boolean|integer</span> signature)</span><span class="type-signature"> &rarr; boolean</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -1586,7 +1888,7 @@ note as root.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 258
+        <a href="Note.js.html">Note.js</a>, line 269
     </li></ul></dd>
     
     
@@ -1607,7 +1909,7 @@ note as root.
     
             
 <div class="param-desc">
-    - True if the signature is flat (one or more b)
+    True if the signature is flat (one or more b)
 </div>
 
 
@@ -1631,12 +1933,12 @@ note as root.
 
         
             
-<dt>
-    <h4 class="name" id="simpleNotation"><span class="type-signature">&lt;static> </span>simpleNotation<span class="signature">(note, signature)</span><span class="type-signature"> &rarr; {string}</span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="simpleNotation"><span class="type-signature">&lt;static> </span>simpleNotation<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note, <span class="type-signature">integer</span> signature)</span><span class="type-signature"> &rarr; string</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -1745,7 +2047,7 @@ note as root.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 233
+        <a href="Note.js.html">Note.js</a>, line 244
     </li></ul></dd>
     
     
@@ -1786,12 +2088,12 @@ note as root.
 
         
             
-<dt>
-    <h4 class="name" id="transpose"><span class="type-signature">&lt;static> </span>transpose<span class="signature">(note, interval)</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="transpose"><span class="type-signature">&lt;static> </span>transpose<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note, <span class="type-signature"><a href="Interval.html">Interval</a></span> interval)</span><span class="type-signature"></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -1899,7 +2201,7 @@ note as root.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 277
+        <a href="Note.js.html">Note.js</a>, line 288
     </li></ul></dd>
     
     
@@ -1922,16 +2224,16 @@ note as root.
 
         
             
-<dt>
-    <h4 class="name" id="distance"><span class="type-signature"></span>distance<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="cofPosition"><span class="type-signature"></span>cofPosition<span class="signature">()</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
-        class methods
+        the Note's position on the circle of fifths
     </div>
     
 
@@ -1964,7 +2266,7 @@ note as root.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 293
+        <a href="Note.js.html">Note.js</a>, line 370
     </li></ul></dd>
     
     
@@ -1981,18 +2283,176 @@ note as root.
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the position on the circle of fifths as an integer
+                     ( C = 0, G = 1, D = 2, ... F = -1 )
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="frequency"><span class="type-signature"></span>frequency<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="distance"><span class="type-signature"></span>distance<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        calculates the distance from this note to the specified note
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>note</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">the note to calculate the distance to</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 311
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the distance from this note to the note in semitones
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="frequency"><span class="type-signature"></span>frequency<span class="signature">()</span><span class="type-signature"> &rarr; Number</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -2034,7 +2494,7 @@ possible optimization: lookup table
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 377
+        <a href="Note.js.html">Note.js</a>, line 469
     </li></ul></dd>
     
     
@@ -2051,18 +2511,40 @@ possible optimization: lookup table
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the frequency of the note in Hz
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Number</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="hasName"><span class="type-signature"></span>hasName<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="hasName"><span class="type-signature"></span>hasName<span class="signature">()</span><span class="type-signature"> &rarr; boolean</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -2101,7 +2583,7 @@ compensates for accidentals, i.e.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 331
+        <a href="Note.js.html">Note.js</a>, line 409
     </li></ul></dd>
     
     
@@ -2118,18 +2600,310 @@ compensates for accidentals, i.e.
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if the note can be described by this name
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="octave"><span class="type-signature"></span>octave<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="interval"><span class="type-signature"></span>interval<span class="signature">(<span class="type-signature"><a href="Interval.html">Interval</a></span> interval)</span><span class="type-signature"> &rarr; <a href="Note.html">Note</a></span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        transpose the note with an interval
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>interval</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Interval.html">Interval</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">An interval object</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 345
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="notation"><span class="type-signature"></span>notation<span class="signature">(<span class="type-signature">integer</span> signature)</span><span class="type-signature"> &rarr; string</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        get the proper notation for a note
+
+In the end, we use the unicode characters ♭ and ♯ to represent sharps and 
+flats, instead of b or #
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>signature</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">integer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">the amount of sharps of flats 
+                             (0 = no sharps / flats, 1 = 1 sharp, -1 = 1 flat, etc.)</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 385
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the notation used based on the
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="octave"><span class="type-signature"></span>octave<span class="signature">()</span><span class="type-signature"> &rarr; integer</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -2166,7 +2940,7 @@ compensates for accidentals, i.e.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 338
+        <a href="Note.js.html">Note.js</a>, line 418
     </li></ul></dd>
     
     
@@ -2183,18 +2957,178 @@ compensates for accidentals, i.e.
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the octave
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="relPos"><span class="type-signature"></span>relPos<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="relativeDistance"><span class="type-signature"></span>relativeDistance<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        returns the relative distance from this note to note
+
+this is an integer from 0 - 11 representing the distance in semitones between
+the notes
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>note</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The second note</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 325
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The relative distance between the notes in semitones
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="relPos"><span class="type-signature"></span>relPos<span class="signature">()</span><span class="type-signature"> &rarr; integer</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -2231,7 +3165,7 @@ compensates for accidentals, i.e.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 353
+        <a href="Note.js.html">Note.js</a>, line 437
     </li></ul></dd>
     
     
@@ -2248,18 +3182,262 @@ compensates for accidentals, i.e.
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the relative position ( 0 - 11 )
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="signature">()</span><span class="type-signature"></span></h4>
+<dt class="doc-header doc-method">
+    <h4 class="name" id="shortestDistance"><span class="type-signature"></span>shortestDistance<span class="signature">(<span class="type-signature"><a href="Note.html">Note</a></span> note)</span><span class="type-signature"> &rarr; integer</span></h4>
     
     
 </dt>
-<dd>
+<dd class="doc-content doc-method-content">
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>note</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The second note</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 335
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the shortest distance from this to note
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="signature"><span class="type-signature"></span>signature<span class="signature">()</span><span class="type-signature"> &rarr; integer</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        The signature as an integer representing the amount
+of sharps or flats the scale has when using this
+note as root.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 359
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The signature as an integer representing the amount
+                     of sharps or flats the scale has when using this
+                     note as root.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">integer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="signature">()</span><span class="type-signature"> &rarr; <a href="Note.html">Note</a></span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
     
     
     <div class="description">
@@ -2296,7 +3474,7 @@ compensates for accidentals, i.e.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Note.js.html">Note.js</a>, line 361
+        <a href="Note.js.html">Note.js</a>, line 447
     </li></ul></dd>
     
     
@@ -2313,6 +3491,115 @@ compensates for accidentals, i.e.
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    A new Note object
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt class="doc-header doc-method">
+    <h4 class="name" id="type"><span class="type-signature"></span>type<span class="signature">()</span><span class="type-signature"> &rarr; string</span></h4>
+    
+    
+</dt>
+<dd class="doc-content doc-method-content">
+    
+    
+    <div class="description">
+        the type of object, always returns "note"
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Note.js.html">Note.js</a>, line 455
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    "note"
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -2330,18 +3617,17 @@ compensates for accidentals, i.e.
 
 
 
-</div>
+            </div>
+        </div>
+        
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Mar 23 2013 09:34:41 GMT-0400 (EDT)
+        </footer>
+    </div>
 
-<nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Chord.html">Chord</a></li><li><a href="Chords.html">Chords</a></li><li><a href="Guitar.html">Guitar</a></li><li><a href="GuitarChord.html">GuitarChord</a></li><li><a href="GuitarFret.html">GuitarFret</a></li><li><a href="GuitarNote.html">GuitarNote</a></li><li><a href="GuitarString.html">GuitarString</a></li><li><a href="Interval.html">Interval</a></li><li><a href="Note.html">Note</a></li><li><a href="Scale.html">Scale</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUSIQ">MUSIQ</a></li></ul>
-</nav>
 
-<br clear="both">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Mar 21 2013 19:51:16 GMT-0400 (EDT)
-</footer>
 
 <script> prettyPrint(); </script>
+<script src="../script/lib/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

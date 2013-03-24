@@ -1,14 +1,15 @@
 /** 
  * the guitar note data object
  * 
+ * 
  * @constructor
  * 
- * @param guitar - a Guitar object this note belongs to
- * @param guitarString - a GuitarString object this note belongs to
- * @param fret - the GuitarFret this note belongs to
- * @param pos - the position as in [ string, fret ]
+ * @param {Guitar} guitar - a Guitar object this note belongs to
+ * @param {GuitarString} guitarString - a GuitarString object this note belongs to
+ * @param {GuitarFret} fret - the GuitarFret this note belongs to
+ * @param {array} pos - the position as in [ string, fret ]
  * 
- * @param state - an object representing the state of the note:
+ * @param {object} state - an object representing the state of the note:
  *                         active: false,
  *                          ghosted: false,
  *                          tonic: false
@@ -25,7 +26,7 @@ var GuitarNote = function( guitar, guitarString, fret, pos, state ){
     
     this.state = state || _.clone( GuitarNote.DEFAULT_STATE );
     
-    /**
+    /*
      * create a Note object for easy access
      */
     this.note = new Note( guitarString.base + fret.pos );
@@ -41,6 +42,8 @@ GuitarNote.DEFAULT_STATE = { active: false, ghosted: false, tonic: false };
 
 /**
  * get the notation
+ * 
+ * @returns {string} the notation
  */
 GuitarNote.prototype.notation = function(){
     return this.note.notation();
@@ -48,6 +51,10 @@ GuitarNote.prototype.notation = function(){
 
 /**
  * get the short notation
+ * 
+ * @param {integer} signature 
+ * 
+ * @returns {string} the Chord notation
  */
 GuitarNote.prototype.short = 
 GuitarNote.prototype.simple = function( signature ){
@@ -57,7 +64,9 @@ GuitarNote.prototype.simple = function( signature ){
 
 /**
  * sets or gets the active state. 
- * @returns true if the state is active
+ * 
+ * @param {boolean} value 
+ * @returns {boolean} true if the state is active
  */
 GuitarNote.prototype.active = function( value ){
     if( typeof value != 'undefined'){
@@ -70,7 +79,9 @@ GuitarNote.prototype.active = function( value ){
 
 /**
  * sets or gets the tonic state. 
- * @returns true if the state is tonic
+ * 
+ * @param {Note} value - a Note object
+ * @returns {boolean} true if the state is tonic
  */
 GuitarNote.prototype.tonic = function( value ){
     if( typeof value != 'undefined'){
@@ -83,7 +94,9 @@ GuitarNote.prototype.tonic = function( value ){
 
 /**
  * sets or gets the active state. 
- * @returns true if the state is active
+ * 
+ * @param {boolean} value
+ * @returns {boolean} true if the state is active
  */
 GuitarNote.prototype.ghosted = function( value ){
     if( typeof value != 'undefined'){
@@ -96,19 +109,25 @@ GuitarNote.prototype.ghosted = function( value ){
 
 /**
  * sets this note as the only active note on the string
+ * 
+ * @param {boolean} value - 
+ * @returns {boolean} 
  */
 GuitarNote.prototype.onlyActive = function( value ){
     return this.guitarString.onlyActive( this.pos[1], value );
-}
+};
 
 /**
  * get a string representation of the class
+ * 
+ * @param {Note} [tonic] optionally specify a tonic. If so, the interval to the tonic is added as well
+ * @returns {string} 
  */
 GuitarNote.prototype.className = function( tonic ){
    var ret = [];
-   if( this.state.active ) ret.push('active');
+   if( this.state.active )  ret.push('active');
    if( this.state.ghosted ) ret.push('ghosted');
-   if( this.state.tonic ) ret.push('tonic');
+   if( this.state.tonic )   ret.push('tonic');
    
    // add the interval to the tonic as well
    if( tonic ) ret.push(this.intervalToTonic(tonic).name().replace(" ","-"));
@@ -119,32 +138,39 @@ GuitarNote.prototype.className = function( tonic ){
 /**
  * the interval to the tonic
  * 
- * @returns an Interval object relative to the tonic
+ * @param {Note} tonic - A Note object representing the tonic
+ * 
+ * @returns {Interval} an Interval object relative to the tonic
  */
 GuitarNote.prototype.intervalToTonic = function( tonic ){
     if( tonic )
         return tonic.interval( this.note );
-}
+};
 
 /**
  * get the int note position
+ * 
+ * @returns {integer} the MIDI position of the note
  */
 GuitarNote.prototype.notePos = function(){
     return this.note.pos;
-}
+};
 
 /**
  * get the relative note position
+ * 
+ * @returns {integer} the relative position of the note
  */
 GuitarNote.prototype.relPos =
 GuitarNote.prototype.relativeNotePos = function(){
     return this.note.toRelative().pos;
-}
+};
 
 /**
  * get the 'distance' of a fret to another note on the fretboard
- * returns an array [ strings, frets ]
+ * @returns {array} an array with 2 elements [ strings, frets ]
+ * 
  */
 GuitarNote.prototype.distanceTo = function( otherNote ){
     return [ otherNote.pos[0] - this.pos[0], otherNote.pos[1] - this.pos[1] ];
-}
+};

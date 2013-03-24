@@ -4,22 +4,81 @@
     <meta charset="utf-8">
     <title>JSDoc: Source: guitar/Guitar.js</title>
     
+    <script src="scripts/jquery-1.9.1.min.js"></script>
+    
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="../style/bootstrap.min.css">
+    <!-- responsive sheets -->
+    <link href="../style/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../style/docs.css" rel="stylesheet">
+    
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    
+    
+          
+    <script>
+        $(document).ready(function(w){
+            
+            // toggle handlers for the data titles
+            $('dt.doc-header').click(function(){
+                //alert("It works");
+                $(this).next('dd').toggle(100);
+                //$(this).toggle();
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-<div id="main">
-    
-    <h1 class="page-title">Source: guitar/Guitar.js</h1>
-    
-    
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li>
+                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="tutorials/">Tutorials</a></li>
+                    <li class="active"><a href="docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                </ul>
+              </li>
+              <li><a href="guitar.html">Interactive Guitar</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li></ul>
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1 class="page-title">Source: guitar/Guitar.js</h1>
+                </div>
+                
 
 
     
@@ -29,11 +88,13 @@
 /**
  * Guitar object
  * 
+ * 
  * @constructor
  * 
- * @param tuning : initializes the guitar object with a tuning
+ * @param {string}  [tuning=standard] - initializes the guitar object with a tuning
  *                  defaults to "standard" guitar tuning
  *                  E A D G B E
+ *                  
  * 
  * You can find more tunings in MUSIQ.tunings
  * 
@@ -66,6 +127,11 @@ var Guitar = function( tuning ){
     //console.log( this );
 };
 
+/**
+ * An object array with a number of different guitar tunings.
+ * @todo add more tunings
+ * 
+ */
 Guitar.tunings = {
     "standard" : {
         "name"    : "Standard",
@@ -85,8 +151,14 @@ Guitar.tunings = {
     }
 };
 
+/**
+ * the number of frets shown in any visual representation (default value = 16 )
+ */
 Guitar.FRETS_SHOWN = 16;
 
+/**
+ * @private
+ */
 Guitar.prototype.createNotes = function(){
     
     // create an matrix of notes:
@@ -105,7 +177,9 @@ Guitar.prototype.createNotes = function(){
 }
 /**
  * sets or gets the tuning for this guitar
- * @param name : a string representing the type of tuning (default: "standard")
+ * @param {string} name - representing the type of tuning (default: "standard")
+ * 
+ * @returns {Guitar} this object
  */
 Guitar.prototype.tuning = function( name ){
     
@@ -140,8 +214,8 @@ Guitar.prototype.tuning = function( name ){
 /**
  * returns a list of chords based on the finger positions for the 
  * individual strings
- * @param positions : the finger positions on the individual strings
- * @returns an array of chords that match this fingering position
+ * @param {array} positions - the finger positions on the individual strings
+ * @returns {array} an array of chords that match this fingering position
  * 
  */
 Guitar.prototype.chordsFromFingerPos = function( positions ){
@@ -153,7 +227,7 @@ Guitar.prototype.chordsFromFingerPos = function( positions ){
 };
 
 /**
- * returns a Chord object from the active notes played on the guitar
+ * @returns {array} an array of Chord objects from the active notes played on the guitar
  */
 Guitar.prototype.chordsFromActiveNotes = function(){
     var notes = _(this.activeNotes()).map(function(note){
@@ -165,7 +239,7 @@ Guitar.prototype.chordsFromActiveNotes = function(){
 };
 
 /**
- * returns a match array with all the notes or chords that
+ * @returns {Note[]|Chord[]} a match array with Note objects that
  * match this finger position
  */
 Guitar.prototype.activeMatches = function(){
@@ -188,7 +262,7 @@ Guitar.prototype.activeMatches = function(){
 
 
 /**
- * returns an array of GuitarNote objects representing
+ * @returns {GuitarNote[]} of GuitarNote objects representing
  * all the active notes on the guitar neck
  */
 Guitar.prototype.activeNotes = function(){
@@ -206,7 +280,7 @@ Guitar.prototype.activeNotes = function(){
 };
 
 /**
- * @returns a list of Note objects 
+ * @returns {integer[]} a list of integers representing the MIDI notes for all finger positions 
  */
 Guitar.prototype.notesFromFingerPos = function( positions ){
     
@@ -227,7 +301,9 @@ Guitar.prototype.notesFromFingerPos = function( positions ){
 
 /**
  * get all possible fingering positions from a chord
- * @returns an array with all possible fingerings
+ * @returns {array} an array with all possible fingerings
+ * 
+ * @todo implement this method
  */
 Guitar.prototype.posFromChord = function( chord ){
     
@@ -235,9 +311,9 @@ Guitar.prototype.posFromChord = function( chord ){
 
 /**
  * get all notes on a particular fret
- * @param fretNr : the number of the fret to look for
+ * @param {integer} fretNr - the number of the fret to look for
  * 
- * @returns an array of GuitarNote objects
+ * @returns {GuitarNote[]} an array of GuitarNote objects
  */
 Guitar.prototype.notesOnFret = function( fretNr ){
     return _(this.strings).map( function( str, str_nr ){
@@ -246,9 +322,10 @@ Guitar.prototype.notesOnFret = function( fretNr ){
 };
 
 /**
- * @returns the notation for a position on the fretboard
- * @param str : the string selected (int)
- * @param fret : the selected fret (int)
+ * get the notation for a note on the specified string and fret
+ * @returns {string} the notation for a position on the fretboard
+ * @param {integer} str - the string selected (int)
+ * @param {integer} fret - the selected fret (int)
  */
 Guitar.prototype.notationFor = function( str, fret ){
     return this.notes[str][fret].note.simpleNotation();
@@ -257,7 +334,9 @@ Guitar.prototype.notationFor = function( str, fret ){
 
 /**
  * transpose notes on the fretboard
- * @param num : the number of frets to transpose (negative is down, positive is up)
+ * @param {integer} num - the number of frets to transpose (negative is down, positive is up)
+ * 
+ * @returns {Guitar} the Guitar object
  * 
  * we implement this by transposing the state objects of all the notes only
  */
@@ -287,21 +366,23 @@ Guitar.prototype.transpose = function( num ){
                 
         });
     });
+    
+    return this;
 };
 
 
 /**
  * show function: shows chords, notes or scales on the fretboard
  * 
- * @param matches - an array of Chord / Note / Scale objects to be shown
+ * @param matches {array} - an array of Chord / Note / Scale objects to be shown
  * 
- * @return {boolean} - true if the query is valid and the fretboard has changed
+ * @return {Guitar} - the Guitar object
  * 
  */
  
 Guitar.prototype.show = function( matches ){
     
-    if( !matches ) return;
+    if( !matches ) return this;
     
     // clear fretboard
     this.clearFretboard();
@@ -326,7 +407,7 @@ Guitar.prototype.show = function( matches ){
         
     },this);
     
-    return true;
+    return this;
     
 };
 
@@ -341,7 +422,8 @@ Guitar.prototype.show = function( matches ){
  *          active: boolean,
  *          ghosted: boolean,
  *          tonic: boolean
- *      
+ *  
+ * @returns {Guitar} the Guitar object
  * 
  */
 Guitar.prototype.showNotes = function( notes, options ){
@@ -421,15 +503,24 @@ Guitar.prototype.showNotes = function( notes, options ){
             if( opts.ghosted ) note.ghosted( noteFound );
         });
     });
+    
+    return this;
 };
 
 /**
  * show all the notes of a list of chords on the fretboard
+ * 
+ * @param {array} - array of Chord objects
+ * 
+ * @returns {Guitar} the Guitar object
+ * @todo: implement so we can show multiple chords. Now, it will only show the
+ * first chord in the array
+ * 
  */
 Guitar.prototype.showChords = function( chords ){
     
     console.log( "ShowChords ");
-    console.log( chords )
+    console.log( chords );
     
     // get a list of notes - only from the first chord
     if( chords && chords.length > 0){
@@ -439,31 +530,40 @@ Guitar.prototype.showChords = function( chords ){
         this.showTonic( chords[0].tonic );
     }
     
-    
+    return this;
 };
 
 /**
  * show all notes of a particular scale on the fretboard
+ * 
+ * @param scales {array} - of Scale objects
+ * @returns {Guitar} the Guitar object
+ * 
+ * @todo implement function
  */
 Guitar.prototype.showScales = function( scales ){
     console.log("Function showScales not implemented!");
+    return this;
 };
 
 /**
  * show the tonic notes on the fret board as well
- * @param note - a Note object representing the current tonic
+ * @param note {Note} - a Note object representing the current tonic
+ * 
+ * @returns {Guitar} the Guitar object
  */
 Guitar.prototype.showTonic = function( note ){
     console.log("Showing tonic");
     console.log( note );
     
-    this.showNotes( [note], { only: false, tonic: true });
+    return this.showNotes( [note], { only: false, tonic: true });
 };
 
 /**
  * show the notes on the fretboard
- * @param frets - an array of integers representing which note to show
+ * @param frets {array} - an array of integers representing which note to show
  *                on what string
+ * @returns {Guitar} the Guitar object
  */
 Guitar.prototype.showFrets = function( frets ){
    
@@ -473,10 +573,14 @@ Guitar.prototype.showFrets = function( frets ){
        };
    });
    
+   return this;
+   
 };
 
 /**
  * clear all active or ghosted notes from the fretboard
+ * 
+ * @returns {Guitar} the Guitar object
  */
 Guitar.prototype.clearFretboard = function(){
     
@@ -486,6 +590,8 @@ Guitar.prototype.clearFretboard = function(){
         });
     });
     
+    return this;
+    
 };</code></pre>
         </article>
     </section>
@@ -493,18 +599,17 @@ Guitar.prototype.clearFretboard = function(){
 
 
 
-</div>
+            </div>
+        </div>
+        
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Mar 23 2013 09:34:34 GMT-0400 (EDT)
+        </footer>
+    </div>
 
-<nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Chord.html">Chord</a></li><li><a href="Chords.html">Chords</a></li><li><a href="Guitar.html">Guitar</a></li><li><a href="GuitarChord.html">GuitarChord</a></li><li><a href="GuitarFret.html">GuitarFret</a></li><li><a href="GuitarNote.html">GuitarNote</a></li><li><a href="GuitarString.html">GuitarString</a></li><li><a href="Interval.html">Interval</a></li><li><a href="Note.html">Note</a></li><li><a href="Scale.html">Scale</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUSIQ">MUSIQ</a></li></ul>
-</nav>
 
-<br clear="both">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Mar 21 2013 19:51:10 GMT-0400 (EDT)
-</footer>
 
 <script> prettyPrint(); </script>
+<script src="../script/lib/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

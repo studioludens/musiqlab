@@ -30,7 +30,7 @@
         
         
         
-        <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -42,7 +42,14 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="musiq.html">MUSIQ.js</a></li>
+              <li>
+                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="tutorials/">Tutorials</a></li>
+                    <li><a href="docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                </ul>
+              </li>
               <li><a href="guitar.html">Interactive Guitar</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
@@ -154,8 +161,9 @@
     
     
         <!-- async scripts -->
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="script/lib/jquery/jquery-1.9.1.min.js"></script>
         <script src="script/lib/bootstrap/bootstrap.min.js"></script>
+        
         
         <!-- Google Analytics -->
         <script type="text/javascript">
