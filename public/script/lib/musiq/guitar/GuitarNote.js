@@ -108,6 +108,24 @@ GuitarNote.prototype.ghosted = function( value ){
 };
 
 /**
+ * 
+ * @returns {integer} - number of the fret this note is on
+ */
+GuitarNote.prototype.fretPos = function(){
+    return this.pos[1];
+};
+
+/**
+ * 
+ * @returns {integer} - number of the string this note is on
+ *                      0 is the lowest string (in standard Guitar tuning
+ *                      this would be the low E)
+ */
+GuitarNote.prototype.stringPos = function(){
+    return this.pos[0];
+};
+
+/**
  * sets this note as the only active note on the string
  * 
  * @param {boolean} value - 

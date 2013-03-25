@@ -59,3 +59,14 @@ Interval.fromNotes = function( note1, note2 ){
 Interval.fromName = function( name ){
     return new Interval( MUSIQ.intervalNames.indexOf( name ) );
 };
+
+/**
+ * creates an interval object, internally calls Interval.fromName()
+ * 
+ * @param {string} name - the name of the interval
+ * 
+ * @returns {Interval}
+ */
+function interval( name ){
+    return Interval.fromName( name );
+}

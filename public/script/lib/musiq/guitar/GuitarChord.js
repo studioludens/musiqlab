@@ -16,12 +16,42 @@ var GuitarChord = function( guitar, chord, notes  ){
     this.notes = notes;
     
     this._barre = 0;
+    
+    /**
+     * how easy it is to play the chord.
+     * 
+     * these factors add weight:
+     * - each note played
+     *   + 1 for each note played
+     * - the distance of each note relative to the previous note
+     *   + 1 for each extra fret distance between two notes
+     * - the distance of the note to the base note
+     * - the number of fingers used
+     *   + 1 for each finger used, + 100 if more than all fingers are used (impossible)
+     * 
+     * lower is better, no note has ease 0,
+     * 1 note at least ease 1
+     */
+    var ease = 0;
+    
+    /** 
+     * five fingers that we can use
+     * 
+     * In case you're Django, please remove the last three
+     * items from the list 
+     * 0 : thumb
+     * 1 : index
+     * 2 : middle
+     * 3 : ring
+     * 4 : pinky
+     */
+    var fingersUsed = [ false, false, false, false, false];
 };
 
 /**
  * maximum finger stretch
  */
-GuitarChord.MAX_STRETCH = 4;
+GuitarChord.MAX_STRETCH = 3;
 
 
 /**
@@ -44,110 +74,162 @@ GuitarChord.fromChordAndBase = function( guitar, chord, base ){
     
     // from the base, walk up the neck, fret by fret
     
-    var baseString = base.pos[0];
-    var baseFret = base.pos[1];
+    var baseString = base.stringPos();
+    var baseFret = base.fretPos();
     
     var numNotes = chord.notes.length - (chord.optional ? chord.optional.length : 0);
     
-    
-    /* a list of all five fingers the user has in his left hand
-       In case you're Django, please remove the last three
-       items from the list
-       
-       This will be used to determine the 'easyness' of the chord
-       
-    */
-    
-    /**
-     * how easy it is to play the chord.
-     * 
-     * these factors add weight:
-     * - each note played
-     *   + 1 for each note played
-     * - the distance of each note relative to the previous note
-     *   + 1 for each extra fret distance between two notes
-     * - the distance of the note to the base note
-     * - the number of fingers used
-     *   + 1 for each finger used, + 100 if more than all fingers are used (impossible)
-     * 
-     * lower is better, no note has ease 0,
-     * 1 note at least ease 1
-     */
-    var ease = 0;
-    
-    var fingersUsed = [ false, false, false, false, false];
     // exit if we have more required notes than possible frets to
     
     
     //var foundNotes = [];
     
-    var lookup = function( chordNotes, baseString, foundNotes){
-        
-        if( baseString + numNotes > guitar.strings.length){
-            //console.warn( "Not enough strings to find notes on!" + (guitar.strings.length - baseString));
-            return;
-        }
+    /*
+    STEP 0:
+    filter out situations where not even all the notes in the chord would fit
+    on the selected strings
+    */
+    if( baseString + numNotes > guitar.strings.length){
+        //console.warn( "Not enough strings to find notes on!" + (guitar.strings.length - baseString));
+        return;
+    }
     
-        for( var i = baseString; i < guitar.strings.length ; i++){
-            // get all notes on the string that match the chord 
-            var stringNotes = _(guitar.notes[i]).filter(function(note){
-                return _(chordNotes).contains(note.relPos());
-            });
+    /*
+    STEP 1: 
+    create a list for each fret of possible notes within the MAX_STRETCH
+    */
+    
+    var foundNotes = [];
+    var chordNotes = chord.notes;
+    // push the base note on the return array  
+    foundNotes.push( [ base ] );
+    
+    for( var i = baseString+1; i < guitar.strings.length ; i++){
+        // get all notes on the string that match the chord 
+        var stringNotes = _(guitar.notes[i]).filter(function(note){
+            return _(chordNotes).contains(note.relPos());
+        });
 
-            // and are close enough to the base note
-            stringNotes = _(stringNotes).filter(function(note){
-                if( Math.abs( note.distanceTo(base)[1] ) <= GuitarChord.MAX_STRETCH ){
-                    //console.log("Found note " + note.simple() + " on pos [" + note.pos + "]");
-                    return true;
-                }
-            });
-            
-            // if we have notes left, these 
-            // are potentially interesting
-            if( !stringNotes || stringNotes.length == 0 ){
-                console.log("No notes on string found!");
-            } else if( stringNotes.length == 1 ){
-                //console.log("One matching note on string found!");
-                //console.log( stringNotes );
-                foundNotes.push( stringNotes );
-                
-            } else {
-                // more notes found!
-                //console.log( stringNotes.length + " matching note on string found!");
-                //console.log( stringNotes );
-                
-                // for now, return the combined array
-                foundNotes.push( stringNotes );
-                
+        // and are close enough to the base note
+        stringNotes = _(stringNotes).filter(function(note){
+            if( Math.abs( note.distanceTo(base)[1] ) <= GuitarChord.MAX_STRETCH ){
+                //console.log("Found note " + note.simple() + " on pos [" + note.pos + "]");
+                return true;
             }
-        };
-        
-        // check if we have really found all notes in the chord
-        
-        var lowestFret = 1000;
-        var highestFret = -1;
-        
-        var stringNotes = _(foundNotes).each(function(notes){
-            lowestFret = Math.min(notes[0].pos[1], lowestFret);
-            highestFret = Math.max(notes[0].pos[1], highestFret);
         });
         
-        // TODO: not working
-        //console.log( "Biggest distance between frets: " + highestFret-lowestFret);
-        
-        return foundNotes;
-        
+        // if we have notes left, these 
+        // are potentially interesting
+        if( !stringNotes || stringNotes.length == 0 ){
+            console.log("No notes on string found!");
+        } else if( stringNotes.length == 1 ){
+            //console.log("One matching note on string found!");
+            //console.log( stringNotes );
+            foundNotes.push( stringNotes );
+            
+        } else {
+            // more notes found!
+            //console.log( stringNotes.length + " matching note on string found!");
+            //console.log( stringNotes );
+            
+            // for now, return the combined array
+            foundNotes.push( stringNotes );
+            
+        }
     };
     
-    var chordNotes = lookup( chord.notes, baseString, []);
+    var chordNotes = foundNotes;
     // look them up - recursively
-    //console.log("FoundNotes:");
-    //console.log(foundNotes);
-    /*_(chordNotes).reduce(function(memo, note, index, list){
-        // first item
-        if( !memo ) memo = [];
-        memo.push(note);
-    })*/
+    console.log("FoundNotes:");
+    console.log(chordNotes);
+    
+    /* 
+    STEP 2:
+    Create chords of all possible combinations 
+    */
+    
+    var combinations = function(lists) {
+        if (lists.length == 0) {
+            return [];
+        } else if( lists.length == 1 ){
+            return lists[0];
+        } else {
+            var pr = combinations(_.rest(lists));
+            var ret = [];
+            _.each(_.first(lists),function(fp) {
+                _.each(pr,function(p) {
+                    ret.push( [fp].concat(p) );
+                });
+            });
+          return ret;
+        }
+    };
+    
+    // array of chords
+    var matches = combinations( chordNotes );
+
+    console.log("STEP 2 - # of matches");
+    console.log( matches.length );
+    
+    /*
+    STEP 3:
+    filter out the chords that don't have all notes
+    */
+    var matches = _(matches).filter(function(match){
+        
+        // make a copy for reference
+        var remainingNotes = chord.relNotes.slice();
+        // loop through all notes of the match
+        
+        // a match is an array (length = # of strings)
+        // each item a guitarNote
+        
+        // get an array of relative positions
+        var relNotes = _(match).map(function(note){
+            return note.relPos();
+            
+        });
+        //console.log("relnotes: ", relNotes);
+        //console.log( _(remainingNotes).difference(relNotes).length );
+        return _(remainingNotes).difference(relNotes).length == 0;
+    });
+    
+    console.log("STEP 3 - # of matches");
+    console.log( matches.length );
+    
+    /*
+    STEP 4:
+    filter out the chords where the fingers are too far from each other
+    */
+    var matches = _(matches).filter(function(match){
+        
+        
+        var fretNrs = _(match).map(function(note){
+            return note.fretPos();
+        });
+        
+        var lowestFret = _(fretNrs).min();
+        var highestFret = _(fretNrs).max();
+        
+        // we remove all matches where the notes are too far apart
+        if( Math.abs(lowestFret - highestFret) > GuitarChord.MAX_STRETCH )
+            return false;
+        
+        
+        // now remove all matches where the fingers are too far apart from each other
+        // note to note
+        for( var i = 1; i < match.length; i++ ){
+            if( Math.abs(match[i].fretPos() - match[i-1].fretPos()) > GuitarChord.MAX_STRETCH )
+                return false;
+        }
+        
+        console.log("match ", fretNrs );
+        return true;
+    });
+    
+    console.log("STEP 4 - # of matches");
+    console.log( matches.length );
+    
     
     // check if we have found all the notes
     

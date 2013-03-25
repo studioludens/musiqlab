@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Interval.js</title>
+    <title>MUSIQ.js API Reference: Source: Interval.js</title>
     
     <script src="scripts/jquery-1.9.1.min.js"></script>
     
@@ -47,21 +47,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">MUSIQ Lab</a>
+          <a class="brand" href="/#">MUSIQ Lab</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="#">Home</a></li>
-              <li>
-                <a href="musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+              <li><a href="/#">Home</a></li>
+              <li class="active">
+                <a href="/musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
                 <ul class="dropdown-menu">
-                    <li><a href="tutorials/">Tutorials</a></li>
-                    <li class="active"><a href="docs/index.html">API Documentation</a></li>
-                    <li><a href="http://github.com/studioludens/musiqjs/">Github</a></li>
+                    <li><a href="/musiqjs-tutorial.html">Tutorial</a></li>
+                    <li class="active"><a href="/docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Source Code</a></li>
                 </ul>
               </li>
-              <li><a href="guitar.html">Interactive Guitar</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="/guitar.html">Interactive Guitar</a></li>
+              <li><a href="/#about">About</a></li>
+              <li><a href="/#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -72,7 +72,7 @@
         
         <div class="row">
             <div class="span3 bs-docs-sidebar">
-                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li></ul>
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li><li class="nav-header">Globals</li><li><a href="global.html#chord"><i class="icon-chevron-right"></i>chord</a></li><li><a href="global.html#interval"><i class="icon-chevron-right"></i>interval</a></li><li><a href="global.html#note"><i class="icon-chevron-right"></i>note</a></li></ul>
             </div>
             <div class="span9">
                 <div class="page-header">
@@ -105,7 +105,7 @@ var Interval = function( distance ){
 /**
  * @returns {string} the name of the interval
  */
-Interval.name = function(){
+Interval.prototype.name = function(){
         return MUSIQ.intervalNames[this.relativeDistance];
 };
 
@@ -144,7 +144,18 @@ Interval.fromNotes = function( note1, note2 ){
  */
 Interval.fromName = function( name ){
     return new Interval( MUSIQ.intervalNames.indexOf( name ) );
-};</code></pre>
+};
+
+/**
+ * creates an interval object, internally calls Interval.fromName()
+ * 
+ * @param {string} name - the name of the interval
+ * 
+ * @returns {Interval}
+ */
+function interval( name ){
+    return Interval.fromName( name );
+}</code></pre>
         </article>
     </section>
 
@@ -155,7 +166,7 @@ Interval.fromName = function( name ){
         </div>
         
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Mar 23 2013 09:34:34 GMT-0400 (EDT)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon Mar 25 2013 11:50:56 GMT-0400 (EDT)
         </footer>
     </div>
 

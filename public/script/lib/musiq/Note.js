@@ -464,3 +464,13 @@ Note.prototype.frequency = function(){
     return 440 * Math.pow(2, (this.pos-69)/12 );
 };
 
+/**
+ * creates a note object from a notation. This is the same as saying
+ * Note.fromNotation( )
+ * @param {String} notation - a string notation of the note
+ * 
+ * @returns {Note}
+ */
+function note( notation ){
+    return Note.fromNotation( notation );
+}

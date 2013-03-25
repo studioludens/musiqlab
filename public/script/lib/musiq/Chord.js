@@ -332,7 +332,16 @@ Chord.prototype.contains = function( note ){
  */
 var Chords = {};
 
-
+/**
+ * build a chord from individual notes
+ * these can be note objects or just a list of integers
+ * @param {array}   notes         - a simple array of integer notes
+ * @param {integer} [inversion=0] - the number of the inversion, 
+ *                                  0 = root position, 1 = first inversion, 
+ *                                  2 = second inversion, ...
+ * 
+ * @returns {Chord[]} an array of matching chords, null when nothing is found
+ */
 Chords.fromNotes = function( notes, inversion ){
     
     var ret = [];
@@ -499,7 +508,10 @@ Chords.fromNotation = Chord.fromNotation;
 /**
  * shortcut function to create a new chord based on Chord.fromNotation()
  * 
+ * @param {string} name - the name of the chord
+ * 
+ * @returns {Chord}
  */
-function Chord( name, type ){
-    return Chord.fromNotation(name, type);
+function chord( name ){
+    return Chord.fromNotation(name );
 }

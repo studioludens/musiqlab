@@ -1,3 +1,4 @@
 {"ts":1361152790420,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
 {"contributors":[],"silentsave":false,"ts":1361152810208,"patch":[[{"diffs":[[1,"body {\n    background-image: url('../img/vms/vms-0.svg');\n}"]],"start1":0,"start2":0,"length1":0,"length2":59}]],"length":59,"saved":false}
 {"ts":1361153372545,"patch":[[{"diffs":[[0,"vms-"],[-1,"0"],[1,"all-symbols"],[0,".svg"]],"start1":45,"start2":45,"length1":9,"length2":19}]],"length":69,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1364227634700,"patch":[[{"diffs":[[-1,"body {\n    background-image: url('../img/vms/vms-all-symbols.svg');\n}"]],"start1":0,"start2":0,"length1":69,"length2":0}]],"length":0,"saved":false}
