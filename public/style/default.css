@@ -1,0 +1,13 @@
+/**
+hero unit background
+**/
+.hero-unit {
+    background-image: url(../img/guitar.jpg);
+    background-size: cover;
+}
+
+.hero-unit h1, .hero-unit p {
+    color: #EEE;
+    text-shadow: 2px 2px 15px #000;
+    filter: dropshadow(color=#000, offx=2, offy=2);
+}

@@ -62,6 +62,10 @@ Guitar.tunings = {
     "fourths"   : {
         "name"    : "All Fourths",
         "notes" : [ 40, 45, 50, 55, 60, 65 ]
+    },
+    "ukelele"   : {
+        "name"    : "Ukelele Standard",
+        "notes" : [ 67, 60, 64, 69 ]
     }
 };
 

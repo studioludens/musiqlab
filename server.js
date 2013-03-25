@@ -6,82 +6,28 @@
  * 
  */
 var util = require("util");
-var server = require("http");
-var fs = require('fs');
-var path = require('path');
+var static_server = require('node-static');
 
-/**
- * folder locations
- */
-var publicFolder = './public';
-var htmlFolder = 'html';
-var styleFolder = 'style';
-var scriptFolder = 'script';
+//
+// Create a node-static server instance to serve the './public' folder
+//
+var file = new(static_server.Server)('./public');
 
-/**
- * create a server
- */
- 
-server.createServer(function(request,response){  
-    
-    console.log('request starting...');
-     
-    var requestURL = request.url;
-    
-    if( requestURL == '/') requestURL = '/index.html';
-    
-    // default file path
-    var filePath = publicFolder + '/'  + requestURL;
-    
-         
-    var extname = path.extname(requestURL);
-    
-    var contentType = 'text/html';
-    
-    filePath = publicFolder + '/' + requestURL;
-    
-    switch (extname) {
-        case '.js':
-            
-            contentType = 'text/javascript';
-            break;
-        case '.css':
-            
-            contentType = 'text/css';
-            break;
-        case '.svg':
-            contentType = 'image/svg+xml';
-            break;
-        case '.png':
-            contentType = 'image/png';
-            break;
-        default:
-            
-            break;
-    }
-    
-    console.log("Serving " + filePath);
-     
-    fs.exists(filePath, function(exists) {
-     
-        if (exists) {
-            fs.readFile(filePath, function(error, content) {
-                if (error) {
-                    response.writeHead(500);
-                    response.end();
-                }
-                else {
-                    response.writeHead(200, { 'Content-Type': contentType });
-                    response.end(content, 'utf-8');
-                }
-            });
-        }
-        else {
-            response.writeHead(404);
-            response.end();
-        }
+util.puts("Starting Server on " + process.env.PORT);  
+
+require('http').createServer(function (request, response) {
+    request.addListener('end', function () {
+        file.serve(request, response, function (err, result) {
+            //console.log("Serving " + request);
+            if (err) { // There was an error serving the file
+                util.puts("Error serving " + request.url + " - " + err.message);
+
+                // Respond to the client
+                response.writeHead(err.status, err.headers);
+                response.end();
+            }
+        });
     });
-    
 }).listen(process.env.PORT);  
 
 util.puts("Server Running on " + process.env.PORT);  

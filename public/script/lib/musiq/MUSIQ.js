@@ -256,13 +256,13 @@ var MUSIQ = {
                 'names': ["m11"],
                 'longName': "minor 11th",
                 'notes': [ 0, 3, 7, 10, 17 ],
-                'optional': [7]
+                'optional': [7, 10]
              },
         {  
                 'names': ["11"],
                 'longName': "dominant 11th",
                 'notes': [ 0, 4, 7, 10, 17 ],
-                'optional': [7]
+                'optional': [7, 10]
              },
         
         /* thirteenth chords */

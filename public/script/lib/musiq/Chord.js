@@ -496,3 +496,10 @@ Chords.fromNotes = function( notes, inversion ){
 
 Chords.fromNotation = Chord.fromNotation;
 
+/**
+ * shortcut function to create a new chord based on Chord.fromNotation()
+ * 
+ */
+function Chord( name, type ){
+    return Chord.fromNotation(name, type);
+}
