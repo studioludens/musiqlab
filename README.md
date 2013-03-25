@@ -20,7 +20,16 @@ Run the server
 
 MUSIQLab uses (for the time being) only client-side libraries. That means you can run the code on any system of your choice, like Apache or any other HTTP server. If you have node installed, you can also use the bundled node-static server. Run it like this:
 
- node ./server.js
+    node ./server.js
+    
+Generate Documentation
+----------------------
+
+Documentation is created by JSDoc using a custom-made template (/jsdoc-template) and can be run by the following commandline utility:
+
+    ./doc
+    
+Files are put in the ./public/docs/ folder. 
  
 License and Copyright
 =====================
