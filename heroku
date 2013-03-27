@@ -1,0 +1,6 @@
+#!/bin/sh
+# push everything to heroku
+
+echo "Pushing to Heroku...."
+git push heroku-target master 
+echo "Done."
