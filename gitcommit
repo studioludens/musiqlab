@@ -1,0 +1,9 @@
+#!/bin/sh
+# run jsdoc with the right template
+
+echo "Committing to git"
+git status
+git add -A
+git commit -m $1
+git push
+echo "Done!!"
