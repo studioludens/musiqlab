@@ -1,0 +1,11 @@
+#!/bin/sh
+# update all submodules to HEAD
+
+echo "Updating all submodules..."
+
+cd public/script/lib/musiq
+git status
+git pull
+cd ../../../..
+
+echo "Done!"
