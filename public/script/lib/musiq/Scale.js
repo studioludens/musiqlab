@@ -1,3 +1,4 @@
+'use strict';
 /**
  * the MUSIQ.js scale class
  * 
@@ -9,6 +10,8 @@
  * @param relative - if the scale should be interpreted as  relative, 
  *                   i.e. can be positioned anywhere
  *                   on the musical scale (Fretboard for guitar)
+ * 
+ * @todo implement some methods
  */
 var Scale = {}; //_(Chord).extend();
 
@@ -25,7 +28,7 @@ Scale.fromTonicAndType = function( tonic, type ){
 Scale.extend = function( startOctave, endOctave ){
     this.startOctave = startOctave;
     this.endOctave = endOctave;
-}
+};
 
 /*Scale.prototype.type = function(){
     return "scale";

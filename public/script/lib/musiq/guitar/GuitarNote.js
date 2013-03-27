@@ -1,3 +1,4 @@
+'use strict';
 /** 
  * the guitar note data object
  * 

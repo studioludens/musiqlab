@@ -1,3 +1,4 @@
+'use strict';
 /**
  * GuitarChord - a class for representing a guitar chord
  * 
@@ -181,8 +182,6 @@ GuitarChord.fromChordAndBase = function( guitar, chord, base ){
         var remainingNotes = chord.relNotes.slice();
         // loop through all notes of the match
         
-        // a match is an array (length = # of strings)
-        // each item a guitarNote
         
         // get an array of relative positions
         var relNotes = _(match).map(function(note){

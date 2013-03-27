@@ -1,3 +1,4 @@
+'use strict';
 /**
  * the MUSIQ.js Note object
  * 
@@ -237,7 +238,7 @@ Note.notation = function( note, signature ){
  */
 Note.simpleNotation = function( note, signature ){
    
-   n = note;
+   var n = note;
    var ret;
    
    if( !(note instanceof Note) ) n = new Note(note);

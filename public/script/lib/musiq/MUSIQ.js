@@ -1,3 +1,4 @@
+'use strict';
 /**
  * MUSIQ: a javascript library for note and chord analysis
  * 
@@ -577,4 +578,4 @@ MUSIQ.guitar.isValidFingerPos = function( tab ){
  */
 MUSIQ.guitar.isValidChord = function( chord ){
     
-}
+};

@@ -1,3 +1,4 @@
+'use strict';
 /**
  * GuitarFret - describes a guitar fret
  * 
@@ -49,5 +50,5 @@ GuitarFret.prototype.className = function(){
     if( this.pos == 12 ) return "twelfth";
     
     return;
-}
+};
 

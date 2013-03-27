@@ -1,3 +1,4 @@
+'use strict';
 /**
  * 
  * data structure for an interval

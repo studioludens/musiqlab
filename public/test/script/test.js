@@ -27,7 +27,7 @@
     var high_c = g.noteOnPos( [0,8] );
     var c = chord("Cdim");
     
-    var chords = GuitarChord.fromChordAndBase( g, c, g_note );
+    var chords = GuitarChord.fromChordAndBase( g, c, high_c );
     
     //console.log( chords );
 })();
