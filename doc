@@ -2,5 +2,5 @@
 # run jsdoc with the right template
 
 echo "Creating Documentation..."
-./node_modules/jsdoc/jsdoc -r public/script/lib/musiq/ -d public/docs -t jsdoc-template/
+./node_modules/jsdoc/jsdoc -r public/script/lib/musiq/src/ -d public/docs -t jsdoc-template/
 echo "Done!!"

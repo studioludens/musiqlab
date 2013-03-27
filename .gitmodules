@@ -1,0 +1,3 @@
+[submodule "public/script/lib/musiq"]
+	path = public/script/lib/musiq
+	url = https://github.com/studioludens/musiqjs.git
