@@ -3,7 +3,12 @@
 
 echo "Committing to git"
 git status
+echo "ADDING FILES"
 git add -A
+git status
+echo "COMMITTING CHANGES"
 git commit -m $1
+git status
+echo "PUSHING TO MASTER"
 git push
 echo "Done!!"
