@@ -31,6 +31,19 @@ Documentation is created by JSDoc using a custom-made template (/jsdoc-template)
     
 Files are put in the ./public/docs/ folder. 
  
+Description of files
+--------------------
+
+Included in this repo are a number of useful executables. They are shell (bash) scripts that help me to accomplish common tasks. Since I'm a complete beginner with javascript, these tasks could probably be accomplished much more easily, but well, they serve their purpose for now. 
+
+* `docs` : generate documentation using the jsdoc compiler. It makes documentation only for the musiq.js library (./public/script/lib/musiq/)
+* `gitcommit` : shortcut for the git add, git commit and git push commands. Use a string with the commit message like ./gitcommit "message"
+* `gitsubmup` : update git submodules (for now only the musiqjs library)
+* `heroku` : deploy the app to heroku
+* `Procfile` : deployment instructions for heroku (see [documentation](https://devcenter.heroku.com/articles/procfile) )
+* `server.js` : the main node server application
+
+
 License and Copyright
 =====================
 

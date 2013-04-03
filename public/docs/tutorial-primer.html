@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MUSIQ.js API Reference: Tutorial: primer</title>
+    
+    <script src="scripts/jquery-1.9.1.min.js"></script>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="../style/bootstrap.min.css">
+    <!-- responsive sheets -->
+    <link href="../style/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../style/docs.css" rel="stylesheet">
+    
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    
+    
+          
+    <script>
+        $(document).ready(function(w){
+            
+            // toggle handlers for the data titles
+            $('dt.doc-header').click(function(){
+                //alert("It works");
+                $(this).next('dd').toggle(100);
+                //$(this).toggle();
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/#">MUSIQ Lab</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/#">Home</a></li>
+              <li class="active">
+                <a href="/musiq.html" class="dropdown" data-toggle="dropdown">MUSIQ.js</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/musiqjs-tutorial.html">Tutorial</a></li>
+                    <li class="active"><a href="/docs/index.html">API Documentation</a></li>
+                    <li><a href="http://github.com/studioludens/musiqjs/">Source Code</a></li>
+                </ul>
+              </li>
+              <li><a href="/guitar.html">Interactive Guitar</a></li>
+              <li><a href="/#about">About</a></li>
+              <li><a href="/#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav affix"><li class="active"><a href="index.html"><i class="icon-chevron-right"></i>Index</a></li><li class="nav-header">Classes</li><li><a href="Chord.html"><i class="icon-chevron-right"></i>Chord</a></li><li><a href="Chords.html"><i class="icon-chevron-right"></i>Chords</a></li><li><a href="Guitar.html"><i class="icon-chevron-right"></i>Guitar</a></li><li><a href="GuitarChord.html"><i class="icon-chevron-right"></i>GuitarChord</a></li><li><a href="GuitarFret.html"><i class="icon-chevron-right"></i>GuitarFret</a></li><li><a href="GuitarNote.html"><i class="icon-chevron-right"></i>GuitarNote</a></li><li><a href="GuitarString.html"><i class="icon-chevron-right"></i>GuitarString</a></li><li><a href="Interval.html"><i class="icon-chevron-right"></i>Interval</a></li><li><a href="Note.html"><i class="icon-chevron-right"></i>Note</a></li><li><a href="Scale.html"><i class="icon-chevron-right"></i>Scale</a></li><li class="nav-header">Namespaces</li><li><a href="MUSIQ.html"><i class="icon-chevron-right"></i>MUSIQ</a></li><li class="nav-header">Tutorials</li><li><a href="tutorial-primer.html">primer</a></li><li class="nav-header">Globals</li><li><a href="global.html#chord"><i class="icon-chevron-right"></i>chord</a></li><li><a href="global.html#interval"><i class="icon-chevron-right"></i>interval</a></li><li><a href="global.html#note"><i class="icon-chevron-right"></i>note</a></li></ul>
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1 class="page-title">Tutorial: primer</h1>
+                </div>
+                <section>
+    
+<header>
+    
+
+    <h2>primer</h2>
+</header>  
+
+<article>
+    <h1>MUSIQ.js Primer</h1>
+
+<p>Musiq.js is a pure Javascript Library that helps you to understand music theory by representing the most common elements as easy to use javascript functions and objects. Take a note for example. To represent the middle C on the keyboard, we can write:</p>
+
+<pre><code>var middle_c = note(&quot;C4&quot;);
+// we have just created a Note object, 
+// representing the middle C</code></pre>
+
+<p>The 4 is the octave of the note, in this case this is the middle C.</p>
+
+<p>Now, we can do all kinds of things with this note. Want to know what the fifth of the middle C is?</p>
+
+<pre><code>var c_with_fifth = middle_c.transpose(&quot;fifth&quot;);
+// c_with_fifth is now equal to the fifth of C
+// so, what is it called?
+console.log( c_with_fifth );
+// returns &quot;G4&quot;</code></pre>
+
+<p>There are only so many things you can do with a single note. Take a look at the API Documentation for a list of all the methods available.</p>
+
+<p>When we play multiple notes together, they can form a chord. There are many types of chords each with their own sound and function. Let&#39;s say we want to create a G chord.</p>
+
+<pre><code>var g_chord = chord(&quot;G&quot;);
+// what notes are in this chord?
+console.log( g_chord )
+// returns G B D</code></pre>
+
+<p>Before we dive any deeper into this nifty little library, let&#39;s set up our environment first so we can experiment.</p>
+
+<h2>Installation</h2>
+
+<p>MUSIQ.js is hosted on <a href="http://www.github.com/">GitHub</a> and can be easily included in your project. In the root folder of the <a href="https://www.github.com/studioludens/musiqjs/">GitHub project</a> you will find a file called</p>
+
+<pre><code>musiqjs.min.js</code></pre>
+
+<p>Download this file and put it in your web project folder. In your html files, include it like so:</p>
+
+<pre><code><script src=&quot;script-folder/musiqjs.min.js&quot;\></code></pre>
+
+<p>You can do this in between the <code><head></head></code> tags or just before the <code><body></code> tag.</p>
+
+<p>And you&#39;re set!</p>
+
+<h2>Basic Usage</h2>
+
+<p>The library is built with simple use and extensibility in mind. We aim to let you solve basic questions related to music theory with minimal effort. </p>
+
+<p>Creating music objects - Note, Interval & Chord</p>
+
+<hr/>
+
+<p>You can create a note in the following ways:</p>
+
+<pre><code>var n = new Note( 90 ); // creates a note at MIDI position 90</code></pre>
+
+<p>This creates an F#6. You can check the <a href="http://midikits.net23.net/midi_analyser/midi_note_numbers_for_octaves.htm">MIDI note numbers</a>, but most of the time you won&#39;t need them. A little bit of info: all notes in the western system can be represented with a number. The lowest number is 0 and represents the C in octave -1 (don&#39;t ask me why, somebody a long while ago just made that decision and it stuck). The middle C has number 60 for example. 61 represents a C#, not a D as you might think. Adding 1 to the number represents raising the note with a semitone (half a tone). So, 62 = D, 63 = D#/Eb, etc. </p>
+
+<p>Instead, it&#39;s easier to create a note from a string notation. MUSIQ.js supports two basic ways of notating a note. You can have notes like <code>C</code>, <code>F</code>, <code>Bb</code>, <code>D#</code>, etc. These we call <em>relative</em> notes. They are actually a representation of all the <code>C</code>, <code>F</code>, ... notes that exists. </p>
+
+<p>On the other hand, if we use a notation like <code>C4</code>, the Note object will represent a specific note at a specific height, in this case the middle C. The 4 represents the octave of the note.</p>
+
+<pre><code>var middle_c = Note.fromNotation(&quot;C4&quot;);</code></pre>
+
+<p>To make it a little easier and type less, you can use the short function:</p>
+
+<pre><code>var c = note(&quot;C&quot;);</code></pre>
+
+<p>These ways of creating the middle C (C4) note are all equivalent (use whichever feels the most natural to you):</p>
+
+<pre><code>var c = new Note(60);
+var c = Note.fromNotation(&quot;C4&quot;);
+var c = note(&quot;C4&quot;);</code></pre>
+
+<p>The same goes for an Interval, the distance between two notes. We can create an interval like so:</p>
+
+<pre><code>var fifth = new Interval(7);</code></pre>
+
+<p>This represents a perfect fifth interval. It&#39;s easier if we can use the name:</p>
+
+<pre><code>var fifth = Interval.fromNotation(&quot;fifth&quot;);
+// or the short notation
+var fifth = interval(&quot;fifth&quot;);</code></pre>
+
+<p>MUSIQ.js currently supports one notation for each interval. You can find them in the [Interval API].</p>
+
+<p>Just a lone interval like this doesn&#39;t really have any meaning musically. We use it to describe the distance between notes, like so:</p>
+
+<pre><code>var c_to_g = note(&quot;C&quot;).interval(&quot;G&quot;);
+console.log(c_to_g); // -> &quot;fifth&quot;</code></pre>
+
+<p>We can get the number of semitones (for use in our code) easily:</p>
+
+<pre><code>console.log( c_to_g.distance );</code></pre>
+
+<p>~~~</p>
+
+<p>The last one of the basics is the Chord object. The most common ways to create a chord are:</p>
+
+<pre><code>var Cmaj7 = Chord.fromNotation(&quot;Cmaj7&quot;);
+var Cmaj7 = chord(&quot;Cmaj7&quot;);
+// these two do the same</code></pre>
+
+<p>As we said earlier, there are many types of chords. You have the most common ones, like C major, D minor, G7, etc. If we&#39;re getting a bit jazzy, we might use chords like Bbmaj7, G#m7, Fdim.  Then you have a whole array of chords with extensions, like Bmaj9 or Fm11, G13 and many others. The MUSIQ.js library tries to support as many of them as possible. Slash chords (D/G), power chords (C5), and some really exotic ones like GmM7 or A6/9 are all possible. For the full list of supported chords you can take a look at the [Chord documentation].</p>
+
+<p>Here are some of the previous chords in code:</p>
+
+<pre><code>var c_major = chord(&quot;C&quot;); // or CM, or C major, or C maj
+var d_minor = chord(&quot;Dm&quot;); // or Dmin, D minor, and even D-
+var g7 = chord(&quot;G7&quot;); // you get the point...
+var Bbmaj7 = chord(&quot;Bbmaj7&quot;);
+var Fm11 = chord(&quot;Fm11&quot;);</code></pre>
+
+<p>~~~</p>
+
+<p>Now we know how to create some common objects in music theory. </p>
+
+<p>Learning about objects and relationships</p>
+
+<hr/>
+
+<p>Let&#39;s see if we can answer some of the questions we can have when we learn or use music theory. </p>
+
+<p>A simple question that we already answered was: what is the interval (distance) between two notes? In this example, the interval between the D and the F# is a major third.</p>
+
+<pre><code>var interval_notation = note(&quot;D&quot;).interval(&quot;F#&quot;).notation();
+// interval_notation == &#39;major third&#39;</code></pre>
+
+<p>Which note is a minor third above the F# ?</p>
+
+<pre><code>var third_of_f_sharp = note(&quot;F#&quot;).transpose(&quot;minor third&quot;);
+console.log(third_of_f_sharp.notation()); // -> try it!</code></pre>
+
+<p>Is there a C in an Fmaj7 chord?</p>
+
+<pre><code>var f_has_c = chord(&quot;Fmaj7&quot;).contains(&quot;C&quot;);</code></pre>
+</article>
+
+</section>  
+
+            </div>
+        </div>
+        
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sun Mar 31 2013 05:54:09 GMT-0400 (EDT)
+        </footer>
+    </div>
+
+
+
+<script> prettyPrint(); </script>
+<script src="../script/lib/bootstrap/bootstrap.min.js"></script>
+</body>
+</html>
