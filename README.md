@@ -15,6 +15,16 @@ And a couple more.
 Installation
 ------------
 
+Clone the repository to your own computer:
+
+    git clone https://github.com/studioludens/musiqlab.git
+
+and install the npm dependencies like so:
+
+    npm install
+    
+This will create a directory `node_modules`. 
+
 Run the server
 --------------
 
