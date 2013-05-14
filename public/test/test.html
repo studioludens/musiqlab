@@ -2,23 +2,24 @@
 <html>
     <head>
         <title>MUSIQ.js Test | MUSIQ Lab</title>
-        <script src="../script/lib/underscore/underscore-min.js"></script>
+        <script src="script/underscore-min.js"></script>
+        <script src="script/jquery.js"></script>
         
         
         <!-- MUSIQ.js library -->
-        <script src="../script/lib/musiq/MUSIQ.js"></script>
-        <script src="../script/lib/musiq/Interval.js"></script>
-        <script src="../script/lib/musiq/Note.js"></script>
-        <script src="../script/lib/musiq/Chord.js"></script>
+        <script src="../script/lib/musiq/src/MUSIQ.js"></script>
+        <script src="../script/lib/musiq/src/Interval.js"></script>
+        <script src="../script/lib/musiq/src/Note.js"></script>
+        <script src="../script/lib/musiq/src/Chord.js"></script>
         
         <!-- MUSIQ.js guitar scripts -->
-        <script src="../script/lib/musiq/guitar/Guitar.js"></script>
-        <script src="../script/lib/musiq/guitar/GuitarString.js"></script>
-        <script src="../script/lib/musiq/guitar/GuitarFret.js"></script>
-        <script src="../script/lib/musiq/guitar/GuitarNote.js"></script>
-        <script src="../script/lib/musiq/guitar/GuitarChord.js"></script>
+        <script src="../script/lib/musiq/src/guitar/Guitar.js"></script>
+        <script src="../script/lib/musiq/src/guitar/GuitarString.js"></script>
+        <script src="../script/lib/musiq/src/guitar/GuitarFret.js"></script>
+        <script src="../script/lib/musiq/src/guitar/GuitarNote.js"></script>
+        <script src="../script/lib/musiq/src/guitar/GuitarChord.js"></script>
         
-        <script src="../test/script/test.js"></script>
+        <script src="script/test.js"></script>
         
         <link rel="stylesheet" href="../style/default.css"/>
         <link rel="stylesheet" href="../style/test.css"/>
@@ -28,7 +29,10 @@
         <h1>MUSIQ Notation</h1>
         <hr>
         <p>Testing!</p>
-        
+        <input type="text" id="name" length="30"/>
+        <input id="calculate" type="submit" value="Calculate"/>
+        <input id="onlyBase" name="onlyBase" type="checkbox" value="true"/><label for="onlyBase">Only Base</label>
+        <div id="output">Results...</div>
         
     </body>
 </html>

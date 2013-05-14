@@ -149,6 +149,11 @@ test( "Chord object", function(){
     ok( !dmaj7.hasName("Cmaj7") );
     //ok( !dmaj7.hasName("D") );
     
+    ok( dmaj7.relative , "Dmaj7 is a relative chord");
+    // check if the chord contains the D note
+    // check if the chord doesn't contain the E note
+    ok( dmaj7.contains("D"), "Dmaj7 contains a D");
+    ok( !dmaj7.contains("E"), "Dmaj7 !contains an E");
     
 
     // transpose it a bit
@@ -157,6 +162,11 @@ test( "Chord object", function(){
     //console.log( dmaj7.noteObjects());
 
     //var fmaj7 = Chord.fromNotes( [0,4,7] );
+    
+    // some extensions
+    e13 = chord("E13");
+    ok(e13.hasName("E 13"), "E 13th");
+    ok(e13.contains("C#"), "E13 contains a C#");
 
     // a C chord
     var chords1 = Chords.fromNotes( [0,4,7] );
