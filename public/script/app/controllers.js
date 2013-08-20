@@ -42,7 +42,7 @@ var GuitarCtrl = function( $scope , $window){
     _($scope.tunings).each(function(item, key){
         item.id = key;
         item.notesDisplay = _(item.notes).map(function(note){return Note.simpleNotation(note)}).join(" ");
-    })
+    });
     
     //console.log($scope.tunings);
     
@@ -63,20 +63,16 @@ var GuitarCtrl = function( $scope , $window){
     
     $scope.showMatchPanel = 'false';
     
-    // toggle note function
-    $scope.toggleNote = function( note ){
-        note.onlyActive( !note.active() );
-       //console.log( note ); 
-       
-       $scope.updateMatchesFromGuitar();
-       
-       //console.log($scope.matchedChords);
-    };
+    /**
+     * chord variations
+     */
+    $scope.chordVariations = [];
+    $scope.selectedVariation = null; // selected chord variation
+    $scope.selectedVariationNum = -1; // the selected index of the variation
     
-    $scope.toggleMatchPanel = function(){
-        console.log("Toggling match panel");
-        $scope.showMatchPanel = $scope.showMatchPanel == 'true' ? 'false' : 'true';
-    };
+    /**
+     * QUERY AND SEARCH FUNCTIONS
+     */
     
     $scope.clearQuery = function() {
         console.log("Clearing query & fretboard!");
@@ -94,7 +90,12 @@ var GuitarCtrl = function( $scope , $window){
     $scope.search = function( query ){
         console.log("New query: " + query);
         $scope.query = query.replace("♭","b").replace("♯","#");
-        $scope.updateMatches();
+        $scope.queryMatches = $scope.musiq.match($scope.query);
+        
+        var firstChord = _($scope.queryMatches).find(function(m){ return ( m.type() == 'chord' || m.type() == 'scale' ); });
+       
+        $scope.tonic = firstChord ? firstChord.tonic : null;
+        $scope.selectedMatch = $scope.queryMatches[0]; // why do we set selectedMatch to null?
         
         //console.log("New query: " + $scope.query);
         var result = $scope.guitar.show( $scope.queryMatches );
@@ -123,30 +124,15 @@ var GuitarCtrl = function( $scope , $window){
         if( $scope.selectedMatch != match )
             $scope.selectedMatch = match;
         else    $scope.selectedMatch = null;
-    }
-    
-    $scope.updateMatches = function(){
-        // find a matching chord
-        console.log("Updating matches");
-       $scope.queryMatches = $scope.musiq.match($scope.query);//$scope.guitar.chordsFromActiveNotes();
-       var firstChord = _($scope.queryMatches).find(function(m){
-           // check for a match
-           return ( m.type() == 'chord' || m.type() == 'scale' );
-       });
-       
-       $scope.tonic = firstChord ? firstChord.tonic : null;
-       $scope.selectedMatch = null;
-       
-       console.log("Tonic ");
-       console.log($scope.tonic);
     };
     
+    
+    /**
+     * update the interface when the user changes notes on the guitar
+     */
     $scope.updateMatchesFromGuitar = function(){
         // update guitar matches
         console.log("[GuitarCtrl] Update matches from Guitar");
-        
-        
-        
        $scope.queryMatches = $scope.guitar.activeMatches();
        
        console.log($scope.queryMatches);
@@ -175,19 +161,124 @@ var GuitarCtrl = function( $scope , $window){
            $scope.query = "";
            $scope.tonic = "";
        }
-       
-       
-       
-    }
+    };
     
-    // transpose the whole fretboard
+    /** 
+     * transpose the whole fretboard
+     * TODO: make sure that if a match is selected, the match
+     * is updated instead of the fretboard directly
+     */
     $scope.transpose = function( num ){
         console.log("Transposing Fretboard : " + num);
         $scope.guitar.transpose( num, {active: true} );
         $scope.updateMatchesFromGuitar();
     };
     
-    /** QUERY PARSING FUNCTIONS **/
+    /**
+     * select a specific variation
+     */
+    $scope.variation = function( num ){
+        $scope.selectedVariationNum++;
+        
+        console.log( "Selecting variation : " + $scope.variationNum );
+        
+        // set the selected variation
+        
+        $scope.selectedVariation = $scope.getVariation( $scope.selectedVariationNum );
+        $scope.showVariation( $scope.selectedVariation );
+    };
+    
+    /** return a specific variation with te num index
+     */
+    $scope.getVariation = function( num ){
+        
+        console.log("Get variations on:", $scope.selectedMatch);
+        
+        if( !$scope.variations ){
+            $scope.variations = $scope.guitar.variationsOn( $scope.selectedMatch );
+        }
+        return $scope.variations[num] ? $scope.variations[num] : null;
+    }
+    
+    /**
+     * toggle a note to view
+     */
+    $scope.toggleNote = function( note ){
+        note.onlyActive( !note.active() );
+       //console.log( note ); 
+       
+       $scope.updateMatchesFromGuitar();
+       
+       //console.log($scope.matchedChords);
+    };
+    
+    $scope.toggleMatchPanel = function(){
+        console.log("Toggling match panel");
+        $scope.showMatchPanel = $scope.showMatchPanel == 'true' ? 'false' : 'true';
+    };
+    
+    /**
+     * show a note with a specific name on the fretboard
+     */
+    $scope.activateNote = function( name ){
+        console.log("Activate note " + name);
+        
+        // match the note in the query
+        $scope.search(name);
+        $scope.updateMatches();
+        
+    };
+    
+    /**
+     * show a chord with a specific name on the fretboard
+     */
+    $scope.activateChord = function( name ){
+        console.log("Activate chord " + name);
+        
+        // replace the chord bit in the query
+        
+        // if we already have a chord match
+        var match = _($scope.queryMatches).find(function(m){ return m.type() == 'chord' });
+        if( match ){
+            $scope.search(match.tonic.simpleNotation() + name);
+        }
+        else
+            $scope.search( $scope.query + name );
+            
+        $scope.updateMatches();
+    };
+    
+    /**
+     * show a scale with a specific name on the fretboard
+     */
+    $scope.activateScale = function( name ){
+        console.log("Activate scale " + name);
+        
+        // replace the scale bit in the query
+        
+        // if we already have a chord match
+        var match = _($scope.queryMatches).find(function(m){ return m.type() == 'scale' });
+        if( match ){
+            $scope.search(match.tonic.simpleNotation() + name + " scale");
+        }
+        else
+            $scope.search( $scope.query + name + " scale" );
+            
+        $scope.updateMatches();
+    };
+    
+    // utility functions
+    $scope.intervalName = function( interval ){
+        //console.log("get interval name for " + interval)
+        return (new Interval(interval)).name();
+    };
+    
+    
+    /**
+     * CLASS FUNCTIONS
+     * - to give notes on the fretboard the correct class
+     */
+    
     $scope.noteClass = function( name ){
         //console.log("Get noteClass for " + name);
         
@@ -219,53 +310,6 @@ var GuitarCtrl = function( $scope , $window){
         return _($scope.queryMatches).find(function(m){
             return m.type() == 'scale' && m.hasName( name );
         }) ? 'active' : disabled;
-    };
-    
-    $scope.activateNote = function( name ){
-        console.log("Activate note " + name);
-        
-        // match the note in the query
-        $scope.search(name);
-        $scope.updateMatches();
-        
-    };
-    
-    $scope.activateChord = function( name ){
-        console.log("Activate chord " + name);
-        
-        // replace the chord bit in the query
-        
-        // if we already have a chord match
-        var match = _($scope.queryMatches).find(function(m){ return m.type() == 'chord' });
-        if( match ){
-            $scope.search(match.tonic.simpleNotation() + name);
-        }
-        else
-            $scope.search( $scope.query + name );
-            
-        $scope.updateMatches();
-    };
-    
-    $scope.activateScale = function( name ){
-        console.log("Activate scale " + name);
-        
-        // replace the scale bit in the query
-        
-        // if we already have a chord match
-        var match = _($scope.queryMatches).find(function(m){ return m.type() == 'scale' });
-        if( match ){
-            $scope.search(match.tonic.simpleNotation() + name + " scale");
-        }
-        else
-            $scope.search( $scope.query + name + " scale" );
-            
-        $scope.updateMatches();
-    };
-    
-    // utility functions
-    $scope.intervalName = function( interval ){
-        //console.log("get interval name for " + interval)
-        return (new Interval(interval)).name();
     };
     
     /** RESPONSIVE **/

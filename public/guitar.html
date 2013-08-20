@@ -40,6 +40,7 @@
   <script src="script/lib/musiq/src/guitar/GuitarFret.js"></script>
   <script src="script/lib/musiq/src/guitar/GuitarNote.js"></script>
   <script src="script/lib/musiq/src/guitar/GuitarString.js"></script>
+  <script src="script/lib/musiq/src/guitar/GuitarChord.js"></script>
   
   <!-- angular.js controller -->
   
@@ -266,7 +267,7 @@
                     </div>
                     
                     <!-- VARIATIONS -->
-                    <!--
+                    
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown">
                             Variations
@@ -274,12 +275,15 @@
                         </a>
                         
                         <ul id="variations-dropdown" class="dropdown-menu">
-                            <li ng-repeat="vari in ['1st','2nd','3rd','4th','5th','6th']">
+                            <li ng-repeat="vari in chordVariations">
                                 <a><b>{{vari}}</b> variation</a>
                             </li>
                         </ul>
                     </div>
-                        -->
+                    
+                        <a class="btn" ng-click="variation(-1)"><i class="icon-arrow-left"></i></a>
+                        <a class="btn" ng-click="variation(1)"><i class="icon-arrow-right"></i></a>
+                        
                     <!-- edit and save functionality -->
                     <!--
                     <div class="btn-group">
@@ -322,7 +326,7 @@
                 -->
                 
                 <div class="guitar-neck hidden-phone">
-                    <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
+                    <div class="guitar-fret" ng-class="fret.className()" ng-repeat="fret in frets">
                         
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes().reverse()">
                             <a  ng-class="note.className(tonic)" 
@@ -336,7 +340,7 @@
                 
                 <!-- normal order: for small screens -->
                 <div class="guitar-neck visible-phone">
-                    <div class="guitar-fret" ng-class="fret.class()" ng-repeat="fret in frets">
+                    <div class="guitar-fret" ng-class="fret.className()" ng-repeat="fret in frets">
                         <div class="guitar-fret-note" ng-repeat="note in fret.notes()">
                             <a  ng-class="note.className(tonic)" 
                                 ng-click="toggleNote(note)" 
