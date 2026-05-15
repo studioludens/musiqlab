@@ -5,7 +5,6 @@
  * TODO: support different mime-types
  * 
  */
-var util = require("util");
 var static_server = require('node-static');
 
 //
@@ -18,22 +17,19 @@ var server_args = isDebugging ? {cache:false, headers: {"Cache-Control": "no-cac
 
 var file = new(static_server.Server)('./public', server_args);
 
-util.puts("Starting Static Server on " + process.env.PORT);  
+console.log("Starting Static Server on " + process.env.PORT);
 
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
         file.serve(request, response, function (err, result) {
-            //console.log("Serving " + request);
-            if (err) { // There was an error serving the file
-                util.puts("[] Error serving " + request.url + " - " + err.message);
-
-                // Respond to the client
+            if (err) {
+                console.log("[] Error serving " + request.url + " - " + err.message);
                 response.writeHead(err.status, err.headers);
                 response.end();
             }
         });
-    });
-}).listen(process.env.PORT);  
+    }).resume();
+}).listen(process.env.PORT);
 
-util.puts("Server Running on " + process.env.PORT);  
+console.log("Server Running on " + process.env.PORT);
 
